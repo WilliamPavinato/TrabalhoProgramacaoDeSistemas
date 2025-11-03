@@ -8,14 +8,18 @@ public class Registrador {
 
  Registrador(String name, int id, int value)
  {
-    this.name = name;
-    this.id = id;
-    this. value = value;
+    this.name   = name;
+    this.id     = id;
+    this.value  = value;
  }
 
+    Registrador(String nome, int id) {  // valor default é 0
+        this.name   = nome;
+        this.id     = id;
+        this.value  = 0;
+    }
+
  // Getters 
-
-
  public String getName(){ return this.name; }
 
  public int getId(){ return this.id; }
@@ -24,7 +28,6 @@ public class Registrador {
 
 
  // Setters
-
  public void setValue(int newValue){
     this.value = newValue;
  }
