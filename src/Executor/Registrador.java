@@ -13,7 +13,7 @@ public class Registrador {
     this. value = value;
  }
 
- // Get methods
+ // Getters 
 
 
  public String getName(){ return this.name; }
@@ -23,7 +23,7 @@ public class Registrador {
  public int getValue(){ return this.value; }
 
 
- // Set methods
+ // Setters
 
  public void setValue(int newValue){
     this.value = newValue;
