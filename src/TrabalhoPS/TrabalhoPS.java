@@ -1,13 +1,11 @@
 package TrabalhoPS;
 
-import javax.swing.JFrame;
+import Executor.ExecutorInterface;
 
-public class TrabalhoPS extends JFrame{
+public class TrabalhoPS{
+    static ExecutorInterface executor;
+
     void main(){
-        setSize(750, 550);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setVisible(true);
-        setResizable(false);
+        executor = new ExecutorInterface();
     }
 }
