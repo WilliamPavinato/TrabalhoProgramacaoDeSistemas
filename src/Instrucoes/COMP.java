@@ -5,10 +5,10 @@ import Executor.Registradores;
 
     //Compara o valor do Acumulador
 
-public class COMPARE extends Instruction {
+public class COMP extends Instruction {
 
-    public COMPARE() {
-        super("COMPARE", "28"); // Define nome e opcode para a operação 
+    public COMP() {
+        super("COMP", "28"); // Define nome e opcode para a operação 
     }
 
 
