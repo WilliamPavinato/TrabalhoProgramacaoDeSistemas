@@ -4,10 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 // Esta classe é o catálogo central de todas as instruções válidas no simulador,
-// mapeando o opcode hexadecimal (chave) para a instância da classe Instrucao (valor).
+// mapeando o opcode hexadecimal (chave) para a instância da classe Instruction (valor).
 public class Instructions { // CLASSE RENOMEADA PARA Instructions
-    // Mapa que armazena pares de Opcode (String) e a Instância da Instrução (Instrucao).
-    private final Map<String, Instrucao> instrucoes;
+    
+    // Mapa que armazena pares de Opcode (String) e a Instância da Instrução (Instruction).
+    // CORREÇÃO: Usando a classe base 'Instruction' para consistência.
+    private final Map<String, Instruction> instrucoes;
 
     // Construtor: Inicializa o mapa e carrega todas as instruções.
     public Instructions() {
@@ -62,7 +64,7 @@ public class Instructions { // CLASSE RENOMEADA PARA Instructions
     }
 
     // Método para buscar e retornar a instância da instrução com base no Opcode.
-    public Instrucao getInstrucao(String opcode) {
+    public Instruction getInstrucao(String opcode) {
         return instrucoes.get(opcode);
     }
 }
