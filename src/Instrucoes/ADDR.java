@@ -7,7 +7,7 @@ import Executor.Registradores;
     //Representa a instrução de Adição entre Registradores (ADDR).
     //Lógica: Reg_B <- Reg_A + Reg_B.
 
-public class ADDR extends Instrucao {
+public class ADDR extends Instruction {
 
     public ADDR() {
         super("ADDR", "90"); // Define nome e opcode para adição entre registradores

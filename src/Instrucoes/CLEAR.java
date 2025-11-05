@@ -5,7 +5,7 @@ import Executor.Registradores;
 
 // Zera registrador
 
-public class CLEAR extends Instrucao {
+public class CLEAR extends Instruction {
 
     public CLEAR() {
         super("CLEAR", "4"); // Define nome e opcode

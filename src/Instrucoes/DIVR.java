@@ -5,7 +5,7 @@ import Executor.Registradores;
 
     //Realiza a divisão inteira (Reg_A / Reg_B) e armazena o quociente (parte inteira) no reg B
 
-public class DIVR extends Instrucao {
+public class DIVR extends Instruction {
 
     public DIVR() {
         super("DIVR", "9C"); // Define nome e opcode para divisão entre registradores

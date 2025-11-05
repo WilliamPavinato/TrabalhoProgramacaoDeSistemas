@@ -6,7 +6,7 @@ import Executor.Registradores;
 /**
     Representa a instrução AND, E Lógico Bit a Bit
  */
-public class AND extends Instrucao {
+public class AND extends Instruction {
 
     public AND() {
         super("AND", "40"); // Define nome e opcode para a operação AND

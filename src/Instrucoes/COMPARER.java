@@ -6,7 +6,7 @@ import Executor.Registradores;
 
 // Compara o valor do Registrador A com o valor do Registrador B e define o registrador
 
-public class COMPARER extends Instrucao {
+public class COMPARER extends Instruction {
 
     public COMPARER() {
         super("COMPARER", "A0"); // Define nome e opcode para comparação entre registradores

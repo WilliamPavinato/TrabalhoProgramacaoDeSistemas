@@ -5,7 +5,7 @@ import Executor.Registradores;
 
     //Realiza a divisão inteira do valor do acumulador (A) por um valor da memória e armazena o resultado inteiro no acumulador
 
-public class DIV extends Instrucao {
+public class DIV extends Instruction {
 
     public DIV() {
         super("DIV", "24"); // Define nome e opcode para a operação de divisão
