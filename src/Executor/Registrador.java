@@ -20,22 +20,22 @@ public class Registrador {
     }
 
  // Getters 
- public String getName(){ return this.name; }
+ public String getNome(){ return this.name; }
 
  public int getId(){ return this.id; }
 
- public int getValue(){ return this.value; }
+ public int getValor(){ return this.value; }
 
 
  // Setters
- public void setValue(int newValue){
+ public void setValor(int newValue){
     this.value = newValue;
  }
 
  // Other methods
 
  // For Program Counter (PC)
- public void incValue(int incValue){
+ public void incrementarValor(int incValue){
     this.value += incValue;
  }
 }
