@@ -3,10 +3,10 @@ package Instrucoes;
 import Executor.Memoria;
 import Executor.Registradores;
 
-/**
-    Representa a instrução de Adição entre Registradores (ADDR).
-    Lógica: Reg_B <- Reg_A + Reg_B.
- */
+
+    //Representa a instrução de Adição entre Registradores (ADDR).
+    //Lógica: Reg_B <- Reg_A + Reg_B.
+
 public class ADDR extends Instrucao {
 
     public ADDR() {
