@@ -5,7 +5,8 @@ import Executor.Registradores;
 
 public class LDCH extends Instrucao {
 
-    // Construtor
+    // Construtor: Define o nome e o opcode da instrução LDCH
+    public LDCH() {
         super("LDCH", "50");
     }
 
@@ -13,7 +14,6 @@ public class LDCH extends Instrucao {
     public void executar(Memoria memoria, Registradores registradores) {
         // Obtém o endereço de memória para o operando (o endereço está no PC)
         int enderecoMem = Integer.parseInt(memoria.getPosicaoMemoria(registradores.getValorPC()),16);
-        
         // Lê o valor (palavra) na posição de memória especificada
         int valorMem = Integer.parseInt(memoria.getPosicaoMemoria(enderecoMem),16);
         // Isola o byte menos significativo (byte mais à direita) do valor lido
