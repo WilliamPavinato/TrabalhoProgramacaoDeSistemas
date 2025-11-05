@@ -1,11 +1,11 @@
 package TrabalhoPS;
 
-import Executor.ExecutorInterface;
+import Interface.ExecutorInterface;
 
-public class TrabalhoPS{
-    static ExecutorInterface executor;
+    public class TrabalhoPS {
+        static ExecutorInterface executor;
 
-    void main(){
+        void main() {
         executor = new ExecutorInterface();
-    }
+        }
 }
