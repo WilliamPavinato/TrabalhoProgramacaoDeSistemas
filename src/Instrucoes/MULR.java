@@ -24,10 +24,10 @@ public class MULR extends Instruction {
         registradores.incrementarPC();
 
         // Pega o valor armazenado no primeiro registrador (RegA)
-        int registerA_Value = registradores.getRegistrador(registerA_ID).getValue();
+        int registerA_Value = registradores.getRegistrador(registerA_ID).getValor();
 
         // Pega o valor armazenado no segundo registrador (RegB)
-        int registerB_Value = registradores.getRegistrador(registerB_ID).getValue();
+        int registerB_Value = registradores.getRegistrador(registerB_ID).getValor();
 
         // RegB = RegA * RegB (A lógica é r2 = r1 * r2)
         int result = registerA_Value * registerB_Value; // Multiplica

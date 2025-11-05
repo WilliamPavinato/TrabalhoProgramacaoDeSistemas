@@ -21,7 +21,7 @@ public class MUL extends Instruction {
         int memoryValue = Integer.parseInt(memoria.getPosicaoMemoria(memoryAddress), 16);
 
         // Pega o valor que está no acumulador "A"
-        int accumulatorValue = registradores.getRegistradorPorNome("A").getValue();
+        int accumulatorValue = registradores.getRegistradorPorNome("A").getValor();
 
         // Acumulador = Acumulador * valorMem
         accumulatorValue *= memoryValue; // Multiplica
