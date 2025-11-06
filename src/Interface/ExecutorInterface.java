@@ -34,15 +34,15 @@ public class ExecutorInterface extends javax.swing.JFrame {
     private javax.swing.JList<String> memoryList;
 
     // Paleta de cores moderna
-    private final Color BG_PRIMARY = new Color(15, 23, 42);        // Azul escuro profundo
-    private final Color BG_SECONDARY = new Color(30, 41, 59);      // Azul escuro médio
-    private final Color BG_CARD = new Color(51, 65, 85);           // Cinza azulado
-    private final Color ACCENT_PRIMARY = new Color(99, 102, 241);  // Índigo vibrante
-    private final Color ACCENT_SECONDARY = new Color(139, 92, 246); // Roxo
+    private final Color BG_PRIMARY = new Color(255, 240, 245);     // Rosa bebê bem claro
+    private final Color BG_SECONDARY = new Color(255, 228, 238);   // Rosa bebê médio
+    private final Color BG_CARD = new Color(255, 218, 233);        // Rosa bebê card
+    private final Color ACCENT_PRIMARY = new Color(236, 72, 153);  // Rosa vibrante
+    private final Color ACCENT_SECONDARY = new Color(219, 39, 119); // Rosa escuro
     private final Color ACCENT_SUCCESS = new Color(34, 197, 94);   // Verde
-    private final Color TEXT_PRIMARY = new Color(248, 250, 252);   // Branco quase puro
-    private final Color TEXT_SECONDARY = new Color(203, 213, 225); // Cinza claro
-    private final Color BORDER_COLOR = new Color(71, 85, 105);     // Cinza azulado escuro
+    private final Color TEXT_PRIMARY = new Color(30, 30, 30);      // Cinza escuro
+    private final Color TEXT_SECONDARY = new Color(100, 100, 100); // Cinza médio
+    private final Color BORDER_COLOR = new Color(244, 114, 182);   // Rosa borda
     private final Color HIGHLIGHT = new Color(255, 199, 0);        // Amarelo dourado
 
     public ExecutorInterface() {
@@ -153,6 +153,7 @@ public class ExecutorInterface extends javax.swing.JFrame {
         inputField.setForeground(TEXT_PRIMARY);
         inputField.setCaretColor(TEXT_PRIMARY);
         inputField.setFont(new Font("Consolas", Font.PLAIN, 13));
+        inputField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         inputField.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(BORDER_COLOR, 2),
                 BorderFactory.createEmptyBorder(5, 10, 5, 10)
@@ -169,6 +170,7 @@ public class ExecutorInterface extends javax.swing.JFrame {
         outputField.setBackground(BG_CARD);
         outputField.setForeground(ACCENT_SUCCESS);
         outputField.setFont(new Font("Consolas", Font.BOLD, 13));
+        outputField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         outputField.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(BORDER_COLOR, 2),
                 BorderFactory.createEmptyBorder(5, 10, 5, 10)
@@ -188,7 +190,7 @@ public class ExecutorInterface extends javax.swing.JFrame {
             loadButtonActionPerformed(evt, memoryList);
         });
 
-        runButton.setText("▶ RUN");
+        runButton.setText("RUN");
         runButton.setEnabled(false);
         runButton.setBackground(ACCENT_SUCCESS);
         runButton.setForeground(TEXT_PRIMARY);
@@ -202,7 +204,7 @@ public class ExecutorInterface extends javax.swing.JFrame {
             runButtonActionPerformed(evt, memoryList);
         });
 
-        stepButton.setText("⏭ STEP");
+        stepButton.setText("STEP");
         stepButton.setEnabled(false);
         stepButton.setBackground(ACCENT_SECONDARY);
         stepButton.setForeground(TEXT_PRIMARY);

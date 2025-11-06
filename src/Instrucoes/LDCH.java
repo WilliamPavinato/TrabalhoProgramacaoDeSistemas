@@ -3,7 +3,7 @@ package Instrucoes;
 import Executor.Memoria;
 import Executor.Registradores;
 
-public class LDCH extends Instrucao {
+public class LDCH extends Instruction {
 
     // Construtor: Define o nome e o opcode da instrução LDCH
     public LDCH() {

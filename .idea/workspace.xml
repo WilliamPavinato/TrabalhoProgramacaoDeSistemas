@@ -4,8 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="49513774-cd14-46a5-89e2-6d5c80cd9bfc" name="Changes" comment="interface, falta arrumar ainda">
+    <list default="true" id="49513774-cd14-46a5-89e2-6d5c80cd9bfc" name="Changes" comment="getValor() arrumado">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Executor/Executor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Executor/Executor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Executor/Registradores.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Executor/Registradores.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Instrucoes/LDCH.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/LDCH.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Interface/ExecutorInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interface/ExecutorInterface.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -81,11 +84,20 @@
       <option name="project" value="LOCAL" />
       <updated>1762371195395</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="getValor() arrumado">
+      <option name="closed" value="true" />
+      <created>1762387299625</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1762387299625</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="interface, falta arrumar ainda" />
-    <option name="LAST_COMMIT_MESSAGE" value="interface, falta arrumar ainda" />
+    <MESSAGE value="getValor() arrumado" />
+    <option name="LAST_COMMIT_MESSAGE" value="getValor() arrumado" />
   </component>
 </project>

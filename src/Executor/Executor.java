@@ -1,6 +1,7 @@
 package Executor;
 
-import Instrucoes.Instrucoes;
+import Instrucoes.Instructions;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -12,11 +13,11 @@ public class Executor {
     private boolean stop;
     private final Memoria memoria;
     private final Registradores registradores;
-    private final Instrucoes instrucoes;
+    private final Instructions instructions;
 
     public Executor(){
         this.registradores = new Registradores();
-        this.instrucoes = new Instrucoes();
+        this.instructions = new Instructions();
         this.memoria = new Memoria();
         this.output = -1;
     }
@@ -62,10 +63,10 @@ public class Executor {
             registradores.incrementarPC();
 
             if ("DC".equals(opcode)) { // OUTPUT
-                setOutput(registradores.getRegistradorPorNome("A").getValue());
+                setOutput(registradores.getRegistradorPorNome("A").getValor());
                 registradores.incrementarPC();
             } else {
-                instrucoes.getInstrucao(opcode).executar(memoria, registradores);
+                instructions.getInstrucao(opcode).executar(memoria, registradores);
             }
 
             pc = registradores.getValorPC();
@@ -90,10 +91,10 @@ public class Executor {
         registradores.incrementarPC();
 
         if ("DC".equals(opcode)) {
-            setOutput(registradores.getRegistradorPorNome("A").getValue());
+            setOutput(registradores.getRegistradorPorNome("A").getValor());
             registradores.incrementarPC();
         } else {
-            instrucoes.getInstrucao(opcode).executar(memoria, registradores);
+            instructions.getInstrucao(opcode).executar(memoria, registradores);
         }
 
         pc = registradores.getValorPC();
@@ -105,7 +106,7 @@ public class Executor {
     // Getters
     public Registradores getRegistradores() { return registradores; }
     public Memoria getMemoria(){ return memoria; }
-    public Instrucoes getInstrucoes(){ return instrucoes; }
+    public Instructions getInstrucoes(){ return instructions; }
     public int getOutput(){ return output; }
     public boolean getStop(){ return stop; }
 
