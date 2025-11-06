@@ -310,8 +310,8 @@ public class ExecutorInterface extends javax.swing.JFrame {
         try {
             int value = Integer.parseInt(enteredText);
             if ( value >= 0 && value <= 255 ) {
-                executor.getRegistradores().getRegistradorPorNome("A").setValue(value);
-                executor.getRegistradores().getRegistradorPorNome("PC").setValue(executor.getRegistradores().getRegistradorPorNome("PC").getValue()+1);
+                executor.getRegistradores().getRegistradorPorNome("A").setValor(value);
+                executor.getRegistradores().getRegistradorPorNome("PC").setValor(executor.getRegistradores().getRegistradorPorNome("PC").getValor()+1);
                 attRegistradores();
                 stepButton.setEnabled(true);
                 runButton.setEnabled(true);
@@ -412,14 +412,14 @@ public class ExecutorInterface extends javax.swing.JFrame {
     private void attRegistradores() {
         registerTable.setModel(new DefaultTableModel(
                 new Object [][] {
-                        {"PC", executor.getRegistradores().getRegistradorPorNome("PC").getValue()},
-                        {"A", executor.getRegistradores().getRegistradorPorNome("A").getValue()},
-                        {"X", executor.getRegistradores().getRegistradorPorNome("X").getValue()},
-                        {"L", executor.getRegistradores().getRegistradorPorNome("L").getValue()},
-                        {"B", executor.getRegistradores().getRegistradorPorNome("B").getValue()},
-                        {"S", executor.getRegistradores().getRegistradorPorNome("S").getValue()},
-                        {"T", executor.getRegistradores().getRegistradorPorNome("T").getValue()},
-                        {"SW", executor.getRegistradores().getRegistradorPorNome("SW").getValue()}
+                        {"PC", executor.getRegistradores().getRegistradorPorNome("PC").getValor()},
+                        {"A", executor.getRegistradores().getRegistradorPorNome("A").getValor()},
+                        {"X", executor.getRegistradores().getRegistradorPorNome("X").getValor()},
+                        {"L", executor.getRegistradores().getRegistradorPorNome("L").getValor()},
+                        {"B", executor.getRegistradores().getRegistradorPorNome("B").getValor()},
+                        {"S", executor.getRegistradores().getRegistradorPorNome("S").getValor()},
+                        {"T", executor.getRegistradores().getRegistradorPorNome("T").getValor()},
+                        {"SW", executor.getRegistradores().getRegistradorPorNome("SW").getValor()}
                 },
                 new String [] {
                         "Nome", "Valor"
