@@ -5,13 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="49513774-cd14-46a5-89e2-6d5c80cd9bfc" name="Changes" comment="interface, falta arrumar ainda">
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_05_11_2025_18_52_[Changes]/shelved.patch" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_05_11_2025_18_52__Changes_.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_05_11_2025_19_00_[Changes]/shelved.patch" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_05_11_2025_19_00__Changes_.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/programa.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Executor/Registradores.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Executor/Registradores.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/programa.txt" beforeDir="false" afterPath="$PROJECT_DIR$/programa.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Executor/Registrador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Executor/Registrador.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

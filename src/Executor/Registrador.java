@@ -32,8 +32,6 @@ public class Registrador {
     this.value = newValue;
  }
 
- // Other methods
-
  // For Program Counter (PC)
  public void incrementarValor(int incValue){
     this.value += incValue;
