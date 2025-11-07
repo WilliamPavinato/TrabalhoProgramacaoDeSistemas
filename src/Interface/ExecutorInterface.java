@@ -34,16 +34,16 @@ public class ExecutorInterface extends javax.swing.JFrame {
     private javax.swing.JList<String> memoryList;
 
     // Paleta de cores moderna
-    private final Color BG_PRIMARY = new Color(255, 240, 245);     // Rosa bebê bem claro
-    private final Color BG_SECONDARY = new Color(255, 228, 238);   // Rosa bebê médio
-    private final Color BG_CARD = new Color(255, 218, 233);        // Rosa bebê card
-    private final Color ACCENT_PRIMARY = new Color(236, 72, 153);  // Rosa vibrante
-    private final Color ACCENT_SECONDARY = new Color(219, 39, 119); // Rosa escuro
-    private final Color ACCENT_SUCCESS = new Color(34, 197, 94);   // Verde
-    private final Color TEXT_PRIMARY = new Color(30, 30, 30);      // Cinza escuro
-    private final Color TEXT_SECONDARY = new Color(100, 100, 100); // Cinza médio
-    private final Color BORDER_COLOR = new Color(244, 114, 182);   // Rosa borda
-    private final Color HIGHLIGHT = new Color(255, 199, 0);        // Amarelo dourado
+    private final Color BG_PRIMARY       = new Color(255, 240, 245); // Rosa bebê bem claro
+    private final Color BG_SECONDARY     = new Color(255, 228, 238); // Rosa bebê médio
+    private final Color BG_CARD          = new Color(255, 218, 233); // Rosa bebê card
+    private final Color ACCENT_PRIMARY   = new Color(236, 72, 153);  // Rosa vibrante
+    private final Color ACCENT_SECONDARY = new Color(219, 39, 119);  // Rosa escuro
+    private final Color ACCENT_SUCCESS   = new Color(34, 197, 94);   // Verde
+    private final Color TEXT_PRIMARY     = new Color(30, 30, 30);    // Cinza escuro
+    private final Color TEXT_SECONDARY   = new Color(100, 100, 100); // Cinza médio
+    private final Color BORDER_COLOR     = new Color(244, 114, 182); // Rosa borda
+    private final Color HIGHLIGHT        = new Color(255, 199, 0);   // Amarelo dourado
 
     public ExecutorInterface() {
         super("Executor SIC/XE");
@@ -51,30 +51,30 @@ public class ExecutorInterface extends javax.swing.JFrame {
     }
 
     private void initComponents() {
-        executor = new Executor();
+        executor       = new Executor();
         backgroundPane = new javax.swing.JPanel();
-        sicLabel = new javax.swing.JLabel();
+        sicLabel       = new javax.swing.JLabel();
 
         registersPane = new javax.swing.JScrollPane();
-        memoryPane = new javax.swing.JScrollPane();
+        memoryPane    = new javax.swing.JScrollPane();
 
-        registerTable = new javax.swing.JTable();
+        registerTable  = new javax.swing.JTable();
         registersLabel = new javax.swing.JLabel();
 
         executeLabel = new javax.swing.JLabel();
         executeLabel.setText("teste");
 
-        inputField = new javax.swing.JTextField();
+        inputField  = new javax.swing.JTextField();
         outputField = new javax.swing.JTextField();
-        inputLabel = new javax.swing.JLabel();
+        inputLabel  = new javax.swing.JLabel();
         outputLabel = new javax.swing.JLabel();
 
-        memoryList = new javax.swing.JList<>();
+        memoryList  = new javax.swing.JList<>();
         memoryLabel = new javax.swing.JLabel();
 
         loadButton = new javax.swing.JButton();
         stepButton = new javax.swing.JButton();
-        runButton = new javax.swing.JButton();
+        runButton  = new javax.swing.JButton();
 
         fileChooser = new javax.swing.JFileChooser();
 
