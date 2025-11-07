@@ -30,22 +30,22 @@ public class Registradores {
     public int getValorPC() { return registradores.get(8).getValor(); }
 
     public Registrador getRegistradorPorNome(String nome) {
-        switch(nome) {
-            case "A":  return registradores.get(0);
-            case "X":  return registradores.get(1);
-            case "L":  return registradores.get(2);
-            case "B":  return registradores.get(3);
-            case "S":  return registradores.get(4);
-            case "T":  return registradores.get(5);
-            case "PC": return registradores.get(8);
-            case "SW": return registradores.get(9);
-        }
-        return null;
+        return switch (nome) {
+            case "A" -> registradores.get(0);
+            case "X" -> registradores.get(1);
+            case "L" -> registradores.get(2);
+            case "B" -> registradores.get(3);
+            case "S" -> registradores.get(4);
+            case "T" -> registradores.get(5);
+            case "PC" -> registradores.get(8);
+            case "SW" -> registradores.get(9);
+            default -> null;
+        };
     }
 
     // Outros monstros
     public void incrementarPC() {
-        registradores.get(8).incrementarValor(1);;
+        registradores.get(8).incrementarValor(1);
     }
 
     public void cleanRegistradores(){
