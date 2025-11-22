@@ -67,4 +67,13 @@ public class Instructions { // CLASSE RENOMEADA PARA Instructions
     public Instruction getInstrucao(String opcode) {
         return instrucoes.get(opcode);
     }
+
+    public Instruction getInstrucaoPorNome(String nome)
+    {
+        for (Instruction instrucao : instrucoes.values()) {
+            if (instrucao.getNome().equals(nome))
+                return instrucao;
+        }
+        return null;
+    }
 }

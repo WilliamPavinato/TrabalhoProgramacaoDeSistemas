@@ -18,7 +18,7 @@ public class J extends Instruction {
 
         // Desvia a execução: PC ← enderecoJump
         // Define o novo valor do Program Counter (PC) para o endereço de salto
-        reg.getRegistradorPorNome("PC").setValor(enderecoJump);
+        reg.    getRegistradorPorNome("PC").setValor(enderecoJump);
 
     }
 

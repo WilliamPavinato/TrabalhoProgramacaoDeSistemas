@@ -23,7 +23,10 @@ public class JEQ extends Instruction {
             // Define o novo valor do Program Counter (PC) para o endereço de salto
             reg.getRegistradorPorNome("PC").setValor(enderecoJump);
         }
-        reg.incrementarPC();
+        else
+        {
+            reg.incrementarPC();
+        }
     }
     
 }

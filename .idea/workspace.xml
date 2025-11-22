@@ -5,8 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="49513774-cd14-46a5-89e2-6d5c80cd9bfc" name="Changes" comment="interface, falta arrumar ainda">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_05_11_2025_18_52_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_05_11_2025_18_52__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_05_11_2025_19_00_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_05_11_2025_19_00__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Interface/ExecutorInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interface/ExecutorInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Executor/Executor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Executor/Executor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Instrucoes/ADD.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/ADD.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Instrucoes/ADDR.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/ADDR.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Instrucoes/AND.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/AND.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Instrucoes/CLEAR.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/CLEAR.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Instrucoes/COMP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/COMP.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Instrucoes/COMPR.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/COMPR.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Instrucoes/DIV.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/DIV.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Instrucoes/DIVR.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/DIVR.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Instrucoes/Instruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/Instruction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Instrucoes/Instructions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/Instructions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Instrucoes/J.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/J.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Instrucoes/JEQ.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/JEQ.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Instrucoes/JGT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/JGT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Instrucoes/JLT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/JLT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/TrabalhoPS/TrabalhoPS.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TrabalhoPS/TrabalhoPS.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,6 +66,9 @@
   &quot;associatedIndex&quot;: 0
 }</component>
   <component name="ProjectId" id="34wX74tZTG6bW3RirRi17iiLFZO" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />

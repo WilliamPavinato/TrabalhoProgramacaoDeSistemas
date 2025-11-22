@@ -26,6 +26,9 @@ public class JLT extends Instruction {
         }
         
         // O PC é sempre incrementado
-        reg.incrementarPC();
+        else
+        {
+            reg.incrementarPC();
+        }
     }
 }

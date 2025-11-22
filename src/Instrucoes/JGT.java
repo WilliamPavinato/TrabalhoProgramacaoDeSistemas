@@ -26,6 +26,9 @@ public class JGT extends Instruction {
         
         // O PC é sempre incrementado para avançar sobre o endereço do operando
         // (o endereço de salto), seja o salto executado ou não.
-        reg.incrementarPC();
+        else
+        {
+            reg.incrementarPC();
+        }
     }
 }

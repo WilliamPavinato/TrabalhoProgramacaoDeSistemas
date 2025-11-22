@@ -55,7 +55,6 @@ public class Executor {
         while (!"00".equals(opcode)) {
 
             if ("D8".equals(opcode)) { // STOP
-                registradores.incrementarPC();
                 stop = true;
                 return;
             }
@@ -64,8 +63,7 @@ public class Executor {
 
             if ("DC".equals(opcode)) { // OUTPUT
                 setOutput(registradores.getRegistradorPorNome("A").getValor());
-                registradores.incrementarPC();
-            } else {
+           } else {
                 instructions.getInstrucao(opcode).executar(memoria, registradores);
             }
 
@@ -83,7 +81,6 @@ public class Executor {
         if ("00".equals(opcode)) return false;
 
         if ("D8".equals(opcode)) {
-            registradores.incrementarPC();
             stop = true;
             return true;
         }
@@ -92,7 +89,6 @@ public class Executor {
 
         if ("DC".equals(opcode)) {
             setOutput(registradores.getRegistradorPorNome("A").getValor());
-            registradores.incrementarPC();
         } else {
             instructions.getInstrucao(opcode).executar(memoria, registradores);
         }
