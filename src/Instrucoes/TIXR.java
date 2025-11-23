@@ -6,39 +6,37 @@ import Executor.Registradores;
 public class TIXR extends Instruction {
 
     public TIXR() {
-        super("TIXR", "B8"); // Nome e Opcode
+        // Opcode "B8" para TIXR
+        super("TIXR", "B8");
     }
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
-        // TIXR: Incrementa X em 1, e então compara X com outro registrador (r1)
+        // TIXR r1 -> compara X com o registrador r1
+        int reg1_ID = Integer.parseInt(memoria.getPosicaoMemoria(registradores.getValorPC()), 16);
 
-        // Pega o valor atual de X e incrementa 1
-        int registerX_Value = (registradores.getRegistradorPorNome("X").getValor()) + 1;
-
-        // Armazena o novo valor (X+1) de volta no registrador X
-        registradores.getRegistradorPorNome("X").setValor(registerX_Value);
-
-        // Pega o ID do registrador (r1) (parâmetro 1) do PC (para comparar)
-        int registerA_ID = Integer.parseInt(memoria.getPosicaoMemoria(registradores.getValorPC()), 16);
-
-        // Lê e avança PC (para pular o parâmetro 'registerA_ID')
+        //avança o PC para a próxima instrução
         registradores.incrementarPC();
 
-        // Pega o valor armazenado no registrador (r1)
-        int registerA_Value = registradores.getRegistrador(registerA_ID).getValor();
+        //incrementa o registrador X em 1
+        int registerX_Value = registradores.getRegistradorPorNome("X").getValor() + 1;
 
-        // Compara o NOVO valor de X com o valor do registrador (r1)
-        // e define o registrador de Status (SW)
+        //salva o novo valor de volta em X
+        registradores.getRegistradorPorNome("X").setValor(registerX_Value);
+
+        //busca o valor do registrador de comparação (r1)
+        int registerA_Value = registradores.getRegistrador(reg1_ID).getValor();
+
+        //compara X (incrementado) com r1
         if (registerX_Value == registerA_Value) {
-            // SW = 0 (Equal)
+            // igual (=)
             registradores.getRegistradorPorNome("SW").setValor(0);
-        } else if (registerX_Value > registerA_Value) {
-            // SW = 1 (Greater than)
-            registradores.getRegistradorPorNome("SW").setValor(1);
-        } else {
-            // SW = -1 (Less than)
+        } else if (registerX_Value < registerA_Value) {
+            // menor (<) -> define como -1 para funcionar com JLT
             registradores.getRegistradorPorNome("SW").setValor(-1);
+        } else {
+            // maior (>) -> define como 1 para funcionar com JGT
+            registradores.getRegistradorPorNome("SW").setValor(1);
         }
     }
 }

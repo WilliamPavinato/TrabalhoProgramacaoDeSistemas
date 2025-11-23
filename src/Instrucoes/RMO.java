@@ -6,28 +6,27 @@ import Executor.Registradores;
 public class RMO extends Instruction {
 
     public RMO() {
-        super("RMO", "AC"); // Nome e Opcode
+        super("RMO", "AC");
     }
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
-        // Pega o ID do primeiro registrador (RegA - origem) do PC
-        int registerA_ID = Integer.parseInt(memoria.getPosicaoMemoria(registradores.getValorPC()), 16);
+        // pega o ID do registrador de ORIGEM (r1) apontado pelo PC
+        int r1_ID = Integer.parseInt(memoria.getPosicaoMemoria(registradores.getValorPC()), 16);
 
-        // Avança PC
+        //avança PC para o próximo parâmetro
         registradores.incrementarPC();
 
-        // Pega o ID do segundo registrador (RegB - destino) do PC
-        int registerB_ID = Integer.parseInt(memoria.getPosicaoMemoria(registradores.getValorPC()), 16);
+        // pega o ID do registrador de DESTINO (r2) apontado pelo PC
+        int r2_ID = Integer.parseInt(memoria.getPosicaoMemoria(registradores.getValorPC()), 16);
 
-        // Avança PC
+        //avança PC para a próxima instrução
         registradores.incrementarPC();
 
-        // Pega o valor armazenado no primeiro registrador (RegA)
-        int registerA_Value = registradores.getRegistrador(registerA_ID).getValor();
+        // busca o valor que está no registrador de origem (r1)
+        int valueR1 = registradores.getRegistrador(r1_ID).getValor();
 
-        // RegB = RegA (Move o valor de RegA para RegB)
-        // O segundo registrador (RegB) recebe o valor
-        registradores.getRegistrador(registerB_ID).setValor(registerA_Value); // Armazena resultado
+        // copia esse valor para o registrador de destino (r2)
+        registradores.getRegistrador(r2_ID).setValor(valueR1); // R2 <- R1
     }
 }

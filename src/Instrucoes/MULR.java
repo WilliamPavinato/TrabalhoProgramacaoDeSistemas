@@ -6,34 +6,32 @@ import Executor.Registradores;
 public class MULR extends Instruction {
 
     public MULR() {
-        super("MULR", "98"); // Nome e Opcode
+        super("MULR", "98");
     }
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
-        // Pega o ID do primeiro registrador (parâmetro 1) do PC
-        int registerA_ID = Integer.parseInt(memoria.getPosicaoMemoria(registradores.getValorPC()), 16);
+        // pega o ID do primeiro registrador (Reg 1) apontado pelo PC
+        int reg1_ID = Integer.parseInt(memoria.getPosicaoMemoria(registradores.getValorPC()), 16);
 
-        // Avança PC
+        //avança PC para ler o próximo parâmetro
         registradores.incrementarPC();
 
-        // Pega o ID do segundo registrador (parâmetro 2) do PC
-        int registerB_ID = Integer.parseInt(memoria.getPosicaoMemoria(registradores.getValorPC()), 16);
+        // pega o ID do segundo registrador (Reg 2) apontado pelo PC
+        int reg2_ID = Integer.parseInt(memoria.getPosicaoMemoria(registradores.getValorPC()), 16);
 
-        // Avança PC
+        //avança PC para a próxima instrução
         registradores.incrementarPC();
 
-        // Pega o valor armazenado no primeiro registrador (RegA)
-        int registerA_Value = registradores.getRegistrador(registerA_ID).getValor();
+        // busca os valores dentro desses registradores
+        int valReg1 = registradores.getRegistrador(reg1_ID).getValor();
+        int valReg2 = registradores.getRegistrador(reg2_ID).getValor();
 
-        // Pega o valor armazenado no segundo registrador (RegB)
-        int registerB_Value = registradores.getRegistrador(registerB_ID).getValor();
+        // realiza a multiplicação
+        // lógica padrão: Reg2 = Reg2 * Reg1
+        int resultado = valReg2 * valReg1;
 
-        // RegB = RegA * RegB (A lógica é r2 = r1 * r2)
-        int result = registerA_Value * registerB_Value; // Multiplica
-
-        // O segundo registrador (RegB) recebe o resultado
-        registradores.getRegistrador(registerB_ID).setValor(result); // Armazena resultado
+        //salva o resultado no segundo registrador
+        registradores.getRegistrador(reg2_ID).setValor(resultado);
     }
-
 }

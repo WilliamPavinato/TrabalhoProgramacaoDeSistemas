@@ -6,19 +6,20 @@ import Executor.Registradores;
 public class RSUB extends Instruction {
 
     public RSUB() {
-        super("RSUB", "4C"); // Nome e Opcode
+        super("RSUB", "4C"); // Opcode 4C
     }
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
-        // Pega o valor do registrador "L" (Linkage), que guarda o endereço de retorno
+        // pega o valor do registrador "L"
+        // oregistrador L contém o endereço de retorno salvo pelo JSUB anterior
         int registerL_Value = registradores.getRegistradorPorNome("L").getValor();
 
-        // Atualiza o PC (Contador de Programa) com o valor de "L"
-        // Isso faz o programa "pular" de volta para onde a sub-rotina foi chamada
+        // atualiza o Contador de Programa (PC) com o valor de L
+        // isso faz o programa "pular" de volta para a instrução seguinte à chamada da função
         registradores.getRegistradorPorNome("PC").setValor(registerL_Value);
 
-        // Incrementa o contador de programa
-        registradores.incrementarPC();
+        // não chamamos registradores.incrementarPC() aqui, o endereço guardado em L já é o local exato
+        // se incrementarmos, pularemos uma instrução
     }
 }

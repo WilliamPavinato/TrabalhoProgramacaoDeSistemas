@@ -2,26 +2,29 @@ package Instrucoes;
 
 import Executor.Memoria;
 import Executor.Registradores;
-
+//preciso do outputMontador.txt
 public class LDS extends Instruction {
-    
-    // Construtor: Define o nome e o opcode da instrução LDS
+
+    // define o nome e o opcode
     public LDS() {
-        super("LDS", "6C"); // LDS tem o opcode 6C em arquiteturas como SIC/XE
+        // o montador espera que o opcode seja uma String "6C"
+        super("LDS", "6C");
     }
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
-        // Obtém o endereço de memória para o operando (o endereço está no PC)
-        int enderecoMem = Integer.parseInt(memoria.getPosicaoMemoria(registradores.getValorPC()),16);
-        // Lê o valor (palavra) na posição de memória especificada
-        // S ← (m..m+2)
-        int valorMem = Integer.parseInt(memoria.getPosicaoMemoria(enderecoMem),16);
+        // o montador escreve no arquivo opcode - endereço, quando essa instrução roda, o PC está apontando para o endereço
+        // pega o endereço de memória onde está o valor
+        int memoryAddress = Integer.parseInt(memoria.getPosicaoMemoria(registradores.getValorPC()), 16);
 
-        // Atualiza o valor do registrador Index S com a palavra lida da memória
-        registradores.getRegistradorPorNome("S").setValor(valorMem);
-
-        // Incrementa o Program Counter (PC) para apontar para a próxima instrução
+        // opcional: avança o PC para pular o parâmetro que acabamos de ler
+        // Isso depende se o ciclo de busca já incrementou ou não, mas seguindo o padrão dos anteriores:
         registradores.incrementarPC();
+
+        // vai na memória, naquele endereço, e pega o valor real
+        int memoryValue = Integer.parseInt(memoria.getPosicaoMemoria(memoryAddress), 16);
+
+        // salva o valor no registrador S
+        registradores.getRegistradorPorNome("S").setValor(memoryValue);
     }
 }

@@ -6,24 +6,24 @@ import Executor.Registradores;
 public class STA extends Instruction {
 
     public STA() {
-        super("STA", "0C"); // Nome e Opcode
+        super("STA", "0C");
     }
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
-        // Pega o endereço de memória (parâmetro 1) do PC (para onde vamos salvar)
+        // pega o endereço de memória onde vamos salvar (apontado pelo PC)
         int memoryAddress = Integer.parseInt(memoria.getPosicaoMemoria(registradores.getValorPC()), 16);
 
-        // Lê e avança PC (para pular o parâmetro 'memoryAddress')
+        // avança o PC para a próxima instrução
         registradores.incrementarPC();
 
-        // Pega o valor que está no acumulador "A"
+        // pega o valor que está no Acumulador "A"
         int accumulatorValue = registradores.getRegistradorPorNome("A").getValor();
 
-        // Converte o valor para Hexadecimal (String) para salvar na memória, assumindo que sua memória armazena Strings
-        String accumulatorHexValue = Integer.toHexString(accumulatorValue);
+        // converte o valor para Hexadecimal (String)
+        String hexValue = Integer.toHexString(accumulatorValue).toUpperCase();
 
-        // Salva o valor do Acumulador (em Hex) no endereço de memória especificado
-        memoria.setPosicaoMemoria(memoryAddress, accumulatorHexValue);
+        // salva o valor na memória no endereço especificado
+        memoria.setPosicaoMemoria(memoryAddress, hexValue);
     }
 }

@@ -6,24 +6,24 @@ import Executor.Registradores;
 public class STB extends Instruction {
 
     public STB() {
-        super("STB", "78"); // Nome e Opcode
+        super("STB", "78");
     }
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
-        // Pega o endereço de memória (parâmetro 1) do PC (para onde vamos salvar)
+        //pega o endereço de memória onde vamos salvar (apontado pelo PC)
         int memoryAddress = Integer.parseInt(memoria.getPosicaoMemoria(registradores.getValorPC()), 16);
 
-        // Lê e avança PC (para pular o parâmetro 'memoryAddress')
+        //avança o PC para a próxima instrução
         registradores.incrementarPC();
 
-        // Pega o valor que está no registrador "B"
+        // pega o valor que está no Registrador "B"
         int registerB_Value = registradores.getRegistradorPorNome("B").getValor();
 
-        // Converte o valor para Hexadecimal (String) para salvar na memóra, assumindo que sua memória armazena Strings
-        String registerB_HexValue = Integer.toHexString(registerB_Value);
+        // converte o valor para Hexadecimal
+        String hexValue = Integer.toHexString(registerB_Value).toUpperCase();
 
-        // Salva o valor do Registrador B (em Hex) no endereço de memória especificado
-        memoria.setPosicaoMemoria(memoryAddress, registerB_HexValue);
+        // salva o valor na memória no endereço especificado
+        memoria.setPosicaoMemoria(memoryAddress, hexValue);
     }
 }

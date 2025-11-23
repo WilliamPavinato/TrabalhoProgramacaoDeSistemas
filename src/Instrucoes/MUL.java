@@ -6,27 +6,29 @@ import Executor.Registradores;
 public class MUL extends Instruction {
 
     public MUL() {
-        super("MUL", "20"); // Nome e Opcode
+        // Opcode "20" para MUL
+        super("MUL", "20");
     }
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
-        // Pega o endereço de memória (parâmetro 1) do PC
+        // pega o endereço de memória apontado pelo PC
         int memoryAddress = Integer.parseInt(memoria.getPosicaoMemoria(registradores.getValorPC()), 16);
 
-        // Lê e avança PC (seguindo a ordem do ADD)
+        // avança o PC para a próxima instrução
         registradores.incrementarPC();
 
-        // Pega o valor armazenado na posição de memória lida
+        // busca o valor armazenado naquele endereço de memória
         int memoryValue = Integer.parseInt(memoria.getPosicaoMemoria(memoryAddress), 16);
 
-        // Pega o valor que está no acumulador "A"
+        // busca o valor atual do Acumulador (A)
+        // substituindo 'getValorIntSigned' por 'getValor', assumindo que a classe trata ints padrão
         int accumulatorValue = registradores.getRegistradorPorNome("A").getValor();
 
-        // Acumulador = Acumulador * valorMem
-        accumulatorValue *= memoryValue; // Multiplica
+        // realiza a multiplicação (A * Memória)
+        int result = accumulatorValue * memoryValue;
 
-        // Acumulador "A" recebe o resultado
-        registradores.getRegistradorPorNome("A").setValor(accumulatorValue); // Armazena resultado
+        // armazena o resultado de volta no Acumulador
+        registradores.getRegistradorPorNome("A").setValor(result);
     }
 }

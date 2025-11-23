@@ -6,33 +6,32 @@ import Executor.Registradores;
 public class SUBR extends Instruction {
 
     public SUBR() {
-        super("SUBR", "94"); // Nome e Opcode
+        super("SUBR", "94");
     }
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
-        // Pega o ID do primeiro registrador (RegA) (parâmetro 1) do PC
-        int registerA_ID = Integer.parseInt(memoria.getPosicaoMemoria(registradores.getValorPC()), 16);
+        //pega o ID do primeiro registrador (Reg1) apontado pelo PC
+        int reg1_ID = Integer.parseInt(memoria.getPosicaoMemoria(registradores.getValorPC()), 16);
 
-        // Avança PC
+        //avança PC para ler o próximo parâmetro
         registradores.incrementarPC();
 
-        // Pega o ID do segundo registrador (RegB) (parâmetro 2) do PC
-        int registerB_ID = Integer.parseInt(memoria.getPosicaoMemoria(registradores.getValorPC()), 16);
+        // pega o ID do segundo registrador (Reg2) apontado pelo PC
+        int reg2_ID = Integer.parseInt(memoria.getPosicaoMemoria(registradores.getValorPC()), 16);
 
-        // Pega o valor armazenado no primeiro registrador (RegA)
-        int registerA_Value = registradores.getRegistrador(registerA_ID).getValor();
-
-        // Pega o valor armazenado no segundo registrador (RegB)
-        int registerB_Value = registradores.getRegistrador(registerB_ID).getValor();
-
-        // RegB = RegB - RegA (A lógica é r2 = r2 - r1)
-        int result = registerB_Value - registerA_Value; // Subtrai
-
-        // O segundo registrador (RegB) recebe o resultado
-        registradores.getRegistrador(registerB_ID).setValor(result); // Armazena resultado
-
-        // Avança PC para a próxima instrução
+        //avança PC para a próxima instrução
         registradores.incrementarPC();
+
+        // busca os valores dentro desses registradores
+        int valReg1 = registradores.getRegistrador(reg1_ID).getValor();
+        int valReg2 = registradores.getRegistrador(reg2_ID).getValor();
+
+        // realiza a subtração
+
+        int resultado = valReg2 - valReg1; // R2 = R2 - R1
+
+        // salva o resultado no segundo registrador (Reg2)
+        registradores.getRegistrador(reg2_ID).setValor(resultado);
     }
 }
