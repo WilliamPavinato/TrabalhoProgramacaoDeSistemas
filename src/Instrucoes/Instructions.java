@@ -7,7 +7,7 @@ import java.util.Map;
 public class Instructions {
     
     // Mapa que armazena pares de Opcode (Byte) e a Instância da Instrução (Instruction).
-    private final Map<byte, Instruction> instrucoes;
+    private final Map<Byte, Instruction> instrucoes;
 
     // Construtor: Inicializa o mapa e carrega todas as instruções.
     public Instructions() {

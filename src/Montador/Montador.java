@@ -55,28 +55,25 @@ public class Montador {
             if (linha.isEmpty())
                 continue;
 
-            String label  = getLabel(linha);
-            String opcode = getOpcode(linha);
+            String label          = getLabel(linha);
+            String opcode         = getOpcode(linha);
             List<String> operands = getOperands(linha);
 
             if(label != null)
                 SYMTAB.put(label, LocationCounter);
 
-            if (instrucoes.getInstrucaoPorNome(opcode) != null) // instruction
-            {
+            if (instrucoes.getInstrucaoPorNome(opcode) != null) { // instruction
                 LocationCounter++;
 
                 assert operands != null;
-                for (String operand : operands)
-                {
+                for (String operand : operands) {
                     if (!isNumeric(operand))
                         SYMTAB.putIfAbsent(operand, null); // referenciado, mas ainda não definido
 
                     LocationCounter++;
                 }
             }
-            else // pseudo-instruction
-            {
+            else { // pseudo-instruction
                 switch (Objects.requireNonNull( opcode )) {
                     case "RD":
                     case "WD":
@@ -105,7 +102,7 @@ public class Montador {
             if (linha.isEmpty())
                 continue;
 
-            String opcode = getOpcode(linha);
+            String opcode         = getOpcode(linha);
             List<String> operands = getOperands(linha);
 
             if (instrucoes.getInstrucaoPorNome(opcode) != null) // Instrucao
@@ -167,24 +164,21 @@ public class Montador {
     }
 
     private String getLabel(String linha) {
-        String[] splited = linha.split("\\s+");
+        String[] splitted = linha.split("\\s+");
         try {
-            if (instrucoes.getInstrucaoPorNome(splited[0]) == null) // tem label
-                return splited[0];
+            if (instrucoes.getInstrucaoPorNome(splitted[0]) == null) // tem label
+                return splitted[0];
             else // não tem label
                 return null;
         }
         catch (Exception e) {return null;}
     }
 
-    private String getOpcode(String linha)
-    {
-        String[] splited = linha.split("\\s+");
+    private String getOpcode(String linha) {
+        String[] splitted = linha.split("\\s+");
         try {
-            if (instrucoes.getInstrucaoPorNome(splited[0]) == null) // tem Label
-                return splited[1];
-            else // não tem label
-                return splited[0];
+        //                                                                 tem label     não tem label
+            return (instrucoes.getInstrucaoPorNome(splitted[0]) == null) ? splitted[1] : splitted[0];
         }
         catch (Exception e) {return null;}
     }
@@ -194,12 +188,10 @@ public class Montador {
         List<String> operands = new ArrayList<>();
 
         try {
-            if (instrucoes.getInstrucaoPorNome(splited[0]) == null) // tem label
-            {
+            if (instrucoes.getInstrucaoPorNome(splited[0]) == null){ // tem label
                 operands.addAll(Arrays.asList(splited).subList(2, splited.length));
             }
-            else // não tem label
-            {
+            else{ // não tem label
                 operands.addAll(Arrays.asList(splited).subList(1, splited.length));
             }
             return operands;
@@ -210,7 +202,7 @@ public class Montador {
     public static boolean isNumeric(String strNum) {
         if (strNum == null) {return false;}
 
-        try {double d = Double.parseDouble(strNum);} // usar dps
+        try {Double.parseDouble(strNum);}
         catch (NumberFormatException nfe) {return false;}
 
         return true;

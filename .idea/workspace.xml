@@ -4,28 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="49513774-cd14-46a5-89e2-6d5c80cd9bfc" name="Changes" comment="interface, falta arrumar ainda">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_05_11_2025_18_52_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_05_11_2025_18_52__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_05_11_2025_19_00_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_05_11_2025_19_00__Changes_.xml" beforeDir="false" />
+    <list default="true" id="49513774-cd14-46a5-89e2-6d5c80cd9bfc" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Executor/Executor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Executor/Executor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/ADD.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/ADD.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/ADDR.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/ADDR.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/AND.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/AND.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/CLEAR.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/CLEAR.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/COMP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/COMP.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/COMPR.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/COMPR.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/DIV.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/DIV.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/DIVR.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/DIVR.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/Instruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/Instruction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/Instructions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/Instructions.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/J.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/J.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/JEQ.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/JEQ.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/JGT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/JGT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/JLT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/JLT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TrabalhoPS/TrabalhoPS.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TrabalhoPS/TrabalhoPS.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Montador/Montador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Montador/Montador.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,27 +21,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="master" />
-      </map>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;Malu-Prata&quot;
-  }
-}</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/WilliamPavinato/TrabalhoProgramacaoDeSistemas.git&quot;,
-    &quot;accountId&quot;: &quot;d57cbf6f-0154-477b-9ca4-b8453f5c7057&quot;
-  }
-}</component>
-  <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
@@ -73,26 +34,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.TrabalhoPS.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.TrabalhoPS.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
   }
-}</component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Usuario\IdeaProjects\TrabalhoPS" />
-    </key>
-  </component>
+}]]></component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="49513774-cd14-46a5-89e2-6d5c80cd9bfc" name="Changes" comment="" />
@@ -101,19 +55,6 @@
       <option name="presentableId" value="Default" />
       <updated>1762125441084</updated>
     </task>
-    <task id="LOCAL-00001" summary="interface, falta arrumar ainda">
-      <option name="closed" value="true" />
-      <created>1762371195395</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1762371195395</updated>
-    </task>
-    <option name="localTasksCounter" value="2" />
     <servers />
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="interface, falta arrumar ainda" />
-    <option name="LAST_COMMIT_MESSAGE" value="interface, falta arrumar ainda" />
   </component>
 </project>
