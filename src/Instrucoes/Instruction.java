@@ -8,24 +8,44 @@ import Executor.Registradores;
 public abstract class Instruction {
     
     private final String nome;
-    private final String opcode;
+    private final byte opcode;
+    Map<String, Boolean> flags = new HashMap<>();
+    private final String formato;
+    private final int length;
 
-    // Construtor
-    Instruction(String nome, String opcode) {
+ 
+    Instruction(String nome, byte opcode, String formato, int length) {
         this.nome = nome;
         this.opcode = opcode;
+        this.formato = formato;
+        this.length = length;
     }
 
 
     public abstract void executar(Memoria memoria, Registradores registradores);
 
-    // Retorna o nome mnemônico da instrução (ex: "ADD", "COMP").
-    public String getNome() {
+    public String getNome() 
+    {
         return nome;
     }
 
-    // Retorna o código de operação (opcode) da instrução (ex: "18", "A0").
-    public String getOpcode() {
+    public byte getOpcode() 
+    {
         return opcode;
+    }
+
+    public String getFormato() 
+    {
+        return formato;
+    }
+
+    public int getLength() 
+    {
+        return length;
+    }
+
+    public void setFlags(byte[] bytes)
+    {
+
     }
 }
