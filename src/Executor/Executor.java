@@ -61,7 +61,7 @@ public class Executor {
 
             registradores.incrementarPC();
 
-            if ("DC".equals(opcode)) { // OUTPUT
+            if ("DC".equals(opcode)) { // OUTPUT / WRITE
                 setOutput(registradores.getRegistradorPorNome("A").getValor());
            } else {
                 instructions.getInstrucao(opcode).executar(memoria, registradores);

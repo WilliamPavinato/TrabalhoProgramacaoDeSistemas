@@ -25,8 +25,13 @@ public class Montador {
         passoDois();
         gerarTXTOutput();
         StringBuilder mensagem = new StringBuilder();
-        mensagem.append("Arquivo de entrada: ").append(System.getProperty("user.dir")).append("\\inputMontador.txt") .append("\n");
-        mensagem.append("Arquivo de saida: ")  .append(System.getProperty("user.dir")).append("\\outputMontador.txt").append("\n\n");
+        mensagem.append("Arquivo de entrada: ")
+                .append(System.getProperty("user.dir"))
+                .append("\\ArquivosTXT\\inputMontador.txt\n");
+        mensagem.append("Arquivo de saída: ")
+                .append(System.getProperty("user.dir"))
+                .append("\\ArquivosTXT\\outputMontador.txt\n");
+
         if (errorMsg.isEmpty())
             mensagem.append("Programa montado com sucesso.");
         else
@@ -155,7 +160,7 @@ public class Montador {
 
     private void gerarTXTOutput()
     {
-        try (FileWriter fileWriter = new FileWriter(System.getProperty("user.dir")+ "\\outputMontador.txt")) {
+        try (var fileWriter = new FileWriter(System.getProperty("user.dir") + "\\ArquivosTXT\\outputMontador.txt")) {
             for (String str : output) {
                 fileWriter.write(str + System.lineSeparator());
             }
