@@ -59,10 +59,75 @@ public abstract class Instruction {
 	flags.put("e", (bytes[1] & 0b00010000) != 0);
     }
 
+    // Retorna estrutura de Map
+    public Map<String,Boolean> getFlags()
+    {
+	return this.flags;
+    }	
+
+    public int getFormato(byte[] bytes)
+    {
+	setFlags(bytes);
+
+	if (formato != "1" && formato != "2")
+	{
+		if (!(flags.get("i") || flags.get("n"))) 
+		{
+			return 3; // tipo 3
+		}
+
+		else if (flags.get("e")) 
+		{
+			return 4;
+		}
+		else 
+		{
+			return 3;
+		}
+	}
 	
+	return Integer.parseInt(formato); // tipo 1
+    }
+
+    public int[] getRegistradores(byte[] bytes)
+    {
+	int[] registradores = new int[2];
+
+	registradores[0] = (int) (bytes[1] & 0b11110000) >>> 4;
+	registradores[1] = (int) (bytes[1] & 0b00001111);
+
+	return registradores;
+    }
+
+    public int getDisp(byte[] bytes) 
+    {
+	int byte1 = (bytes[1] & 0b00001111)<<8;
+	int byte2 = bytes[2];
+
+	return byte1 | byte2;
+    }
+
+    public int getDispbpe(byte[] bytes)
+    {
+	int byte1 = (bytes[1] & 0b01111111)<<7;
+        int byte2 = bytes[2] & 0xFF;
+
+	return byte1 | byte2;
+    }
+
+        public int getAddr(byte[] bytes)
+    {
+        int byte1 = (bytes[1] & 0b00001111) << 16;
+        int byte2 = (bytes[2] & 0xFF) <<8;
+        int byte3 = bytes[3] & 0xFF;
+
+        return byte1 | byte2 | byte3;
+    }
+
 
      public int calcularTA(Registradores registradores, Memoria memoria) 
      {
+        int base =0;
         int x = 0;           // endereçamento indexado que é somado com o TA caso o flag x = 1
         int m = 0;           // onde o operando vai será armazenado
         int tamanhom = 0;
