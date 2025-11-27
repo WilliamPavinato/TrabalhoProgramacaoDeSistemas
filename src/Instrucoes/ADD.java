@@ -6,27 +6,32 @@ import Executor.Registradores;
 public class ADD extends Instruction {
 
     public ADD() {
-        super("ADD", "18"); // Nome e Opcode
+        super("ADD", (byte)0x18, "3/4",3);
     }
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
-        // Pega o endereço de memória (parâmetro 1) do PC
-        int enderecoMem = Integer.parseInt(memoria.getPosicaoMemoria(registradores.getValorPC()),16); // Endereço do PC
         
-        // Lê e avança PC
-        registradores.incrementarPC(); 
+        int TA = calcularTA(registradores, memoria);
         
-        // Pega o valor armazenado na posição de memória lida
-        int valorMem = Integer.parseInt(memoria.getPosicaoMemoria(enderecoMem),16); // Valor da memória
+        Map<String, Boolean> flags = getFlags();
 
-        // Pega o valor que está no acumulador 
+        if (flags.get("n") && !flags.get("i"))
+        {
+            TA = memoria.getWord(memoria.getWord(TA)); 
+        }
+
+        else if ((!flags.get("n") && !flags.get("i")) || (flags.get("n") && flags.get("i"))) 
+        {
+            TA = memoria.getWord(TA);
+        }
+
+        
         int valorAcumulator = registradores.getRegistradorPorNome("A").getValor(); // Valor do Acumulador
         
-        // acumulador += valorMem
-        valorAcumulator += valorMem; // Soma
+        valorAcumulator = TA + valorAcumulator;
 
-        // Acumulador recebe o resultado 
+       
         registradores.getRegistradorPorNome("A").setValor(valorAcumulator); // Armazena resultado
     }
     
