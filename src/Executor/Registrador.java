@@ -1,5 +1,7 @@
 package Executor;
 
+import java.util.Arrays;
+
 public class Registrador {
     private String name;
     private int id;
@@ -17,7 +19,7 @@ public class Registrador {
         this.name   = nome;
         this.id     = id;
         this.value  = new byte[3];
-        Arrays.fill(this.valor, (byte) 0);
+        Arrays.fill(this.value, (byte) 0);
     }
 
  // Getters 
@@ -25,12 +27,18 @@ public class Registrador {
 
  public int getId(){ return this.id; }
 
- public int getValor(){ return this.value; }
+ public byte[] getValor(){ return this.value; }
 
  public int getValorIntSigned() {
-   int byte1 = valor[2];
-   int byte2 = valor[1] << 8;
-   int byte3 = valor[0] << 16;
+   int byte1 = value
+
+[2];
+   int byte2 = value
+
+[1] << 8;
+   int byte3 = value
+
+[0] << 16;
 
    int n = byte1+byte2+byte3;
    n = (int) (n << (32 - 24)) >> (32 - 24);
@@ -39,9 +47,9 @@ public class Registrador {
   }   
 
  public int getValorIntUnsigned() {
-   int byte1 = valor[2];
-   int byte2 = valor[1] << 8;
-   int byte3 = valor[0] << 16;
+   int byte1 = value[2];
+   int byte2 = value[1] << 8;
+   int byte3 = value[0] << 16;
 
    return byte1+byte2+byte3;
  }   
@@ -60,8 +68,8 @@ public class Registrador {
     }
 
   public void setValorInt(int n) {
-      valor[2] = (byte)((n) & 0xFF);
-      valor[1] = (byte)((n >>> 8) & 0xFF);
-      valor[0] = (byte)((n >>> 16) & 0xFF);
+      value[2] = (byte)((n) & 0xFF);
+      value[1] = (byte)((n >>> 8) & 0xFF);
+      value[0] = (byte)((n >>> 16) & 0xFF);
     }
 }

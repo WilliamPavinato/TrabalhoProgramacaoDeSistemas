@@ -27,7 +27,8 @@ public class Registradores {
     // Getters
     public Registrador getRegistrador(int id) { return registradores.get(id); }
 
-    public int getValorPC() { return registradores.get(8).getValor(); }
+    public byte[] getValorPC() { return registradores.get(8).getValor(); }
+
 
     public Registrador getRegistradorPorNome(String nome) {
         return switch (nome) {
@@ -64,15 +65,15 @@ public class Registradores {
 
     public int getPC()
     {
-        return registradores.get(8).getValorIntSigned(0);
+        return registradores.get(8).getValorIntSigned();
     }
     public void cleanRegistradores(){
-        getRegistradorPorNome("A").setValor(0);
-        getRegistradorPorNome("X").setValor(0);
-        getRegistradorPorNome("L").setValor(0);
-        getRegistradorPorNome("B").setValor(0);
-        getRegistradorPorNome("S").setValor(0);
-        getRegistradorPorNome("T").setValor(0);
-        getRegistradorPorNome("PC").setValor(0);
+        getRegistradorPorNome("A").setValorInt(0);
+        getRegistradorPorNome("X").setValorInt(0);
+        getRegistradorPorNome("L").setValorInt(0);
+        getRegistradorPorNome("B").setValorInt(0);
+        getRegistradorPorNome("S").setValorInt(0);
+        getRegistradorPorNome("T").setValorInt(0);
+        getRegistradorPorNome("PC").setValorInt(0);
     }
 }
