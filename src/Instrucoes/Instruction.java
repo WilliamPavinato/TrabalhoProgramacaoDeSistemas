@@ -1,7 +1,11 @@
 package Instrucoes;
 
+
+
 import Executor.Memoria;
 import Executor.Registradores;
+import java.util.HashMap;
+import java.util.Map;
 
     // Classe abstrata base para todas as instruções
     // Garante que toda instrução tenha um nome, um opcode e um método de execução
@@ -29,7 +33,7 @@ public abstract class Instruction {
         return nome;
     }
 
-    public String getOpcode()
+    public byte getOpcode()
     {
         return opcode;
     }
@@ -43,11 +47,19 @@ public abstract class Instruction {
     {
         return length;
     }
+	
 
     public void setFlags(byte[] bytes)
     {
-
+	flags.put("n", (bytes[0] & 0b00000010) != 0);
+	flags.put("i", (bytes[0] & 0b00000001) != 0);
+	flags.put("x", (bytes[1] & 0b10000000) != 0);
+	flags.put("b", (bytes[1] & 0b01000000) != 0);
+	flags.put("p", (bytes[1] & 0b00100000) != 0);
+	flags.put("e", (bytes[1] & 0b00010000) != 0);
     }
+
+	
 
      public int calcularTA(Registradores registradores, Memoria memoria) 
      {
