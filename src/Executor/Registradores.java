@@ -27,8 +27,6 @@ public class Registradores {
     // Getters
     public Registrador getRegistrador(int id) { return registradores.get(id); }
 
-    public byte[] getValorPC() { return registradores.get(8).getValor(); }
-
 
     public Registrador getRegistradorPorNome(String nome) {
         return switch (nome) {
@@ -61,7 +59,7 @@ public class Registradores {
     public void incrementarPC(int valor) {
         registradores.get(8).incrementarValor(valor);
     }
-    public int getPC()
+    public int getValorPC()
     {
         return registradores.get(8).getValorIntSigned();
     }

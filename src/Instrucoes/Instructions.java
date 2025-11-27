@@ -62,7 +62,7 @@ public class Instructions {
     }
 
     // Método para buscar e retornar a instância da instrução com base no Opcode.
-    public Instruction getInstrucao(String opcode) {
+    public Instruction getInstrucao(byte opcode) {
         return instrucoes.get(opcode);
     }
 
