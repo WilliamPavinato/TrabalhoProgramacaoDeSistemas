@@ -31,15 +31,29 @@ public class Registradores {
 
     public Registrador getRegistradorPorNome(String nome) {
         return switch (nome) {
-            case "A" -> registradores.get(0);
-            case "X" -> registradores.get(1);
-            case "L" -> registradores.get(2);
-            case "B" -> registradores.get(3);
-            case "S" -> registradores.get(4);
-            case "T" -> registradores.get(5);
+            case "A"  -> registradores.get(0);
+            case "X"  -> registradores.get(1);
+            case "L"  -> registradores.get(2);
+            case "B"  -> registradores.get(3);
+            case "S"  -> registradores.get(4);
+            case "T"  -> registradores.get(5);
             case "PC" -> registradores.get(8);
             case "SW" -> registradores.get(9);
-            default -> null;
+            default   -> null;
+        };
+    }
+
+    public static int getChaveRegistradorPorNome(String nome) {
+        return switch (nome) {
+            case "A"  -> 0;
+            case "X"  -> 1;
+            case "L"  -> 2;
+            case "B"  -> 3;
+            case "S"  -> 4;
+            case "T"  -> 5;
+            case "PC" -> 8;
+            case "SW" -> 9;
+            default   -> -1;
         };
     }
 

@@ -8,7 +8,7 @@ import Montador.Montador;
 
         void main() {
             Montador montador = new Montador();
-            montador.montarPrograma(System.getProperty("user.dir")+ "\\ArquivosTXT\\inputMontador.txt");
+            montador.montarPrograma(System.getProperty("user.dir")+ "/ArquivosTXT/inputMontador.txt");
             executor = new ExecutorInterface();
         }
 }

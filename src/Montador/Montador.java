@@ -1,6 +1,7 @@
 package Montador;
 
 import Instrucoes.Instructions;
+import Executor.Registradores;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -12,32 +13,33 @@ import javax.swing.JOptionPane;
 
 public class Montador {
     private String errorMsg = "";
-    private final Instructions instrucoes     = new Instructions();
-    private final Map<String, Integer> SYMTAB = new HashMap<>();
+                                                    //  TABELAS
+    private final Instructions OPTAB;               // Instruções
+    private final Map<String, String> POPTAB;       // Pseudo-instruções
+    private final Map<String, Integer> SYMTAB;      // Símbolos
+    private final List<String> input = new ArrayList<>();
+    private final List<String> output = new ArrayList<>();
 
-    List<String> input  = new ArrayList<>();
-    List<String> output = new ArrayList<>();
+    public Montador() {
+        OPTAB = new Instructions();
 
-    public void montarPrograma(String caminho)
-    {
+        POPTAB = new HashMap<>();
+        POPTAB.put("RD",   "D8");
+        POPTAB.put("WD",   "DC");
+        POPTAB.put("WORD", null);
+        POPTAB.put("BYTE", null);
+        POPTAB.put("RESW", "0");
+        POPTAB.put("RESB", "0");
+
+        SYMTAB = new HashMap<>();
+    }
+
+    public void montarPrograma(String caminho) {
         setPrograma(caminho);
         passoUm();
         passoDois();
         gerarTXTOutput();
-        StringBuilder mensagem = new StringBuilder();
-        mensagem.append("Arquivo de entrada: ")
-                .append(System.getProperty("user.dir"))
-                .append("\\ArquivosTXT\\inputMontador.txt\n");
-        mensagem.append("Arquivo de saída: ")
-                .append(System.getProperty("user.dir"))
-                .append("\\ArquivosTXT\\outputMontador.txt\n");
-
-        if (errorMsg.isEmpty())
-            mensagem.append("Programa montado com sucesso.");
-        else
-            mensagem.append("Programa montado com erros. Erro(s): \n").append(errorMsg);
-
-        JOptionPane.showMessageDialog(null, mensagem, "Montador", JOptionPane.INFORMATION_MESSAGE);
+        mostrarMensagem();
     }
 
     public void setPrograma(String caminho) {
@@ -57,8 +59,8 @@ public class Montador {
 
         for(String linha : input)
         {
-            if (linha.isEmpty())
-                continue;
+            if (linha.isEmpty() || linha.charAt(0) == '.')
+                continue;       // pula linhas que começam com . (comentários)
 
             String label          = getLabel(linha);
             String opcode         = getOpcode(linha);
@@ -67,7 +69,7 @@ public class Montador {
             if(label != null)
                 SYMTAB.put(label, LocationCounter);
 
-            if (instrucoes.getInstrucaoPorNome(opcode) != null) { // instruction
+            if (OPTAB.getInstrucaoPorNome(opcode) != null) { // instruction
                 LocationCounter++;
 
                 assert operands != null;
@@ -100,23 +102,19 @@ public class Montador {
         }
     }
 
-    private void passoDois()
-    {
-        for(String linha : input)
-        {
-            if (linha.isEmpty())
-                continue;
+    private void passoDois() {
+        for(String linha : input) {
+            if (linha.isEmpty() || linha.charAt(0) == '.')
+                continue;       // pula linhas que começam com . (comentários)
 
             String opcode         = getOpcode(linha);
             List<String> operands = getOperands(linha);
 
-            if (instrucoes.getInstrucaoPorNome(opcode) != null) // Instrucao
-            {
-                output.add(instrucoes.getInstrucaoPorNome(opcode).getOpcode());
+            if (OPTAB.getInstrucaoPorNome(opcode) != null) { // Instrucao
+                output.add(OPTAB.getInstrucaoPorNome(opcode).getOpcode());
 
                 assert operands != null;
-                for (String operand : operands)
-                {
+                for (String operand : operands) {
                     if (isNumeric(operand))
                         output.add(Integer.toHexString(Integer.parseInt(operand)).toUpperCase());
                     else
@@ -129,8 +127,7 @@ public class Montador {
                         output.add(Integer.toHexString(SYMTAB.get(operand)).toUpperCase());
                 }
             }
-            else // pseudo-instruction
-            {
+            else { // pseudo-instruction
                 switch (Objects.requireNonNull( opcode )) {
                     case "RD":
                         output.add("D8");
@@ -149,7 +146,7 @@ public class Montador {
                         assert operands != null;
                         for (String operand : operands)
                             for (int i = 0; i < Integer.parseInt(operand); i++)
-                                output.add("XX");
+                                output.add("0");
                         break;
                     default:
                         break;
@@ -158,9 +155,8 @@ public class Montador {
         }
     }
 
-    private void gerarTXTOutput()
-    {
-        try (var fileWriter = new FileWriter(System.getProperty("user.dir") + "\\ArquivosTXT\\outputMontador.txt")) {
+    private void gerarTXTOutput() {
+        try (var fileWriter = new FileWriter(System.getProperty("user.dir") + "/ArquivosTXT/outputMontador.txt")) {
             for (String str : output) {
                 fileWriter.write(str + System.lineSeparator());
             }
@@ -168,13 +164,31 @@ public class Montador {
         catch (IOException e) {e.printStackTrace();}
     }
 
+    private void mostrarMensagem() {
+        StringBuilder mensagem = new StringBuilder();
+        mensagem.append("Arquivo de entrada: ")
+                .append(System.getProperty("user.dir"))
+                .append("\\ArquivosTXT\\inputMontador.txt\n");
+        mensagem.append("Arquivo de saída: ")
+                .append(System.getProperty("user.dir"))
+                .append("\\ArquivosTXT\\outputMontador.txt\n");
+
+        if (errorMsg.isEmpty())
+            mensagem.append("Programa montado com sucesso.");
+        else
+            mensagem.append("Programa montado com erros. Erro(s): \n").append(errorMsg);
+
+        JOptionPane.showMessageDialog(null, mensagem, "Montador", JOptionPane.INFORMATION_MESSAGE);
+    }
+
     private String getLabel(String linha) {
         String[] splitted = linha.split("\\s+");
         try {
-            if (instrucoes.getInstrucaoPorNome(splitted[0]) == null) // tem label
-                return splitted[0];
-            else // não tem label
+            if ((OPTAB.getInstrucaoPorNome(splitted[0]) != null) ||     // tem label
+            (POPTAB.get(splitted[0]) != null)) {
                 return null;
+            }
+            else { return splitted[0]; } // tem label
         }
         catch (Exception e) {return null;}
     }
@@ -182,23 +196,48 @@ public class Montador {
     private String getOpcode(String linha) {
         String[] splitted = linha.split("\\s+");
         try {
-        //                                                                 tem label     não tem label
-            return (instrucoes.getInstrucaoPorNome(splitted[0]) == null) ? splitted[1] : splitted[0];
+            if ((OPTAB.getInstrucaoPorNome(splitted[0]) != null) ||     // não tem label
+            (POPTAB.get(splitted[0]) != null )) {
+                return splitted[0];
+            }
+            else { return splitted[1]; }    // tem label
         }
-        catch (Exception e) {return null;}
+        catch (Exception e) { return null; }
     }
 
     private List<String> getOperands(String linha) {
-        String[] splited      = linha.split("\\s+");
-        List<String> operands = new ArrayList<>();
+        String[] splitted      = linha.split("\\s+");
+        List<String> operands  = new ArrayList<>();
 
         try {
-            if (instrucoes.getInstrucaoPorNome(splited[0]) == null){ // tem label
-                operands.addAll(Arrays.asList(splited).subList(2, splited.length));
+            if ((OPTAB.getInstrucaoPorNome(splitted[0]) != null) ||      // não tem label
+            ( POPTAB.get(splitted[0]) != null ) ) {
+                // Separar operandos por vírgula
+                splitted = splitted[1].split(",");
+                for (String s : splitted)
+                    if (Registradores.getChaveRegistradorPorNome(s) != -1) {
+                        operands.add(Integer.toString(Registradores.getChaveRegistradorPorNome(s)));
+                    } else { operands.add(s); }
             }
-            else{ // não tem label
-                operands.addAll(Arrays.asList(splited).subList(1, splited.length));
+            else {  // não tem label
+                // Separar operandos por vírgula
+                splitted = splitted[2].split(",");
+                for (String s : splitted)
+                    if (Registradores.getChaveRegistradorPorNome(s) != -1) {
+                        operands.add(Integer.toString(Registradores.getChaveRegistradorPorNome(s)));
+                    } else { operands.add(s); }
             }
+
+            for(int i = 0; i < operands.size(); i++) {
+                String operand = operands.get(i);
+
+                if (operand.length() > 1) {              // Se for >1 caracteres, é um nome e deve ser convertido pra chave
+                    operands.set(i, Integer.toString(Registradores.getChaveRegistradorPorNome(operand)));
+                } else if (operand.charAt(0) > '9') {    // Compara valor ASCII: se <=0 é algum número e se >0 é uma letra
+                    operands.set(i, Integer.toString(Registradores.getChaveRegistradorPorNome(operand)));
+                }
+            }
+
             return operands;
         }
         catch (Exception e) {return null;}
@@ -207,8 +246,8 @@ public class Montador {
     public static boolean isNumeric(String strNum) {
         if (strNum == null) {return false;}
 
-        try {Double.parseDouble(strNum);}
-        catch (NumberFormatException nfe) {return false;}
+        try { Double.parseDouble(strNum); }
+        catch (NumberFormatException nfe) { return false; }
 
         return true;
     }
