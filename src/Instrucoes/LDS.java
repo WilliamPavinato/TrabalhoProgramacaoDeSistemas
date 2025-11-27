@@ -2,29 +2,32 @@ package Instrucoes;
 
 import Executor.Memoria;
 import Executor.Registradores;
-//preciso do outputMontador.txt
+
 public class LDS extends Instruction {
 
-    // define o nome e o opcode
     public LDS() {
-        // o montador espera que o opcode seja uma String "6C"
-        super("LDS", "6C");
+        //passando os 4 argumentos que a classe instruction pede
+        super("LDS", (byte)0x6C, "3/4", 3);
     }
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
-        // o montador escreve no arquivo opcode - endereço, quando essa instrução roda, o PC está apontando para o endereço
-        // pega o endereço de memória onde está o valor
-        int memoryAddress = Integer.parseInt(memoria.getPosicaoMemoria(registradores.getValorPC()), 16);
+        // O Executor já fez o incremento do PC antes de chamar o executar.
+        // Então o PC atual aponta para o OPERANDO (o endereço).
+        int pc = registradores.getValorPC();
 
-        // opcional: avança o PC para pular o parâmetro que acabamos de ler
-        // Isso depende se o ciclo de busca já incrementou ou não, mas seguindo o padrão dos anteriores:
-        registradores.incrementarPC();
+        //Usando 'getWord' (ou getByte) porque 'getPosicaoMemoria' não existe na sua classe Memoria
+        // Assumindo que o endereço é um número salvo na memória.
+        int enderecoMem = memoria.getWord(pc);
 
-        // vai na memória, naquele endereço, e pega o valor real
-        int memoryValue = Integer.parseInt(memoria.getPosicaoMemoria(memoryAddress), 16);
+        // passando '1' para incrementarPC, pois ele exige um argumento int
+        // Avançamos 1 posição porque acabamos de ler o operando.
+        registradores.incrementarPC(1);
 
-        // salva o valor no registrador S
-        registradores.getRegistradorPorNome("S").setValor(memoryValue);
+        // busca o valor real na memória (no endereço que lemos acima)
+        int valorMem = memoria.getWord(enderecoMem);
+
+        // salva no registrador S
+        registradores.getRegistradorPorNome("S").setValorInt(valorMem);
     }
 }
