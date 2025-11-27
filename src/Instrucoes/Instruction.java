@@ -133,7 +133,7 @@ public abstract class Instruction {
         int tamanhom = 0;
 
 
-        int pc = registradores.getValorPC();
+        int pc = registradores.getPC();  // metodo de Registradores
         
         setFlags(memoria.getBytes(pc, 2));
 
@@ -156,7 +156,7 @@ public abstract class Instruction {
         }
 
 
-        registradores.incrementarPC(getFormato(memoria.getBytes(registradores.getValorPC(), 2)));
+        registradores.incrementarPC(getFormato(memoria.getBytes(registradores.getPC(), 2)));
         
         if(flags.get("b")) 
         { 
@@ -165,7 +165,7 @@ public abstract class Instruction {
         
         else if (flags.get("p")) 
         {
-            base += registradores.getValorPC();
+            base += registradores.getPC();
             m = (int) (m << (32 - tamanhom)) >> (32 - tamanhom); // extende o sinal para ter interpretado como um inteiro com sinal
         }
 
@@ -188,4 +188,5 @@ public abstract class Instruction {
         }
 
         return m+base+x;                                         
+    }
 }

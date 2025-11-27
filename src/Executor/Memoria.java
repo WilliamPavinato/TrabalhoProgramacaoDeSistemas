@@ -42,6 +42,13 @@ public class Memoria {
         return (byte)((memoria[posicao]) & 0xFF);
     }
 
+    public byte[] getBytes(int posicao, int numero) {
+
+        byte[] bytes = new byte[numero];
+        for(int i = 0;i<numero && posicao+i <= capacidade;i++) {
+            bytes[i] = getByte(posicao+i);
+        }return bytes;
+    }
 
     public void setByte(int posicao,byte b)
     { 

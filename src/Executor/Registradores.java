@@ -58,11 +58,9 @@ public class Registradores {
         };
     }
 
-    // Outros monstros
-    public void incrementarPC() {
-        registradores.get(8).incrementarValor(1);
+    public void incrementarPC(int valor) {
+        registradores.get(8).incrementarValor(valor);
     }
-
     public int getPC()
     {
         return registradores.get(8).getValorIntSigned();
