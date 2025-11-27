@@ -62,6 +62,10 @@ public class Registradores {
         registradores.get(8).incrementarValor(1);
     }
 
+    public int getPC()
+    {
+        return registradores.get(8).getValorIntSigned(0);
+    }
     public void cleanRegistradores(){
         getRegistradorPorNome("A").setValor(0);
         getRegistradorPorNome("X").setValor(0);
