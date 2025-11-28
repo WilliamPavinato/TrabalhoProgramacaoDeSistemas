@@ -252,7 +252,7 @@ public class Montador {
             }
             else
             {
-                errorMessage = errorMessage + "\nERRO - Opcode Inválido: " + input.get(lineCounter);
+                errorMsg = errorMsg + "\nERRO - Opcode Inválido: " + input.get(lineCounter);
             }
 
             lineCounter+=1;
@@ -414,7 +414,7 @@ public class Montador {
             ni = 0x02;
         }
         else {
-            errorMessage = errorMessage + "\nERRO - Prefixo inválido: " + line.line;
+            errorMsg = errorMsg + "\nERRO - Prefixo inválido: " + line.line;
         }
 
 
@@ -424,7 +424,7 @@ public class Montador {
                 disp = Integer.parseInt(line.operands[0]);
 
             } catch (NumberFormatException e) {
-                errorMessage = errorMessage + "\nERRO - Nao foi possivel converter para inteiro: " + line.line;
+                errorMsg = errorMsg + "\nERRO - Nao foi possivel converter para inteiro: " + line.line;
             }
 
             xbpe = 0;
