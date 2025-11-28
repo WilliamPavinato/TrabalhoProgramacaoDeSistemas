@@ -1,5 +1,6 @@
 package Instrucoes;
 
+import java.util.Map;
 import Executor.Memoria;
 import Executor.Registradores;
 
@@ -8,34 +9,27 @@ import Executor.Registradores;
 public class DIV extends Instruction {
 
     public DIV() {
-        super("DIV", "24"); // Define nome e opcode para a operação de divisão
+        super("DIV", (byte)0x24, "3/4",3); // Define nome e opcode para a operação de divisão
     }
 
 
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
-        // Pega o endereço de memória (divisor) apontado pelo PC
-        String strEndereco = memoria.getPosicaoMemoria(registradores.getValorPC());
-        int enderecoMem = Integer.parseInt(strEndereco, 16); // Converte de hex para int
 
-        // Avança o Program Counter (PC) para a próxima instrução.
-        registradores.incrementarPC();
+        int TA = calcularTA(registradores, memoria); // operando
+        Map<String, Boolean> flags = getFlags();
 
-        // Pega o valor armazenado na posição de memória lida (o divisor)
-        String strValorMemoria = memoria.getPosicaoMemoria(enderecoMem);
-        int valorDivisor = Integer.parseInt(strValorMemoria, 16); // Converte de hex para int
+        if (flags.get("n") && !flags.get("i"))
+            TA = memoria.getWord(memoria.getWord(TA));
+        else if ((!flags.get("n") && !flags.get("i")) || (flags.get("n") && flags.get("i")))
+            TA = memoria.getWord(TA);
 
-        // Obtém o valor atual do acumulador, que é o dividendo
-        int valorDividendo = registradores.getRegistradorPorNome("A").getValor();
+        int valorAcumulator = registradores.getRegistradorPorNome("A").getValorIntSigned(); // valor acc
 
-        try 
-        {
-            int resultadoDivisao = valorDividendo / valorDivisor;
-            registradores.getRegistradorPorNome("A").setValor(resultadoDivisao);
-        }
-        catch (ArithmeticException e) {
-            // Se houver divisão por zero, o valor do acumulador é mantido inalterado
-        }
+        int resultado = TA / valorAcumulator; // divisao
+
+        registradores.getRegistradorPorNome("A").setValorInt(resultado); // armazena a parte inteira no acc
+
     }
 }

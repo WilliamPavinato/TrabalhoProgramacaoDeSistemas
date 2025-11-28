@@ -1,5 +1,6 @@
 package Instrucoes;
 
+import java.util.Map;
 import Executor.Memoria;
 import Executor.Registradores;
 
@@ -7,19 +8,19 @@ public class J extends Instruction {
 
     // Construtor: Define o nome e o opcode da instrução J (Jump Incondicional)
     public J() {
-        super("J", "3C"); // J tem o opcode 3C em arquiteturas como SIC/XE
+        super("J", (byte)0x3C, "3/4", 3);
     }
 
     @Override
-    public void executar(Memoria mem, Registradores reg) {
-        // Obtém o endereço de memória que contém o endereço de salto (target address)
-        // O endereço do operando está no PC
-        int enderecoJump = Integer.parseInt(mem.getPosicaoMemoria(reg.getValorPC()),16);
+    public void executar(Memoria memoria, Registradores registradores) {
+        int TA = calcularTA(registradores, memoria); // operando
 
-        // Desvia a execução: PC ← enderecoJump
-        // Define o novo valor do Program Counter (PC) para o endereço de salto
-        reg.    getRegistradorPorNome("PC").setValor(enderecoJump);
+        Map<String, Boolean> flags = getFlags();
+        if (flags.get("n") && !flags.get("i"))
+            TA = memoria.getWord(memoria.getWord(TA));
 
+
+        registradores.getRegistradorPorNome("PC").setValorInt(TA); // seta o PC para o endereço de jump
     }
 
 }

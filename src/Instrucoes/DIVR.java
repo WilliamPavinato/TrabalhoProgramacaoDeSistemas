@@ -8,36 +8,21 @@ import Executor.Registradores;
 public class DIVR extends Instruction {
 
     public DIVR() {
-        super("DIVR", "9C"); // Define nome e opcode para divisão entre registradores
+        super("DIVR", (byte)0x9C, "2",2); // Define nome e opcode para divisão entre registradores
     }
-
-
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
-       
-        // Obtém o ID do primeiro registrador reg A a partir do PC
-        String strIdRegA = memoria.getPosicaoMemoria(registradores.getValorPC());
-        int idRegistradorA = Integer.parseInt(strIdRegA, 16); // Converte ID de hexadecimal para inteiro
-        registradores.incrementarPC(); // Avança o PC
+        byte[] bytes = memoria.getBytes(registradores.getValorPC(),2);
 
-        // Obtém o ID do segundo registrador reg B a partir do PC.
-        String strIdRegB = memoria.getPosicaoMemoria(registradores.getValorPC());
-        int idRegistradorB = Integer.parseInt(strIdRegB, 16); // Converte ID de hexadecimal para inteiro
-        registradores.incrementarPC(); // Avança o PC
+        int[] registradoresID = getRegistradores(bytes); // id dos registradores
 
-        // reg A é o dividendo, reg B é o divisor
-        int valorDividendo = registradores.getRegistrador(idRegistradorA).getValor();
-        int valorDivisor = registradores.getRegistrador(idRegistradorB).getValor();
+        int valorRegistradorA = registradores.getRegistrador(registradoresID[0]).getValorIntSigned(); // valor no reg A
+        int valorRegistradorB = registradores.getRegistrador(registradoresID[1]).getValorIntSigned(); // valor no reg B
 
-       try 
-       {
-            int quociente = valorDividendo / valorDivisor;
-            // Reg_B <- Reg_A / Reg_B
-            registradores.getRegistrador(idRegistradorB).setValor(quociente);
-        } 
-        catch (ArithmeticException e) {
-            // Se houver divisão por zero, o valor do Registrador B é mantido inalterado
-        }
+        int resultado = valorRegistradorA / valorRegistradorB;
+
+        registradores.getRegistrador(registradoresID[0]).setValorInt(resultado);
+        registradores.incrementarPC(getFormato(memoria.getBytes(registradores.getValorPC(), 2)));
     }
 }

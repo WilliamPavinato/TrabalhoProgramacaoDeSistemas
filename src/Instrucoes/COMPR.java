@@ -27,7 +27,7 @@ public class COMPR extends Instruction {
         } else if (valorRegistradorA < valorRegistradorB) {
             registradores.getRegistradorPorNome("SW").setValorInt(1);
         } else {
-            registradores.getRegistradorPorNome("SW").setValorInt(2); 
+            registradores.getRegistradorPorNome("SW").setValorInt(2);
         }
 
         registradores.incrementarPC(getFormato(memoria.getBytes(registradores.getValorPC(), 2))); // incrementa PC para a proxima instrução

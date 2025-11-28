@@ -1,5 +1,6 @@
 package Instrucoes;
 
+import java.util.Map;
 import Executor.Memoria;
 import Executor.Registradores;
 
@@ -7,26 +8,23 @@ public class LDCH extends Instruction {
 
     // Construtor: Define o nome e o opcode da instrução LDCH
     public LDCH() {
-        super("LDCH", "50");
+        super("LDCH", (byte)0x50, "3/4", 3);
     }
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
-        // Obtém o endereço de memória para o operando (o endereço está no PC)
-        int enderecoMem = Integer.parseInt(memoria.getPosicaoMemoria(registradores.getValorPC()),16);
-        // Lê o valor (palavra) na posição de memória especificada
-        int valorMem = Integer.parseInt(memoria.getPosicaoMemoria(enderecoMem),16);
-        // Isola o byte menos significativo (byte mais à direita) do valor lido
-        int byteMenosSigMemoria = valorMem & 0xFF;
+        int TA = calcularTA(registradores, memoria);
+        Map<String, Boolean> flags = getFlags();
 
-        // A[byte mais à direita] ← (m)
-        // O valor lido (apenas o byte menos significativo) é o novo valor do registrador A
-        int registradorA = byteMenosSigMemoria;
-        // Atualiza o valor do registrador Acumulador (A)
-        registradores.getRegistradorPorNome("A").setValor(registradorA);
+        if (flags.get("n") && !flags.get("i"))
+            TA = memoria.getWord(memoria.getWord(TA));
+        else if ((!flags.get("n") && !flags.get("i")) || (flags.get("n") && flags.get("i")))
+            TA = memoria.getByte(TA);
 
-        // Incrementa o Program Counter (PC) para apontar para a próxima instrução
-        registradores.incrementarPC();
+        byte[] bytesA = registradores.getRegistradorPorNome("A").getValor();
+        bytesA[2] = (byte)(TA & 0xFF);
+
+        registradores.getRegistradorPorNome("A").setValor(bytesA); // A (byte da direita) ← (m)
     }
 
 }
