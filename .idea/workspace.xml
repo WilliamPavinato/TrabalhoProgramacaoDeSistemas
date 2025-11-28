@@ -6,8 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="49513774-cd14-46a5-89e2-6d5c80cd9bfc" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Executor/Registradores.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Executor/Registradores.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/Instruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/Instruction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Instrucoes/ADD.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/ADD.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Instrucoes/ADDR.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/ADDR.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Instrucoes/AND.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/AND.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Instrucoes/CLEAR.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/CLEAR.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Instrucoes/COMP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/COMP.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Instrucoes/COMPR.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/COMPR.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,21 +42,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.TrabalhoPS.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "//wsl.localhost/Ubuntu/home/guest/trabalho_ps/TrabalhoProgramacaoDeSistemas",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.TrabalhoPS.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;//wsl.localhost/Ubuntu/home/guest/trabalho_ps/TrabalhoProgramacaoDeSistemas&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/ArquivosTXT" />

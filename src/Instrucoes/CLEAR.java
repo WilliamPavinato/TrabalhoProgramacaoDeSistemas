@@ -8,20 +8,17 @@ import Executor.Registradores;
 public class CLEAR extends Instruction {
 
     public CLEAR() {
-        super("CLEAR", "4"); // Define nome e opcode
+        super("CLEAR", (byte)0x4, "2",2);
     }
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
-        // Leitura do ID do Registrador 
-        // Pega o ID do registrador (param 1) a partir do PC
-        String strIdRegistrador = memoria.getPosicaoMemoria(registradores.getValorPC());
-        int idRegistrador = Integer.parseInt(strIdRegistrador, 16); // Converte ID de hexa para int
 
-        // Avança o PC
-        registradores.incrementarPC();
+        byte[] bytes = memoria.getBytes(registradores.getValorPC(),2);
 
-        // Zera o valor 
-        registradores.getRegistrador(idRegistrador).setValor(0);
+        int[] registradoresID = getRegistradores(bytes); // id dos regs
+
+        registradores.getRegistrador(registradoresID[0]).setValorInt(0); // limpa reg
+        registradores.incrementarPC(getFormato(memoria.getBytes(registradores.getValorPC(), 2)));
     }
 }

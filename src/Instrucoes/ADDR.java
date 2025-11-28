@@ -10,30 +10,22 @@ import Executor.Registradores;
 public class ADDR extends Instruction {
 
     public ADDR() {
-        super("ADDR", "90"); // Define nome e opcode para adição entre registradores
+        super("ADDR", (byte)0x90, "2",2); // Define nome e opcode para adição entre registradores
     }
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
 
-        // Obtém o ID do primeiro registrador (reg A) a partir do PC
-        String strIdRegA = memoria.getPosicaoMemoria(registradores.getValorPC());
-        int idRegistradorA = Integer.parseInt(strIdRegA, 16); // Converte ID de hexa para inteiro
-        registradores.incrementarPC(); // Avança o PC
+        byte[] bytes = memoria.getBytes(registradores.getValorPC(),2);
 
-        // O mesmo para o reg B
-        String strIdRegB = memoria.getPosicaoMemoria(registradores.getValorPC());
-        int idRegistradorB = Integer.parseInt(strIdRegB, 16); // Converte ID de hexa para inteiro
-        registradores.incrementarPC(); // Avança o PC
+        int[] registradoresID = getRegistradores(bytes);
 
-        // Obtém os valores dos registradores.
-        int valorRegistradorA = registradores.getRegistrador(idRegistradorA).getValor();
-        int valorRegistradorB = registradores.getRegistrador(idRegistradorB).getValor();
+        int valorRegistradorA = registradores.getRegistrador(registradoresID[0]).getValorIntSigned(); // valor A
+        int valorRegistradorB = registradores.getRegistrador(registradoresID[1]).getValorIntSigned(); // valor B
 
-        // Soma
-        int resultadoSoma = valorRegistradorA + valorRegistradorB;
+        int resultado = valorRegistradorA + valorRegistradorB;
 
-        // Armazena o resultado no reg B (Destino).
-        registradores.getRegistrador(idRegistradorB).setValor(resultadoSoma); // Reg B <- Reg A + Reg B
-    }
+        registradores.getRegistrador(registradoresID[1]).setValorInt(resultado);
+        registradores.incrementarPC(getFormato(memoria.getBytes(registradores.getValorPC(), 2)));
+         }
 }

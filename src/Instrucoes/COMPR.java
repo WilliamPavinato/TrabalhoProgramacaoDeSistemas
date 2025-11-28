@@ -9,43 +9,27 @@ import Executor.Registradores;
 public class COMPR extends Instruction {
 
     public COMPR() {
-        super("COMPR", "A0"); // Define nome e opcode para comparação entre registradores
+        super("COMPR", (byte)0xA0, "2",2);
     }
 
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
+        byte[] bytes = memoria.getBytes(registradores.getValorPC(),2); // pega 2 B
 
-        // Obtém o ID do primeiro registrador reg A a partir do PC
-        String strIdRegA = memoria.getPosicaoMemoria(registradores.getValorPC());
-        int idRegistradorA = Integer.parseInt(strIdRegA, 16); // Converte ID de hexadecimal para inteiro
-        registradores.incrementarPC(); // Avança o PC
+        int[] registradoresID = getRegistradores(bytes); // id dos registradores
 
-        
-        // Obtém o ID do primeiro registrador reg B a partir do PC
-        String strIdRegB = memoria.getPosicaoMemoria(registradores.getValorPC());
-        int idRegistradorB = Integer.parseInt(strIdRegB, 16); // Converte ID de hexadecimal para inteiro
-        registradores.incrementarPC(); // Avança o PC
+        int valorRegistradorA = registradores.getRegistrador(registradoresID[0]).getValorIntSigned(); // reg A
+        int valorRegistradorB = registradores.getRegistrador(registradoresID[1]).getValorIntSigned(); // reg B
 
-        // Obtém os valores dos registradores a serem comparados
-        int valorRegistradorA = registradores.getRegistrador(idRegistradorA).getValor();
-        int valorRegistradorB = registradores.getRegistrador(idRegistradorB).getValor();
-
-        int resultadoComparacao;
-
-        // Compara reg A com reg B e define o valor para o Status Word 
         if (valorRegistradorA == valorRegistradorB) {
-            // Se reg A IGUAL a reg B, define SW como 0.
-            resultadoComparacao = 0;
+            registradores.getRegistradorPorNome("SW").setValorInt(0);
         } else if (valorRegistradorA < valorRegistradorB) {
-            // Se reg A MENOR que reg B, define SW como -1.
-            resultadoComparacao = -1;
+            registradores.getRegistradorPorNome("SW").setValorInt(1);
         } else {
-            // Se reg A MAIOR que reg B, define SW como 1.
-            resultadoComparacao = 1;
+            registradores.getRegistradorPorNome("SW").setValorInt(2); 
         }
-        
-        // Armazena o resultado da comparação no registrador Status Word (SW).
-        registradores.getRegistradorPorNome("SW").setValor(resultadoComparacao);
+
+        registradores.incrementarPC(getFormato(memoria.getBytes(registradores.getValorPC(), 2))); // incrementa PC para a proxima instrução
     }
 }

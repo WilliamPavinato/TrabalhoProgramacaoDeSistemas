@@ -1,5 +1,7 @@
 package Instrucoes;
 
+import java.util.Map;
+
 import Executor.Memoria;
 import Executor.Registradores;
 
@@ -26,13 +28,13 @@ public class ADD extends Instruction {
             TA = memoria.getWord(TA);
         }
 
-        
-        int valorAcumulator = registradores.getRegistradorPorNome("A").getValor(); // Valor do Acumulador
-        
+
+        int valorAcumulator = registradores.getRegistradorPorNome("A").getValorIntSigned();
+
         valorAcumulator = TA + valorAcumulator;
 
        
-        registradores.getRegistradorPorNome("A").setValor(valorAcumulator); // Armazena resultado
+        registradores.getRegistradorPorNome("A").setValorInt(valorAcumulator); // Armazena resultado
     }
     
 }

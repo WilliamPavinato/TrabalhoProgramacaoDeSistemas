@@ -1,5 +1,6 @@
 package Instrucoes;
 
+import java.util.Map;
 import Executor.Memoria;
 import Executor.Registradores;
 
@@ -9,30 +10,25 @@ import Executor.Registradores;
 public class AND extends Instruction {
 
     public AND() {
-        super("AND", "40"); // Define nome e opcode para a operação AND
+        super("AND", (byte)0x40, "3/4",3);
     }
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
 
-        // Pega o endereço de memória (parâmetro 1) apontado pelo PC.
-        String strEndereco = memoria.getPosicaoMemoria(registradores.getValorPC());
-        int enderecoMem = Integer.parseInt(strEndereco, 16); // Converte de hex para int
+        int TA = calcularTA(registradores, memoria);
 
-        // Avança o Program Counter (PC) para a próxima instrução.
-        registradores.incrementarPC();
-
-        // Pega o valor armazenado na posição de memória lida (o dado).
-        String strValorMemoria = memoria.getPosicaoMemoria(enderecoMem);
-        int valorMem = Integer.parseInt(strValorMemoria, 16); // Converte de hex para int
+        Map<String, Boolean> flags = getFlags();
+        if (flags.get("n") && !flags.get("i"))           // N = 1 e I = 0
+            TA = memoria.getWord(memoria.getWord(TA));
+        else if ((!flags.get("n") && !flags.get("i")) || (flags.get("n") && flags.get("i")))
+            TA = memoria.getWord(TA);
 
         // Obtém o valor atual do Acumulador ('A').
-        int valorAcumulador = registradores.getRegistradorPorNome("A").getValor();
+        int valorAcumulador = registradores.getRegistradorPorNome("A").getValorIntSigned();
 
-        // Executa a operação AND lógica bit a bit
-        int resultadoAND = valorAcumulador & valorMem;
+        int resultado = TA & valorAcumulador; // faz a operação AND
 
-        // Armazena o resultado de volta no Acumulador 
-        registradores.getRegistradorPorNome("A").setValor(resultadoAND);
+        registradores.getRegistradorPorNome("A").setValorInt(resultado);
     }
 }

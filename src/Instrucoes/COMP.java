@@ -1,5 +1,6 @@
 package Instrucoes;
 
+import java.util.Map;
 import Executor.Memoria;
 import Executor.Registradores;
 
@@ -8,42 +9,28 @@ import Executor.Registradores;
 public class COMP extends Instruction {
 
     public COMP() {
-        super("COMP", "28"); // Define nome e opcode para a operação 
+        super("COMP", (byte)0x28, "3/4",3);
     }
 
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
-        // Pega o endereço de memória (param 1) apontado pelo PC
-        String strEndereco = memoria.getPosicaoMemoria(registradores.getValorPC());
-        int enderecoMem = Integer.parseInt(strEndereco, 16); // Converte de hex para int
+        int TA = calcularTA(registradores, memoria);
 
-        // Avança o PC
-        registradores.incrementarPC();
+        Map<String, Boolean> flags = getFlags();
 
-        // Pega o valor armazenado no endereço de memória lido
-        String strValorMemoria = memoria.getPosicaoMemoria(enderecoMem);
-        int valorMem = Integer.parseInt(strValorMemoria, 16); // Converte de hex para int
+        if (flags.get("n") && !flags.get("i"))  TA = memoria.getWord(memoria.getWord(TA));
+        else if ((!flags.get("n") && !flags.get("i")) || (flags.get("n") && flags.get("i")))
+            TA = memoria.getWord(TA);
 
+        int valorAcumulator = registradores.getRegistradorPorNome("A").getValorIntSigned(); // valor do acumulador
 
-        // Obtém o valor do acumulador
-        int valorAcumulador = registradores.getRegistradorPorNome("A").getValor();
-
-        // Referência ao registrador de status (SW)
-        int resultadoComparacao;
-
-        if (valorAcumulador == valorMem) {
-            // se (A == Mem), define SW como 0.
-            resultadoComparacao = 0;
-        } else if (valorAcumulador < valorMem) {
-            // se (A < Mem), define SW como -1.
-            resultadoComparacao = -1;
+        if (valorAcumulator == TA) {
+            registradores.getRegistradorPorNome("SW").setValorInt(0); // SW recebe "igual", pois ValorRegA == valorMem
+        } else if (valorAcumulator < TA) {
+            registradores.getRegistradorPorNome("SW").setValorInt(1); // SW recebe "menor", pois ValorRegA < valorMem
         } else {
-            // caso contrário, define SW como 1.
-            resultadoComparacao = 1;
+            registradores.getRegistradorPorNome("SW").setValorInt(2); // SW recebe "maior", pois ValorRegA > valorMem
         }
-        
-        // Armazena o resultado da comparação no registrador Status Word (SW).
-        registradores.getRegistradorPorNome("SW").setValor(resultadoComparacao);
     }
 }
