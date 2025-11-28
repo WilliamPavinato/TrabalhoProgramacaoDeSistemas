@@ -4,39 +4,23 @@ import Executor.Memoria;
 import Executor.Registradores;
 
 public class TIXR extends Instruction {
-
     public TIXR() {
-        // Opcode "B8" para TIXR
-        super("TIXR", "B8");
+        super("TIXR", (byte)0xB8, "2", 2);
     }
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
-        // TIXR r1 -> compara X com o registrador r1
-        int reg1_ID = Integer.parseInt(memoria.getPosicaoMemoria(registradores.getValorPC()), 16);
+        int pc = registradores.getValorPC();
+        int idReg = memoria.getByte(pc) & 0xFF;
+        registradores.incrementarPC(1);
 
-        //avança o PC para a próxima instrução
-        registradores.incrementarPC();
+        int valorReg = registradores.getRegistrador(idReg).getValorIntSigned();
+        int valorX = registradores.getRegistradorPorNome("X").getValorIntSigned() + 1;
 
-        //incrementa o registrador X em 1
-        int registerX_Value = registradores.getRegistradorPorNome("X").getValor() + 1;
+        registradores.getRegistradorPorNome("X").setValorInt(valorX);
 
-        //salva o novo valor de volta em X
-        registradores.getRegistradorPorNome("X").setValor(registerX_Value);
-
-        //busca o valor do registrador de comparação (r1)
-        int registerA_Value = registradores.getRegistrador(reg1_ID).getValor();
-
-        //compara X (incrementado) com r1
-        if (registerX_Value == registerA_Value) {
-            // igual (=)
-            registradores.getRegistradorPorNome("SW").setValor(0);
-        } else if (registerX_Value < registerA_Value) {
-            // menor (<) -> define como -1 para funcionar com JLT
-            registradores.getRegistradorPorNome("SW").setValor(-1);
-        } else {
-            // maior (>) -> define como 1 para funcionar com JGT
-            registradores.getRegistradorPorNome("SW").setValor(1);
-        }
+        if (valorX == valorReg) registradores.getRegistradorPorNome("SW").setValorInt(0);
+        else if (valorX < valorReg) registradores.getRegistradorPorNome("SW").setValorInt(-1);
+        else registradores.getRegistradorPorNome("SW").setValorInt(1);
     }
 }

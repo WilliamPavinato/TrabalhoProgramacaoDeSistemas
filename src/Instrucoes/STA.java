@@ -4,26 +4,22 @@ import Executor.Memoria;
 import Executor.Registradores;
 
 public class STA extends Instruction {
-
     public STA() {
-        super("STA", "0C");
+        super("STA", (byte)0x0C, "3/4", 3);
     }
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
-        // pega o endereço de memória onde vamos salvar (apontado pelo PC)
-        int memoryAddress = Integer.parseInt(memoria.getPosicaoMemoria(registradores.getValorPC()), 16);
+        int pc = registradores.getValorPC();
 
-        // avança o PC para a próxima instrução
-        registradores.incrementarPC();
+        // lê apenas 1 byte pra descobrir onde salvar
+        int endereco = memoria.getByte(pc) & 0xFF;
+        registradores.incrementarPC(1);
 
-        // pega o valor que está no Acumulador "A"
-        int accumulatorValue = registradores.getRegistradorPorNome("A").getValor();
+        // pega valor do Acumulador
+        int valor = registradores.getRegistradorPorNome("A").getValorIntSigned();
 
-        // converte o valor para Hexadecimal (String)
-        String hexValue = Integer.toHexString(accumulatorValue).toUpperCase();
-
-        // salva o valor na memória no endereço especificado
-        memoria.setPosicaoMemoria(memoryAddress, hexValue);
+        // salva na memória
+        memoria.setWord(endereco, valor);
     }
 }

@@ -12,14 +12,14 @@ public class LDS extends Instruction {
     public void executar(Memoria memoria, Registradores registradores) {
         int pc = registradores.getValorPC();
 
-        //lê apenas 1 byte para o endereço (pois o montador gerou 1 linha)
-        int enderecoOperando = memoria.getByte(pc) & 0xFF; // & 0xFF converte byte negativo para int positivo
+        // lê o endereço do operando (1 byte no arquivo do montador)
+        int endereco = memoria.getByte(pc) & 0xFF;
+        registradores.incrementarPC(1); // Consome o operando
 
-        registradores.incrementarPC(1);
+        // busca o valor na memória (Word = 3 bytes)
+        int valor = memoria.getWord(endereco);
 
-        //busca o valor na memória (GetWord lê 3 bytes, ideal para variáveis inteiras)
-        int valor = memoria.getWord(enderecoOperando);
-
+        // salva no registrador S
         registradores.getRegistradorPorNome("S").setValorInt(valor);
     }
 }

@@ -4,34 +4,27 @@ import Executor.Memoria;
 import Executor.Registradores;
 
 public class MULR extends Instruction {
-
     public MULR() {
-        super("MULR", "98");
+        super("MULR", (byte)0x98, "2", 2);
     }
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
-        // pega o ID do primeiro registrador (Reg 1) apontado pelo PC
-        int reg1_ID = Integer.parseInt(memoria.getPosicaoMemoria(registradores.getValorPC()), 16);
+        int pc = registradores.getValorPC();
 
-        //avança PC para ler o próximo parâmetro
-        registradores.incrementarPC();
+        // Lê ID 1 e avança
+        int id1 = memoria.getByte(pc) & 0xFF;
+        registradores.incrementarPC(1);
 
-        // pega o ID do segundo registrador (Reg 2) apontado pelo PC
-        int reg2_ID = Integer.parseInt(memoria.getPosicaoMemoria(registradores.getValorPC()), 16);
+        // Lê ID 2 e avança
+        pc = registradores.getValorPC();
+        int id2 = memoria.getByte(pc) & 0xFF;
+        registradores.incrementarPC(1);
 
-        //avança PC para a próxima instrução
-        registradores.incrementarPC();
+        int val1 = registradores.getRegistrador(id1).getValorIntSigned();
+        int val2 = registradores.getRegistrador(id2).getValorIntSigned();
 
-        // busca os valores dentro desses registradores
-        int valReg1 = registradores.getRegistrador(reg1_ID).getValor();
-        int valReg2 = registradores.getRegistrador(reg2_ID).getValor();
-
-        // realiza a multiplicação
-        // lógica padrão: Reg2 = Reg2 * Reg1
-        int resultado = valReg2 * valReg1;
-
-        //salva o resultado no segundo registrador
-        registradores.getRegistrador(reg2_ID).setValor(resultado);
+        // R2 = R2 * R1
+        registradores.getRegistrador(id2).setValorInt(val2 * val1);
     }
 }

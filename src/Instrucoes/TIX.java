@@ -4,38 +4,25 @@ import Executor.Memoria;
 import Executor.Registradores;
 
 public class TIX extends Instruction {
-
     public TIX() {
-        super("TIX", "2C");
+        super("TIX", (byte)0x2C, "3/4", 3);
     }
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
-        //pega o endereço de memória (m) que está logo após o opcode
-        int memoryAddress = Integer.parseInt(memoria.getPosicaoMemoria(registradores.getValorPC()), 16);
+        int pc = registradores.getValorPC();
+        int endereco = memoria.getByte(pc) & 0xFF;
+        registradores.incrementarPC(1);
 
-        //avança o PC para a próxima instrução
-        registradores.incrementarPC();
+        int valorMem = memoria.getWord(endereco);
 
-        //busca o valor armazenado na memória (valor de m)
-        int memoryValue = Integer.parseInt(memoria.getPosicaoMemoria(memoryAddress), 16);
+        // X = X + 1
+        int valorX = registradores.getRegistradorPorNome("X").getValorIntSigned() + 1;
+        registradores.getRegistradorPorNome("X").setValorInt(valorX);
 
-        //incrementa o registrador X em 1
-        int registerX_Value = registradores.getRegistradorPorNome("X").getValor() + 1;
-
-        //salva o novo valor de volta em X
-        registradores.getRegistradorPorNome("X").setValor(registerX_Value);
-
-        // compara o novo valor de X com o valor da memóri, define SW para ser usado pelos Jumps (JEQ, JLT, JGT)
-        if (registerX_Value == memoryValue) {
-            // igual (=)
-            registradores.getRegistradorPorNome("SW").setValor(0);
-        } else if (registerX_Value < memoryValue) {
-            // menor (<) -> define como -1 para funcionar com JLT
-            registradores.getRegistradorPorNome("SW").setValor(-1);
-        } else {
-            // maior (>) -> define como 1 para funcionar com JGT
-            registradores.getRegistradorPorNome("SW").setValor(1);
-        }
+        // Compara e define SW (-1, 0, 1)
+        if (valorX == valorMem) registradores.getRegistradorPorNome("SW").setValorInt(0);
+        else if (valorX < valorMem) registradores.getRegistradorPorNome("SW").setValorInt(-1);
+        else registradores.getRegistradorPorNome("SW").setValorInt(1);
     }
 }

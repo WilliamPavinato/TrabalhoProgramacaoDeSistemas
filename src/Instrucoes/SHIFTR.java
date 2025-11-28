@@ -4,32 +4,25 @@ import Executor.Memoria;
 import Executor.Registradores;
 
 public class SHIFTR extends Instruction {
-
     public SHIFTR() {
-        super("SHIFTR", "A8");
+        super("SHIFTR", (byte)0xA8, "2", 2);
     }
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
-        // pega o ID do registrador que será deslocado (pparâmetro 1)
-        int registerID = Integer.parseInt(memoria.getPosicaoMemoria(registradores.getValorPC()), 16);
+        int pc = registradores.getValorPC();
 
-        //avança o PC para ler o próximo parâmetro (o 'n')
-        registradores.incrementarPC();
+        int idReg = memoria.getByte(pc) & 0xFF;
+        registradores.incrementarPC(1);
 
-        // pega a quantidade de deslocamento 'n' (parâmetro 2)
-        int n = Integer.parseInt(memoria.getPosicaoMemoria(registradores.getValorPC()), 16);
+        pc = registradores.getValorPC();
+        int n = memoria.getByte(pc) & 0xFF;
+        registradores.incrementarPC(1);
 
-        //avança o PC para a próxima instrução
-        registradores.incrementarPC();
+        int val = registradores.getRegistrador(idReg).getValorIntSigned();
 
-        //busca o valor atual do registrador
-        int registerValue = registradores.getRegistrador(registerID).getValor();
-
-        //realiza o Deslocamento Aritmético à Direita (Preserva o sinal), usa a máscara 0xFFFFFF para garantir que fique dentro dos 24 bits
-        int resultado = (registerValue >> n) & 0xFFFFFF;
-
-        //salva o resultado de volta no registrador
-        registradores.getRegistrador(registerID).setValor(resultado);
+        // Deslocamento Aritmético à Direita
+        int res = (val >> n) & 0xFFFFFF;
+        registradores.getRegistrador(idReg).setValorInt(res);
     }
 }

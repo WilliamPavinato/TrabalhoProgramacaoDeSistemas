@@ -4,23 +4,28 @@ import Executor.Memoria;
 import Executor.Registradores;
 
 public class LDT extends Instruction {
-
     public LDT() {
-        super("LDT", "74");
+        super("LDT", (byte)0x74, "3/4", 3); // nome, opcode, formato, tamanho
     }
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
-        // pega o endereço de memória (que é o operando escrito pelo montador logo após o opcode)
-        int memoryAddress = Integer.parseInt(memoria.getPosicaoMemoria(registradores.getValorPC()), 16);
+        //obtém o valor atual do Contador de Programa (PC)
+        int pc = registradores.getValorPC();
 
-        // avança o PC para pular esse endereço e apontar para a próxima instrução
-        registradores.incrementarPC();
+        //lê o endereço de memória do operando
+        int endereco = memoria.getByte(pc) & 0xFF;
 
-        // vai até o endereço de memória lido e pega o valor armazenado lá
-        int memoryValue = Integer.parseInt(memoria.getPosicaoMemoria(memoryAddress), 16);
+        //incrementa o PC em 1
+        //isso é necessário para "pular" o byte do endereço que acabamos de ler,ndeixando o PC pronto para a próxima instrução
+        registradores.incrementarPC(1);
 
-        // salva esse valor no Registrador T
-        registradores.getRegistradorPorNome("T").setValor(memoryValue);
+        //busca o valor real armazenado na memória
+        //vai até o 'endereco' que lemos acima e pega a palavra (Word = 3 bytes) armazenada lá
+        int valor = memoria.getWord(endereco);
+
+        //salva o valor no Registrador T
+        //atualiza o conteúdo do registrador T com o dado trazido da memória.
+        registradores.getRegistradorPorNome("T").setValorInt(valor);
     }
 }
