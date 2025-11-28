@@ -64,7 +64,7 @@ public class Montador {
         for(String linha : input)
         {
             Line line = new Line();
-            line.parse(linha);
+            line.parser(linha);
 
             if (linha.isEmpty() || linha.charAt(0) == '.')
                 continue;       // pula linhas que começam com . (comentários)
@@ -132,19 +132,19 @@ public class Montador {
                         aux = 0;
                         for (String operand : operands)
                             aux += Integer.parseInt(operand);
-                        break;
                         LocationCounter += aux;
                         line.set_tamanho_instr(aux);
+                        break;
                     default:
                         errorMsg = errorMsg + "\nERRO - Instrucao invalida: " + linha;
                         break;
                 }
             }
-            line = intermediateFile.get(lineCounter);
+            line = intermediateFile.get(LocationCounter);
         }
 
         output.endAddress = LocationCounter;
-        output.set_length();
+        output.setLength();
     }
 
     // Gera código de máquina e arquivo temporário a partir da tabela de símbolos
@@ -252,7 +252,7 @@ public class Montador {
             }
             else
             {
-                errorMessage = errorMessage + "\nERRO - Opcode Inválido: " + input.get(lineCounter);
+                errorMsg = errorMsg + "\nERRO - Opcode Inválido: " + input.get(lineCounter);
             }
 
             lineCounter+=1;
@@ -260,7 +260,7 @@ public class Montador {
         }
 
         output.endAddress = LOCCTR;
-        output.set_length();
+        output.setLength();
     }
 
     private void gerarTXTOutput() {
@@ -414,7 +414,7 @@ public class Montador {
             ni = 0x02;
         }
         else {
-            errorMessage = errorMessage + "\nERRO - Prefixo inválido: " + line.line;
+            errorMsg = errorMsg + "\nERRO - Prefixo inválido: " + line.line;
         }
 
 
@@ -424,7 +424,7 @@ public class Montador {
                 disp = Integer.parseInt(line.operands[0]);
 
             } catch (NumberFormatException e) {
-                errorMessage = errorMessage + "\nERRO - Nao foi possivel converter para inteiro: " + line.line;
+                errorMsg = errorMsg + "\nERRO - Nao foi possivel converter para inteiro: " + line.line;
             }
 
             xbpe = 0;
