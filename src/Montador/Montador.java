@@ -64,7 +64,7 @@ public class Montador {
         for(String linha : input)
         {
             Line line = new Line();
-            line.parse(linha);
+            line.parser(linha);
 
             if (linha.isEmpty() || linha.charAt(0) == '.')
                 continue;       // pula linhas que começam com . (comentários)
@@ -132,19 +132,19 @@ public class Montador {
                         aux = 0;
                         for (String operand : operands)
                             aux += Integer.parseInt(operand);
-                        break;
                         LocationCounter += aux;
                         line.set_tamanho_instr(aux);
+                        break;
                     default:
                         errorMsg = errorMsg + "\nERRO - Instrucao invalida: " + linha;
                         break;
                 }
             }
-            line = intermediateFile.get(lineCounter);
+            line = intermediateFile.get(LocationCounter);
         }
 
         output.endAddress = LocationCounter;
-        output.set_length();
+        output.setLength();
     }
 
     // Gera código de máquina e arquivo temporário a partir da tabela de símbolos
@@ -260,7 +260,7 @@ public class Montador {
         }
 
         output.endAddress = LOCCTR;
-        output.set_length();
+        output.setLength();
     }
 
     private void gerarTXTOutput() {
