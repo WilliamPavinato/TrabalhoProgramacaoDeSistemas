@@ -9,7 +9,18 @@ import javax.swing.JOptionPane;
 import Executor.*;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.BasicStroke;
+import java.awt.Insets;
+import java.awt.Rectangle;
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JScrollPane;
+import javax.swing.border.AbstractBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -50,13 +61,176 @@ public class ExecutorInterface extends javax.swing.JFrame {
         initComponents();
     }
 
+    // Classe para JScrollPane com cantos arredondados
+    private static class RoundedScrollPane extends JScrollPane {
+        private final int radius;
+        private final Color borderColor;
+
+        public RoundedScrollPane(Component view, int radius, Color borderColor) {
+            super(view);
+            this.radius = radius;
+            this.borderColor = borderColor;
+            setOpaque(false);
+            getViewport().setOpaque(false);
+            setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setColor(getBackground());
+            g2d.fillRoundRect(0, 0, getWidth(), getHeight(), radius, radius);
+            g2d.dispose();
+            super.paintComponent(g);
+        }
+
+        @Override
+        protected void paintBorder(Graphics g) {
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setColor(borderColor);
+            g2d.setStroke(new BasicStroke(2));
+            g2d.drawRoundRect(1, 1, getWidth() - 3, getHeight() - 3, radius, radius);
+            g2d.dispose();
+        }
+    }
+
+    // Classe para JButton com cantos arredondados
+    private static class RoundedButton extends JButton {
+        private final int radius;
+        private Color hoverColor;
+
+        public RoundedButton(String text, int radius) {
+            super(text);
+            this.radius = radius;
+            setContentAreaFilled(false);
+            setFocusPainted(false);
+            setBorderPainted(false);
+
+            addMouseListener(new java.awt.event.MouseAdapter() {
+                @Override
+                public void mouseEntered(java.awt.event.MouseEvent evt) {
+                    if (isEnabled()) {
+                        hoverColor = getBackground().brighter();
+                        repaint();
+                    }
+                }
+
+                @Override
+                public void mouseExited(java.awt.event.MouseEvent evt) {
+                    hoverColor = null;
+                    repaint();
+                }
+            });
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+            if (!isEnabled()) {
+                g2d.setColor(getBackground().darker());
+            } else if (hoverColor != null) {
+                g2d.setColor(hoverColor);
+            } else {
+                g2d.setColor(getBackground());
+            }
+
+            g2d.fillRoundRect(0, 0, getWidth(), getHeight(), radius, radius);
+            g2d.dispose();
+            super.paintComponent(g);
+        }
+    }
+
+    // Classe para TextField com cantos arredondados
+    private static class RoundedTextField extends javax.swing.JTextField {
+        private final int radius;
+        private final Color borderColor;
+
+        public RoundedTextField(int radius, Color borderColor) {
+            this.radius = radius;
+            this.borderColor = borderColor;
+            setOpaque(false);
+            setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setColor(getBackground());
+            g2d.fillRoundRect(0, 0, getWidth(), getHeight(), radius, radius);
+            g2d.dispose();
+            super.paintComponent(g);
+        }
+
+        @Override
+        protected void paintBorder(Graphics g) {
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setColor(borderColor);
+            g2d.setStroke(new BasicStroke(2));
+            g2d.drawRoundRect(1, 1, getWidth() - 3, getHeight() - 3, radius, radius);
+            g2d.dispose();
+        }
+    }
+
+    // ScrollBar moderna e minimalista
+    private class ModernScrollBarUI extends javax.swing.plaf.basic.BasicScrollBarUI {
+        @Override
+        protected void configureScrollBarColors() {
+            this.thumbColor = BORDER_COLOR;
+            this.trackColor = BG_CARD;
+        }
+
+        @Override
+        protected JButton createDecreaseButton(int orientation) {
+            return createZeroButton();
+        }
+
+        @Override
+        protected JButton createIncreaseButton(int orientation) {
+            return createZeroButton();
+        }
+
+        private JButton createZeroButton() {
+            JButton button = new JButton();
+            button.setPreferredSize(new java.awt.Dimension(0, 0));
+            button.setMinimumSize(new java.awt.Dimension(0, 0));
+            button.setMaximumSize(new java.awt.Dimension(0, 0));
+            return button;
+        }
+
+        @Override
+        protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds) {
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setColor(thumbColor);
+            g2d.fillRoundRect(thumbBounds.x + 2, thumbBounds.y + 2,
+                    thumbBounds.width - 4, thumbBounds.height - 4, 8, 8);
+            g2d.dispose();
+        }
+
+        @Override
+        protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setColor(trackColor);
+            g2d.fillRoundRect(trackBounds.x, trackBounds.y,
+                    trackBounds.width, trackBounds.height, 8, 8);
+            g2d.dispose();
+        }
+    }
+
     private void initComponents() {
         executor       = new Executor();
         backgroundPane = new javax.swing.JPanel();
         sicLabel       = new javax.swing.JLabel();
 
-        registersPane = new javax.swing.JScrollPane();
-        memoryPane    = new javax.swing.JScrollPane();
+        registersPane = new RoundedScrollPane(null, 15, ACCENT_PRIMARY);
+        memoryPane    = new RoundedScrollPane(null, 15, ACCENT_SECONDARY);
 
         registerTable  = new javax.swing.JTable();
         registersLabel = new javax.swing.JLabel();
@@ -64,17 +238,17 @@ public class ExecutorInterface extends javax.swing.JFrame {
         executeLabel = new javax.swing.JLabel();
         executeLabel.setText("teste");
 
-        inputField  = new javax.swing.JTextField();
-        outputField = new javax.swing.JTextField();
+        inputField  = new RoundedTextField(10, BORDER_COLOR);
+        outputField = new RoundedTextField(10, BORDER_COLOR);
         inputLabel  = new javax.swing.JLabel();
         outputLabel = new javax.swing.JLabel();
 
         memoryList  = new javax.swing.JList<>();
         memoryLabel = new javax.swing.JLabel();
 
-        loadButton = new javax.swing.JButton();
-        stepButton = new javax.swing.JButton();
-        runButton  = new javax.swing.JButton();
+        loadButton = new RoundedButton("CARREGAR PROGRAMA", 10);
+        stepButton = new RoundedButton("STEP", 10);
+        runButton  = new RoundedButton("RUN", 10);
 
         fileChooser = new javax.swing.JFileChooser();
 
@@ -107,11 +281,10 @@ public class ExecutorInterface extends javax.swing.JFrame {
         registerTable.getTableHeader().getColumnModel().getColumn(1).setHeaderRenderer(MyHeaderRender);
 
         registersPane.setViewportView(registerTable);
-        registersPane.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(ACCENT_PRIMARY, 2),
-                BorderFactory.createEmptyBorder(5, 5, 5, 5)
-        ));
         registersPane.setBackground(BG_SECONDARY);
+        registersPane.getVerticalScrollBar().setUI(new ModernScrollBarUI());
+        registersPane.getHorizontalScrollBar().setUI(new ModernScrollBarUI());
+        registersPane.getVerticalScrollBar().setUnitIncrement(16);
 
         if (registerTable.getColumnModel().getColumnCount() > 0) {
             registerTable.getColumnModel().getColumn(0).setMinWidth(60);
@@ -133,11 +306,10 @@ public class ExecutorInterface extends javax.swing.JFrame {
         memoryList.setFixedCellHeight(28);
         memoryList.setFont(new Font("Consolas", Font.PLAIN, 12));
         memoryPane.setViewportView(memoryList);
-        memoryPane.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(ACCENT_SECONDARY, 2),
-                BorderFactory.createEmptyBorder(5, 5, 5, 5)
-        ));
         memoryPane.setBackground(BG_SECONDARY);
+        memoryPane.getVerticalScrollBar().setUI(new ModernScrollBarUI());
+        memoryPane.getHorizontalScrollBar().setUI(new ModernScrollBarUI());
+        memoryPane.getVerticalScrollBar().setUnitIncrement(16);
 
         memoryLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
         memoryLabel.setText("MEMÓRIA");
@@ -153,11 +325,7 @@ public class ExecutorInterface extends javax.swing.JFrame {
         inputField.setForeground(TEXT_PRIMARY);
         inputField.setCaretColor(TEXT_PRIMARY);
         inputField.setFont(new Font("Consolas", Font.PLAIN, 13));
-        inputField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        inputField.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(BORDER_COLOR, 2),
-                BorderFactory.createEmptyBorder(5, 10, 5, 10)
-        ));
+        inputField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         inputField.addActionListener((java.awt.event.ActionEvent evt) -> {
             inputFieldActionPerformed(evt);
         });
@@ -170,50 +338,28 @@ public class ExecutorInterface extends javax.swing.JFrame {
         outputField.setBackground(BG_CARD);
         outputField.setForeground(ACCENT_SUCCESS);
         outputField.setFont(new Font("Consolas", Font.BOLD, 13));
-        outputField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        outputField.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(BORDER_COLOR, 2),
-                BorderFactory.createEmptyBorder(5, 10, 5, 10)
-        ));
+        outputField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
 
         // Botoes
-        loadButton.setText("CARREGAR PROGRAMA");
         loadButton.setBackground(BG_CARD);
         loadButton.setForeground(TEXT_PRIMARY);
         loadButton.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        loadButton.setFocusPainted(false);
-        loadButton.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(BORDER_COLOR, 2),
-                BorderFactory.createEmptyBorder(8, 15, 8, 15)
-        ));
         loadButton.addActionListener((java.awt.event.ActionEvent evt) -> {
             loadButtonActionPerformed(evt, memoryList);
         });
 
-        runButton.setText("RUN");
         runButton.setEnabled(false);
         runButton.setBackground(ACCENT_SUCCESS);
         runButton.setForeground(TEXT_PRIMARY);
         runButton.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        runButton.setFocusPainted(false);
-        runButton.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(ACCENT_SUCCESS, 2),
-                BorderFactory.createEmptyBorder(8, 15, 8, 15)
-        ));
         runButton.addActionListener((java.awt.event.ActionEvent evt) -> {
             runButtonActionPerformed(evt, memoryList);
         });
 
-        stepButton.setText("STEP");
         stepButton.setEnabled(false);
         stepButton.setBackground(ACCENT_SECONDARY);
         stepButton.setForeground(TEXT_PRIMARY);
         stepButton.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        stepButton.setFocusPainted(false);
-        stepButton.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(ACCENT_SECONDARY, 2),
-                BorderFactory.createEmptyBorder(8, 15, 8, 15)
-        ));
         stepButton.addActionListener((java.awt.event.ActionEvent evt) -> {
             stepButtonActionPerformed(evt, memoryList);
         });
@@ -303,6 +449,14 @@ public class ExecutorInterface extends javax.swing.JFrame {
         getContentPane().setBackground(BG_PRIMARY);
         setSize(800,550);
         setResizable(false);
+
+        // Remove o ícone da janela (Duke) criando uma imagem transparente
+        try {
+            java.awt.image.BufferedImage emptyIcon = new java.awt.image.BufferedImage(1, 1, java.awt.image.BufferedImage.TYPE_INT_ARGB);
+            setIconImage(emptyIcon);
+        } catch (Exception e) {
+            // Se falhar, apenas ignora
+        }
     }
 
 

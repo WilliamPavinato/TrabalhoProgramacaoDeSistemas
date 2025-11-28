@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.*;
 import java.nio.file.Files;
+import javax.swing.border.AbstractBorder;
 
 public class MontadorInterface extends JFrame {
     private final Montador montador;
@@ -34,6 +35,114 @@ public class MontadorInterface extends JFrame {
         initComponents();
     }
 
+    // Classe para borda arredondada
+    private static class RoundedBorder extends AbstractBorder {
+        private final Color color;
+        private final int thickness;
+        private final int radius;
+
+        public RoundedBorder(Color color, int thickness, int radius) {
+            this.color = color;
+            this.thickness = thickness;
+            this.radius = radius;
+        }
+
+        @Override
+        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setColor(color);
+            g2d.setStroke(new BasicStroke(thickness));
+            g2d.drawRoundRect(x + thickness/2, y + thickness/2,
+                    width - thickness, height - thickness, radius, radius);
+            g2d.dispose();
+        }
+
+        @Override
+        public Insets getBorderInsets(Component c) {
+            return new Insets(thickness + 2, thickness + 2, thickness + 2, thickness + 2);
+        }
+    }
+
+    // Classe para JScrollPane com cantos arredondados
+    private static class RoundedScrollPane extends JScrollPane {
+        private final int radius;
+        private final Color borderColor;
+
+        public RoundedScrollPane(Component view, int radius, Color borderColor) {
+            super(view);
+            this.radius = radius;
+            this.borderColor = borderColor;
+            setOpaque(false);
+            getViewport().setOpaque(false);
+            setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setColor(getBackground());
+            g2d.fillRoundRect(0, 0, getWidth(), getHeight(), radius, radius);
+            g2d.dispose();
+            super.paintComponent(g);
+        }
+
+        @Override
+        protected void paintBorder(Graphics g) {
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setColor(borderColor);
+            g2d.setStroke(new BasicStroke(2));
+            g2d.drawRoundRect(1, 1, getWidth() - 3, getHeight() - 3, radius, radius);
+            g2d.dispose();
+        }
+    }
+
+    // Classe para JButton com cantos arredondados
+    private static class RoundedButton extends JButton {
+        private final int radius;
+        private Color hoverColor;
+
+        public RoundedButton(String text, int radius) {
+            super(text);
+            this.radius = radius;
+            setContentAreaFilled(false);
+            setFocusPainted(false);
+            setBorderPainted(false);
+
+            addMouseListener(new java.awt.event.MouseAdapter() {
+                @Override
+                public void mouseEntered(java.awt.event.MouseEvent evt) {
+                    hoverColor = getBackground().brighter();
+                    repaint();
+                }
+
+                @Override
+                public void mouseExited(java.awt.event.MouseEvent evt) {
+                    hoverColor = null;
+                    repaint();
+                }
+            });
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+            if (hoverColor != null) {
+                g2d.setColor(hoverColor);
+            } else {
+                g2d.setColor(getBackground());
+            }
+
+            g2d.fillRoundRect(0, 0, getWidth(), getHeight(), radius, radius);
+            g2d.dispose();
+            super.paintComponent(g);
+        }
+    }
+
     private void initComponents() {
         // Header Panel
         headerPanel = new JPanel();
@@ -54,14 +163,14 @@ public class MontadorInterface extends JFrame {
         inputArea.setForeground(TEXT_PRIMARY);
         inputArea.setFont(new Font("Consolas", Font.PLAIN, 13));
         inputArea.setCaretColor(TEXT_PRIMARY);
-        inputArea.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        inputArea.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        JScrollPane inputPane = new JScrollPane(inputArea);
-        inputPane.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(ACCENT_PRIMARY, 2),
-                BorderFactory.createEmptyBorder(5, 5, 5, 5)
-        ));
+        RoundedScrollPane inputPane = new RoundedScrollPane(inputArea, 15, ACCENT_PRIMARY);
         inputPane.setBackground(BG_SECONDARY);
+        inputPane.getVerticalScrollBar().setUI(new ModernScrollBarUI());
+        inputPane.getHorizontalScrollBar().setUI(new ModernScrollBarUI());
+        inputPane.getVerticalScrollBar().setUnitIncrement(16);
+        inputPane.getHorizontalScrollBar().setUnitIncrement(16);
 
         // Output Area
         outputArea = new JTextArea(500, 400);
@@ -69,25 +178,20 @@ public class MontadorInterface extends JFrame {
         outputArea.setBackground(BG_SECONDARY);
         outputArea.setForeground(ACCENT_SUCCESS);
         outputArea.setFont(new Font("Consolas", Font.BOLD, 13));
-        outputArea.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        outputArea.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        JScrollPane outputScrollPane = new JScrollPane(outputArea);
-        outputScrollPane.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(ACCENT_SECONDARY, 2),
-                BorderFactory.createEmptyBorder(5, 5, 5, 5)
-        ));
+        RoundedScrollPane outputScrollPane = new RoundedScrollPane(outputArea, 15, ACCENT_SECONDARY);
         outputScrollPane.setBackground(BG_SECONDARY);
+        outputScrollPane.getVerticalScrollBar().setUI(new ModernScrollBarUI());
+        outputScrollPane.getHorizontalScrollBar().setUI(new ModernScrollBarUI());
+        outputScrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        outputScrollPane.getHorizontalScrollBar().setUnitIncrement(16);
 
         // Montar Button
-        montarButton = new JButton("MONTAR");
+        montarButton = new RoundedButton("MONTAR", 12);
         montarButton.setBackground(ACCENT_SUCCESS);
         montarButton.setForeground(TEXT_PRIMARY);
         montarButton.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        montarButton.setFocusPainted(false);
-        montarButton.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(ACCENT_SUCCESS, 2),
-                BorderFactory.createEmptyBorder(8, 15, 8, 15)
-        ));
         montarButton.addActionListener((ActionEvent e) -> {
             montarPrograma();
         });
@@ -95,15 +199,10 @@ public class MontadorInterface extends JFrame {
         montarButton.setPreferredSize(new Dimension(150, 45));
 
         // Select File Button
-        selectFileButton = new JButton("SELECIONAR");
+        selectFileButton = new RoundedButton("SELECIONAR", 12);
         selectFileButton.setBackground(ACCENT_SECONDARY);
         selectFileButton.setForeground(TEXT_PRIMARY);
         selectFileButton.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        selectFileButton.setFocusPainted(false);
-        selectFileButton.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(ACCENT_SECONDARY, 2),
-                BorderFactory.createEmptyBorder(8, 15, 8, 15)
-        ));
         selectFileButton.addActionListener((java.awt.event.ActionEvent evt) -> {
             selectFileButtonActionPerformed(evt);
         });
@@ -173,29 +272,19 @@ public class MontadorInterface extends JFrame {
         footerPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 37));
         footerPanel.setBackground(BG_PRIMARY);
 
-        JButton executorButton = new JButton("EXECUTOR");
+        JButton executorButton = new RoundedButton("EXECUTOR", 10);
         executorButton.setBackground(BG_CARD);
         executorButton.setForeground(TEXT_PRIMARY);
         executorButton.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        executorButton.setFocusPainted(false);
-        executorButton.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(BORDER_COLOR, 2),
-                BorderFactory.createEmptyBorder(8, 15, 8, 15)
-        ));
         executorButton.setPreferredSize(new Dimension(110, 40));
         executorButton.addActionListener((java.awt.event.ActionEvent evt) -> {
             chamaExecutor();
         });
 
-        JButton limparButton = new JButton("LIMPAR");
+        JButton limparButton = new RoundedButton("LIMPAR", 10);
         limparButton.setBackground(BG_CARD);
         limparButton.setForeground(TEXT_PRIMARY);
         limparButton.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        limparButton.setFocusPainted(false);
-        limparButton.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(BORDER_COLOR, 2),
-                BorderFactory.createEmptyBorder(8, 15, 8, 15)
-        ));
         limparButton.setPreferredSize(new Dimension(110, 40));
         limparButton.addActionListener((java.awt.event.ActionEvent evt) -> {
             limparButtonActionPerformed(evt);
@@ -219,7 +308,63 @@ public class MontadorInterface extends JFrame {
         setSize(800, 550);
         setResizable(false);
         setLocationRelativeTo(null);
+
+        // Remove o ícone da janela criando uma imagem transparente
+        try {
+            java.awt.image.BufferedImage emptyIcon = new java.awt.image.BufferedImage(1, 1, java.awt.image.BufferedImage.TYPE_INT_ARGB);
+            setIconImage(emptyIcon);
+        } catch (Exception e) {
+            // Se falhar, apenas ignora
+        }
+
         setVisible(true);
+    }
+
+    // ScrollBar moderna e minimalista
+    private class ModernScrollBarUI extends javax.swing.plaf.basic.BasicScrollBarUI {
+        @Override
+        protected void configureScrollBarColors() {
+            this.thumbColor = BORDER_COLOR;
+            this.trackColor = BG_CARD;
+        }
+
+        @Override
+        protected JButton createDecreaseButton(int orientation) {
+            return createZeroButton();
+        }
+
+        @Override
+        protected JButton createIncreaseButton(int orientation) {
+            return createZeroButton();
+        }
+
+        private JButton createZeroButton() {
+            JButton button = new JButton();
+            button.setPreferredSize(new Dimension(0, 0));
+            button.setMinimumSize(new Dimension(0, 0));
+            button.setMaximumSize(new Dimension(0, 0));
+            return button;
+        }
+
+        @Override
+        protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds) {
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setColor(thumbColor);
+            g2d.fillRoundRect(thumbBounds.x + 2, thumbBounds.y + 2,
+                    thumbBounds.width - 4, thumbBounds.height - 4, 8, 8);
+            g2d.dispose();
+        }
+
+        @Override
+        protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setColor(trackColor);
+            g2d.fillRoundRect(trackBounds.x, trackBounds.y,
+                    trackBounds.width, trackBounds.height, 8, 8);
+            g2d.dispose();
+        }
     }
 
     private void chamaExecutor() {
