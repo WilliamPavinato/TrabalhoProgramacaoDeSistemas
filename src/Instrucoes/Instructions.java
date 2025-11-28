@@ -30,7 +30,7 @@ public class Instructions {
 
         // Salto e Control
         instrucoes.put((byte)0x3C, new J());      // Salto incondicional para endereço
-        instrucoes.put((byte)0x3,  new JEQ());    // Salto se SW for igual (J = EQual)
+        instrucoes.put((byte)0x30,  new JEQ());    // Salto se SW for igual (J = EQual)
         instrucoes.put((byte)0x34, new JGT());    // Salto se SW for maior (J = Greater Than)
         instrucoes.put((byte)0x38, new JLT());    // Salto se SW for menor (J = Less Than)
         instrucoes.put((byte)0x48, new JSUB());   // Salto para Sub-rotina (armazena retorno em L)
