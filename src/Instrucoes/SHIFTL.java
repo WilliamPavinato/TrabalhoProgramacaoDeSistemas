@@ -8,19 +8,14 @@ public class SHIFTL extends Instruction {
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
-        int pc = registradores.getValorPC();
-        int operando = memoria.getByte(pc) & 0xFF;
+        byte[] bytes = memoria.getBytes(registradores.getValorPC(),2); // pega dos 2 bytes que a instrução ocupa
+        int[] registradoresID = getRegistradores(bytes);                      //  dos registradores
+        int valorRegistradorA = registradores.getRegistrador(registradoresID[0]).getValorIntSigned();
+        int n = (bytes[1] & 0xFF);
+        int resultado = ((valorRegistradorA << n) | (valorRegistradorA >>> (24 - n))) & 0xFFFFFF; // Deslocamento circular a esquerda
 
-        // Formato: R1 (4 bits) | n (4 bits)
-        int id1 = (operando >> 4) & 0xF;
-        int n   = operando & 0xF; // Quantidade de bits a deslocar
+        registradores.getRegistrador(registradoresID[0]).setValorInt(resultado);
+        registradores.incrementarPC(getFormato(memoria.getBytes(registradores.getValorPC(), 2))); // Próxima instrução
 
-        registradores.incrementarPC(1);
-
-        int val = registradores.getRegistrador(id1).getValorIntSigned();
-        // Deslocamento Circular a Esquerda (24 bits)
-        int res = ((val << n) | (val >>> (24 - n))) & 0xFFFFFF;
-
-        registradores.getRegistrador(id1).setValorInt(res);
     }
 }

@@ -17,7 +17,7 @@ public class Instructions {
         instrucoes.put((byte)0x18, new ADD());    // Adiciona valor da memória ao Acumulador (A)
         instrucoes.put((byte)0x90, new ADDR());   // Adiciona Reg A ao Reg B (Reg B <- Reg A + Reg B)
         instrucoes.put((byte)0x40, new AND());    // AND lógico entre memória e A (A <- A & Mem)
-        instrucoes.put((byte)0x4, new CLEAR());   // Zera o valor de um registrador
+        instrucoes.put((byte)0x4,  new CLEAR());  // Zera o valor de um registrador
         instrucoes.put((byte)0x28, new COMP());   // Compara memória com A (seta SW)
         instrucoes.put((byte)0xA0, new COMPR());  // Compara Reg A com Reg B (seta SW)
         instrucoes.put((byte)0x24, new DIV());    // Divide A pelo valor da memória (A <- A / Mem)
@@ -30,21 +30,21 @@ public class Instructions {
 
         // Salto e Control
         instrucoes.put((byte)0x3C, new J());      // Salto incondicional para endereço
-        instrucoes.put((byte)0x3, new JEQ());    // Salto se SW for igual (J = EQual)
+        instrucoes.put((byte)0x3,  new JEQ());    // Salto se SW for igual (J = EQual)
         instrucoes.put((byte)0x34, new JGT());    // Salto se SW for maior (J = Greater Than)
         instrucoes.put((byte)0x38, new JLT());    // Salto se SW for menor (J = Less Than)
         instrucoes.put((byte)0x48, new JSUB());   // Salto para Sub-rotina (armazena retorno em L)
         instrucoes.put((byte)0x4C, new RSUB());   // Retorno de Sub-rotina (PC <- L)
 
         // L and S
-        instrucoes.put((byte)0x0, new LDA());     // Carrega Acumulador (A)
+        instrucoes.put((byte)0x0,  new LDA());    // Carrega Acumulador (A)
         instrucoes.put((byte)0x68, new LDB());    // Carrega Registrador Base (B)
         instrucoes.put((byte)0x50, new LDCH());   // Carrega Caractere (A <- 1º byte da Memória)
-        instrucoes.put((byte)0x8, new LDL());     // Carrega Registrador Linkage (L)
+        instrucoes.put((byte)0x8,  new LDL());    // Carrega Registrador Linkage (L)
         instrucoes.put((byte)0x6C, new LDS());    // Carrega Registrador Geral (S)
         instrucoes.put((byte)0x74, new LDT());    // Carrega Registrador Geral (T)
         instrucoes.put((byte)0x04, new LDX());    // Carrega Registrador Index (X)
-        
+
         instrucoes.put((byte)0x0C, new STA());    // Armazena Acumulador (A)
         instrucoes.put((byte)0x78, new STB());    // Armazena Registrador Base (B)
         instrucoes.put((byte)0x54, new STCH());   // Armazena Caractere (1º byte de A na Memória)
@@ -61,7 +61,6 @@ public class Instructions {
         instrucoes.put((byte)0xB8, new TIXR());   // Testa e Incrementa X com Registrador (X <- X + Reg, seta SW)
     }
 
-    // Método para buscar e retornar a instância da instrução com base no Opcode.
     public Instruction getInstrucao(byte opcode) {
         return instrucoes.get(opcode);
     }

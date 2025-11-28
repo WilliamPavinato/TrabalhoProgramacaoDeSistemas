@@ -15,8 +15,7 @@ public class AND extends Instruction {
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
-
-        int TA = calcularTA(registradores, memoria);
+        int TA = calcularTA(registradores, memoria); // operando
 
         Map<String, Boolean> flags = getFlags();
         if (flags.get("n") && !flags.get("i"))           // N = 1 e I = 0
@@ -24,11 +23,10 @@ public class AND extends Instruction {
         else if ((!flags.get("n") && !flags.get("i")) || (flags.get("n") && flags.get("i")))
             TA = memoria.getWord(TA);
 
-        // Obtém o valor atual do Acumulador ('A').
-        int valorAcumulador = registradores.getRegistradorPorNome("A").getValorIntSigned();
+        int valorAcumulator = registradores.getRegistradorPorNome("A").getValorIntSigned(); // valor do acumulador
 
-        int resultado = TA & valorAcumulador; // faz a operação AND
+        int resultado = TA & valorAcumulator; // faz a operação AND
 
-        registradores.getRegistradorPorNome("A").setValorInt(resultado);
+        registradores.getRegistradorPorNome("A").setValorInt(resultado); // armazena o resultado no acumulador
     }
 }

@@ -8,19 +8,10 @@ public class RMO extends Instruction {
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
-        int pc = registradores.getValorPC();
-
-        // Lê o byte que contem R1 e R2
-        int operando = memoria.getByte(pc) & 0xFF;
-
-        // Extrai os IDs (4 bits superiores para R1, 4 inferiores para R2)
-        int id1 = (operando >> 4) & 0xF;
-        int id2 = operando & 0xF;
-
-        registradores.incrementarPC(1); // Consome o byte de operandos
-
-        // Executa: R2 <- R1
-        int val1 = registradores.getRegistrador(id1).getValorIntSigned();
-        registradores.getRegistrador(id2).setValorInt(val1);
+        byte[] bytes = memoria.getBytes(registradores.getValorPC(),2); // pega dos 2 bytes que a instrução ocupa
+        int[] registradoresID = getRegistradores(bytes); // id dos registradores
+        int valorRegistradorB = registradores.getRegistrador(registradoresID[1]).getValorIntSigned(); // valor no reg B
+        registradores.getRegistrador(registradoresID[0]).setValorInt(valorRegistradorB);
+        registradores.incrementarPC(getFormato(memoria.getBytes(registradores.getValorPC(), 2))); // incrementa PC para a proxima instrução
     }
 }

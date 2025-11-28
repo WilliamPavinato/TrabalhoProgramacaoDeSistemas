@@ -8,79 +8,48 @@ public class Memoria {
     private int capacidade;
 
     Memoria(int capacidade) {
-     
-        //memoria = new ArrayList<String>(Collections.nCopies(350, "00")); // faz 350 palavras de memória
         this.memoria = new byte[capacidade];
         this.capacidade = capacidade;
     }
 
-    /**
-     * Retorna o array da memória
-     * array contendo toda memória
-    
-    public ArrayList<String> getMemoria() {
-        return memoria;
-    }
-    */
+    //------------------
 
+    public byte[] getMemoria() { return memoria; }
 
-    // Get e Clear memoria
-
-    public byte[] getMemoria() {
-        return memoria;
-    }
-
-    public void limparMemoria()
-    {
-        Arrays.fill(memoria, (byte)0);
-    }
+    public void limparMemoria() { Arrays.fill(memoria, (byte)0); }
 
     // Manipula Bytes
 
-    public byte getByte(int posicao)
-    { 
-        return (byte)((memoria[posicao]) & 0xFF);
-    }
+    public byte getByte(int posicao) { return (byte)((memoria[posicao]) & 0xFF); }
 
     public byte[] getBytes(int posicao, int numero) {
-
         byte[] bytes = new byte[numero];
-        for(int i = 0;i<numero && posicao+i <= capacidade;i++) {
+        for(int i = 0; i<numero && posicao+i <= capacidade; i++) {
             bytes[i] = getByte(posicao+i);
-        }return bytes;
+        }
+        return bytes;
     }
 
-    public void setByte(int posicao,byte b)
-    { 
-        memoria[posicao] = b;
-    }
+    public void setByte(int posicao,byte b) { memoria[posicao] = b; }
 
     // Seta o byte no address para o inteiro informado
-    public void setByteInt(int posicao, int value)
-    { 
-        memoria[posicao] = (byte)(value & 0xFF);
-    }
+    public void setByteInt(int posicao, int value) { memoria[posicao] = (byte)(value & 0xFF); }
 
     // Get Opcode
-
     public byte getOpcode(int posicao) {
-
         byte primeiroByte = getByte(posicao);
-
         return (byte)((primeiroByte & 0b11111100));
     }
 
     // Manipula palavras de memoria
 
-    public void setWord(int posicao, int value)
-    { 
+    public void setWord(int posicao, int value) {
         setByteInt(posicao, value >>> 16);
         setByteInt(posicao + 1, value >>> 8);
         setByteInt(posicao + 2, value);
     }
     
-    public int getWord(int posicao)
-    {
+    public int getWord(int posicao) {
         int MSB = getByte(posicao) << 16; // shiftL 16 bits
         int MID = getByte(posicao + 1) << 8;  // shiftL 8b its
         int LSB = getByte(posicao + 2);

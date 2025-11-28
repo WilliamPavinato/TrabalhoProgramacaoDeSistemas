@@ -13,138 +13,162 @@ import javax.swing.JOptionPane;
 
 public class Montador {
     private String errorMsg = "";
-                                                    //  TABELAS
+
     private final Instructions OPTAB;               // Instruções
-    private final Map<String, String> POPTAB;       // Pseudo-instruções
     private final Map<String, Integer> SYMTAB;      // Símbolos
-    private final List<String> input = new ArrayList<>();
-    public Output output = new Output();
+
+    private final ArrayList<String> input = new ArrayList<>();
+    public Output output                  = new Output();
+
     ArrayList<Line> intermediateFile = new ArrayList<>();
 
     public Montador() {
         OPTAB = new Instructions();
 
-        POPTAB = new HashMap<>();
-        POPTAB.put("RD",   "D8");
-        POPTAB.put("WD",   "DC");
-        POPTAB.put("WORD", null);
-        POPTAB.put("BYTE", null);
-        POPTAB.put("RESW", "0");
-        POPTAB.put("RESB", "0");
-
-        SYMTAB = new HashMap<>();
+        SYMTAB = new HashMap<String, Integer>();
+        SYMTAB.put("A",  0);
+        SYMTAB.put("X",  1);
+        SYMTAB.put("L",  2);
+        SYMTAB.put("B",  3);
+        SYMTAB.put("S",  4);
+        SYMTAB.put("T",  5);
+        SYMTAB.put("PC", 8);
+        SYMTAB.put("SW", 9);
     }
 
-    public void montarPrograma(String caminho) {
-        setPrograma(caminho);
+    public String Montar(String codigoAssembly) {
+        limpaListas();
+        setPrograma(codigoAssembly);
         passoUm();
         passoDois();
         gerarTXTOutput();
         mostrarMensagem();
+
+        return String.join("\n", output.machineCode);
     }
 
-    public void setPrograma(String caminho) {
-        File file = new File(caminho);
+    public void setPrograma(String codigoAssembly) {
+        String[] linhas = codigoAssembly.split("\\r?\\n");
+        Collections.addAll(input, linhas);
+    }
 
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String str;
-            while ((str = br.readLine()) != null){
-                input.add(str);
-            }
-        }
-        catch(Exception e) {errorMsg = errorMsg + "\nErro ao ler o arquivo de entrada.";}
+    public void limpaListas() {
+        input.clear();
+        output.reset();
+        SYMTAB.clear();
+        intermediateFile.clear();
+        errorMsg = "";
+        SYMTAB.put("A", 0);
+        SYMTAB.put("X", 1);
+        SYMTAB.put("L", 2);
+        SYMTAB.put("B", 3);
+        SYMTAB.put("S", 4);
+        SYMTAB.put("T", 5);
+        SYMTAB.put("PC", 8);
+        SYMTAB.put("SW", 9);
     }
 
     // Cria a tabela de simbolos
     private void passoUm() {
-        int LocationCounter = 0; // endereço atual
+        int lineCounter = 0;
+        int LOCCTR = 0;
 
-        output.startingAddress = LocationCounter;
+        Line line = new Line();
+        line.parser(input.get(lineCounter));
 
-        for(String linha : input)
+        if(line.opcode.equals("START"))
         {
-            Line line = new Line();
-            line.parser(linha);
+            LOCCTR = Integer.parseInt(line.operands[0]);
+            intermediateFile.add(line);
 
-            if (linha.isEmpty() || linha.charAt(0) == '.')
-                continue;       // pula linhas que começam com . (comentários)
+            lineCounter +=1;
+            line = new Line();
+            line.parser(input.get(lineCounter));
+        }
+        else
+        {
+            LOCCTR = 0;
+        }
 
-            String label          = getLabel(linha);
-            String opcode         = getOpcode(linha);
-            List<String> operands = getOperands(linha);
+        output.startingAddress = LOCCTR;
 
-            if(label != null)
-                SYMTAB.put(label, LocationCounter);
+        while( !(line.opcode.equals("END")) )
+        {
+            if( !(line.label.isEmpty()) )
+            {
+                if( SYMTAB.containsKey(line.label) )
+                {
+                    errorMsg = errorMsg + "\nERRO - Multipla definição: " + input.get(lineCounter);
+                }
+                else
+                {
+                    SYMTAB.put(line.label,LOCCTR);
+                }
+            }
 
-            if (OPTAB.getInstrucaoPorNome(opcode) != null) { // instruction
-                LocationCounter++;
-
-                int tamanhoIntrucao = OPTAB.getInstrucaoPorNome(opcode).getLength();
+            if( OPTAB.getInstrucaoPorNome(line.opcode) != null )
+            {
+                int tamanhoIntrucao = OPTAB.getInstrucaoPorNome(line.opcode).getLength();
                 switch (tamanhoIntrucao)
                 {
                     case 3:
                         if(line.extended)
                         {
-                            LocationCounter += 4;
+                            LOCCTR += 4;
                             line.set_tamanho_instr(4);
                         }
                         else
                         {
-                            LocationCounter += 3;
+                            LOCCTR += 3;
                             line.set_tamanho_instr(3);
                         }
                         break;
                     default:
-                        LocationCounter += tamanhoIntrucao;
+                        LOCCTR += tamanhoIntrucao;
                         line.set_tamanho_instr(tamanhoIntrucao);
                         break;
                 }
-
-                assert operands != null;
-                for (String operand : operands) {
-                    if (!isNumeric(operand))
-                        SYMTAB.putIfAbsent(operand, null); // referenciado, mas ainda não definido
-
-                    LocationCounter++;
-                }
             }
-            else { // pseudo-instruction
-                switch (Objects.requireNonNull( opcode )) {
-                    case "RD":
-                    case "WD":
-                        line.set_tamanho_instr(1);
-                        LocationCounter++;
-                        break;
-                    case "WORD":
-                        line.set_tamanho_instr(3);
-                        LocationCounter++;
-                        break;
-                    case "BYTE":
-                        LocationCounter++;
-                        line.set_tamanho_instr(1);
-                        break;
-                    case "RESW":
-                        int aux = Integer.parseInt(line.operands[0]);
-                        LocationCounter = LocationCounter + (3*aux);
-                        line.set_tamanho_instr(3*aux);
-                    case "RESB":
-                        assert operands != null;
-                        aux = 0;
-                        for (String operand : operands)
-                            aux += Integer.parseInt(operand);
-                        LocationCounter += aux;
-                        line.set_tamanho_instr(aux);
-                        break;
-                    default:
-                        errorMsg = errorMsg + "\nERRO - Instrucao invalida: " + linha;
-                        break;
-                }
+            else if (line.opcode.equals("RD") || line.opcode.equals("WD"))
+            {
+                LOCCTR +=1;
+                line.set_tamanho_instr(1);
             }
-            line = intermediateFile.get(LocationCounter);
+            else if (line.opcode.equals("WORD"))
+            {
+                LOCCTR +=3;
+                line.set_tamanho_instr(3);
+            }
+            else if(line.opcode.equals("RESW"))
+            {
+                int aux = Integer.parseInt(line.operands[0]);
+                LOCCTR = LOCCTR + (3*aux);
+                line.set_tamanho_instr(3*aux);
+            }
+            else if(line.opcode.equals("RESB"))
+            {
+                int aux = Integer.parseInt(line.operands[0]);
+                LOCCTR += aux;
+                line.set_tamanho_instr(aux);
+            }
+            else if(line.opcode.equals("BYTE"))
+            {
+                LOCCTR += 1;
+                line.set_tamanho_instr(1);
+            }
+            else
+            {
+                errorMsg = errorMsg + "\nERRO - Opcode Inválido: " + input.get(lineCounter);
+            }
+
+            intermediateFile.add(line);
+
+            lineCounter +=1;
+            line = new Line();
+            line.parser(input.get(lineCounter));
         }
 
-        output.endAddress = LocationCounter;
-        output.setLength();
+        intermediateFile.add(line);
     }
 
     // Gera código de máquina e arquivo temporário a partir da tabela de símbolos
@@ -260,106 +284,32 @@ public class Montador {
         }
 
         output.endAddress = LOCCTR;
-        output.setLength();
+        output.set_length();
     }
 
     private void gerarTXTOutput() {
         try (var fileWriter = new FileWriter(System.getProperty("user.dir") + "/ArquivosTXT/outputMontador.txt")) {
-            fileWriter.write(String.join("\n", output.machineCode));
+                fileWriter.write(String.join("\n", output.machineCode));
         }
-        catch (IOException e) {e.printStackTrace();}
+        catch (IOException e) { errorMsg = errorMsg + "\nERRO - Erro ao gerar arquivo de saida."; }
     }
 
     private void mostrarMensagem() {
         StringBuilder mensagem = new StringBuilder();
-        mensagem.append("Arquivo de entrada: ")
+        mensagem.append("Arquivo de saida: ")
                 .append(System.getProperty("user.dir"))
-                .append("\\ArquivosTXT\\inputMontador.txt\n");
-        mensagem.append("Arquivo de saída: ")
-                .append(System.getProperty("user.dir"))
-                .append("\\ArquivosTXT\\outputMontador.txt\n");
-
+                .append("/ArquivosTXT/outputMontador.txt")
+                .append("\n\n");
         if (errorMsg.isEmpty())
             mensagem.append("Programa montado com sucesso.");
         else
-            mensagem.append("Programa montado com erros. Erro(s): \n").append(errorMsg);
-
+            mensagem.append("Programa montado com erros. Erro(s): \n")
+                    .append(errorMsg);
         JOptionPane.showMessageDialog(null, mensagem, "Montador", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    private String getLabel(String linha) {
-        String[] splitted = linha.split("\\s+");
-        try {
-            if ((OPTAB.getInstrucaoPorNome(splitted[0]) != null) ||     // tem label
-            (POPTAB.get(splitted[0]) != null)) {
-                return null;
-            }
-            else { return splitted[0]; } // tem label
-        }
-        catch (Exception e) {return null;}
-    }
-
-    private String getOpcode(String linha) {
-        String[] splitted = linha.split("\\s+");
-        try {
-            if ((OPTAB.getInstrucaoPorNome(splitted[0]) != null) ||     // não tem label
-            (POPTAB.get(splitted[0]) != null )) {
-                return splitted[0];
-            }
-            else { return splitted[1]; }    // tem label
-        }
-        catch (Exception e) { return null; }
-    }
-
-    private List<String> getOperands(String linha) {
-        String[] splitted      = linha.split("\\s+");
-        List<String> operands  = new ArrayList<>();
-
-        try {
-            if ((OPTAB.getInstrucaoPorNome(splitted[0]) != null) ||      // não tem label
-            ( POPTAB.get(splitted[0]) != null ) ) {
-                // Separar operandos por vírgula
-                splitted = splitted[1].split(",");
-                for (String s : splitted)
-                    if (Registradores.getChaveRegistradorPorNome(s) != -1) {
-                        operands.add(Integer.toString(Registradores.getChaveRegistradorPorNome(s)));
-                    } else { operands.add(s); }
-            }
-            else {  // não tem label
-                // Separar operandos por vírgula
-                splitted = splitted[2].split(",");
-                for (String s : splitted)
-                    if (Registradores.getChaveRegistradorPorNome(s) != -1) {
-                        operands.add(Integer.toString(Registradores.getChaveRegistradorPorNome(s)));
-                    } else { operands.add(s); }
-            }
-
-            for(int i = 0; i < operands.size(); i++) {
-                String operand = operands.get(i);
-
-                if (operand.length() > 1) {              // Se for >1 caracteres, é um nome e deve ser convertido pra chave
-                    operands.set(i, Integer.toString(Registradores.getChaveRegistradorPorNome(operand)));
-                } else if (operand.charAt(0) > '9') {    // Compara valor ASCII: se <=0 é algum número e se >0 é uma letra
-                    operands.set(i, Integer.toString(Registradores.getChaveRegistradorPorNome(operand)));
-                }
-            }
-
-            return operands;
-        }
-        catch (Exception e) {return null;}
-    }
-
-    public static boolean isNumeric(String strNum) {
-        if (strNum == null) {return false;}
-
-        try { Double.parseDouble(strNum); }
-        catch (NumberFormatException nfe) { return false; }
-
-        return true;
-    }
-
     //Monta instrucao do formato 2
-    public String montarF2(Line line){
+    public String montarF2(Line line) {
 
         String opCode = String.format("%1$02X", OPTAB.getInstrucaoPorNome(line.opcode).getOpcode()& 0xFF);
         String operando1 = line.operands[0];
@@ -390,8 +340,7 @@ public class Montador {
     }
 
     //Monta instrucao do formato 3 ou formato 4
-    public String montarF3F4(Line line, int PC)
-    {
+    public String montarF3F4(Line line, int PC) {
         byte opcode = OPTAB.getInstrucaoPorNome(line.opcode).getOpcode();
         int operand = 0;
 
@@ -484,8 +433,7 @@ public class Montador {
         return firstByte + hexAddress;
     }
 
-    String hexToBinary(String hex)
-    {
+    String hexToBinary(String hex) {
         String binary = "";
 
         hex = hex.toUpperCase();

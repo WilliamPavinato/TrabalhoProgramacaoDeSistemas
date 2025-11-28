@@ -12,16 +12,17 @@ public class JEQ extends Instruction {
     }
 
     @Override
-    public void executar(Memoria mem, Registradores reg) {
-        int TA = calcularTA(reg, mem); // operando
+    public void executar(Memoria memoria, Registradores registradores) {
+
+        int TA = calcularTA(registradores, memoria); // operando
 
         Map<String, Boolean> flags = getFlags();
         if (flags.get("n") && !flags.get("i"))           // N = 1 e I = 0
-            TA = mem.getWord(mem.getWord(TA));
+            TA = memoria.getWord(memoria.getWord(TA));
 
-        if (reg.getRegistradorPorNome("SW").getValorIntSigned() == 0)
+        if (registradores.getRegistradorPorNome("SW").getValorIntSigned() == 0)
         {
-            reg.getRegistradorPorNome("PC").setValorInt(TA);
+            registradores.getRegistradorPorNome("PC").setValorInt(TA);
         }
     }
     

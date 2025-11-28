@@ -13,12 +13,12 @@ public class CLEAR extends Instruction {
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
+        byte[] bytes = memoria.getBytes(registradores.getValorPC(),2); // pega dos 2 bytes que a instrução ocupa
 
-        byte[] bytes = memoria.getBytes(registradores.getValorPC(),2);
+        int[] registradoresID = getRegistradores(bytes); // id dos registradores
 
-        int[] registradoresID = getRegistradores(bytes); // id dos regs
+        registradores.getRegistrador(registradoresID[0]).setValorInt(0); // r1 <- 0
 
-        registradores.getRegistrador(registradoresID[0]).setValorInt(0); // limpa reg
-        registradores.incrementarPC(getFormato(memoria.getBytes(registradores.getValorPC(), 2)));
+        registradores.incrementarPC(getFormato(memoria.getBytes(registradores.getValorPC(), 2))); // incrementa PC para a proxima instrução
     }
 }

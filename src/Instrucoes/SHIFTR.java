@@ -8,18 +8,13 @@ public class SHIFTR extends Instruction {
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
-        int pc = registradores.getValorPC();
-        int operando = memoria.getByte(pc) & 0xFF;
+        byte[] bytes = memoria.getBytes(registradores.getValorPC(),2); // pega dos 2 bytes que a instrução ocupa
+        int[] registradoresID = getRegistradores(bytes);                      // ID dos registradores
+        int valorRegistradorA = registradores.getRegistrador(registradoresID[0]).getValorIntSigned() + 1;
+        int n = (bytes[1] & 0xFF);
+        int resultado = ((valorRegistradorA >> n) & 0xFFFFFF); // Deslocamento circular a direita preservando o sinal
 
-        int id1 = (operando >> 4) & 0xF;
-        int n   = operando & 0xF;
-
-        registradores.incrementarPC(1);
-
-        int val = registradores.getRegistrador(id1).getValorIntSigned();
-        // Deslocamento Aritmético a Direita (Preserva sinal)
-        int res = (val >> n) & 0xFFFFFF;
-
-        registradores.getRegistrador(id1).setValorInt(res);
+        registradores.getRegistrador(registradoresID[0]).setValorInt(resultado);
+        registradores.incrementarPC(getFormato(memoria.getBytes(registradores.getValorPC(), 2))); // Próxima instrução
     }
 }

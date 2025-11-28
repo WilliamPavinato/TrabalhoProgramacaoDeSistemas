@@ -2,24 +2,20 @@ package Instrucoes;
 
 import Executor.Memoria;
 import Executor.Registradores;
+import java.util.Map;
 
 public class LDT extends Instruction {
     public LDT() { super("LDT", (byte)0x74, "3/4", 3); }
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
-        int pc = registradores.getValorPC();
-        int byte1 = memoria.getByte(pc) & 0xFF;
-        int byte2 = memoria.getByte(pc + 1) & 0xFF;
+        int TA = calcularTA(registradores, memoria); // operando
+        Map<String, Boolean> flags = getFlags();
+        if (flags.get("n") && !flags.get("i"))           // N = 1 e I = 0
+            TA = memoria.getWord(memoria.getWord(TA));
+        else if ((!flags.get("n") && !flags.get("i")) || (flags.get("n") && flags.get("i")))
+            TA = memoria.getWord(TA);
 
-        int disp = ((byte1 & 0xF) << 8) | byte2;
-
-        // PC-Relative
-        if ((byte1 & 0x20) != 0) disp += (pc + 2);
-
-        registradores.incrementarPC(2);
-
-        int valor = memoria.getWord(disp);
-        registradores.getRegistradorPorNome("T").setValorInt(valor);
+        registradores.getRegistradorPorNome("T").setValorInt(TA); // seta o registrador T para o valor do operando
     }
 }
