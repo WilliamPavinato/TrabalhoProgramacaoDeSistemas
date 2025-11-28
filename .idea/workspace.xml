@@ -6,57 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="49513774-cd14-46a5-89e2-6d5c80cd9bfc" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ArquivosTXT/inputMontador.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ArquivosTXT/inputMontador.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ArquivosTXT/outputMontador.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ArquivosTXT/outputMontador.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Executor/Executor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Executor/Executor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Executor/Memoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Executor/Memoria.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Executor/Registrador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Executor/Registrador.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Executor/Registradores.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Executor/Registradores.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/ADD.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/ADD.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/ADDR.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/ADDR.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/AND.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/AND.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/CLEAR.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/CLEAR.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/COMP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/COMP.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/COMPR.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/COMPR.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/DIV.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/DIV.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/DIVR.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/DIVR.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/Instruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/Instruction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/Instructions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/Instructions.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/J.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/J.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/JEQ.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/JEQ.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/JGT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/JGT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/JLT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/JLT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/JSUB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/JSUB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/LDA.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/LDA.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/LDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/LDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/LDCH.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/LDCH.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/LDL.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/LDL.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/LDS.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/LDS.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/LDT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/LDT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/LDX.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/LDX.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/MUL.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/MUL.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/MULR.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/MULR.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/OR.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/OR.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/RMO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/RMO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/RSUB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/RSUB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/SHIFTL.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/SHIFTL.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/SHIFTR.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/SHIFTR.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/STA.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/STA.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/STB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/STB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/STCH.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/STCH.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/STL.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/STL.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/STS.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/STS.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/STT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/STT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/STX.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/STX.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/SUB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/SUB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/SUBR.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/SUBR.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/TIX.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/TIX.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instrucoes/TIXR.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instrucoes/TIXR.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Interface/ExecutorInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interface/ExecutorInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Montador/Line.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Montador/Line.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Montador/Montador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Montador/Montador.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Montador/Output.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Montador/Output.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TrabalhoPS/TrabalhoPS.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TrabalhoPS/TrabalhoPS.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

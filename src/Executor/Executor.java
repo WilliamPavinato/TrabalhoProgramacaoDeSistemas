@@ -54,9 +54,11 @@ public class Executor {
         int pc = registradores.getValorPC();
         stop = false;
 
-        while (memoria.getWord(pc) != 0) { // próxima palavra vazia -> para de executar
+        while (memoria.getWord(pc) != 0) // para de executar se a proxima palavra for vazia
+        {
+
             byte opcode = memoria.getOpcode(pc);
-            if (opcode == (byte)0xD8) { // Read
+            if (opcode == (byte)0xD8){ // Read
                 stop = true;
                 registradores.incrementarPC(1);
                 return;
@@ -76,7 +78,9 @@ public class Executor {
     public boolean executarPasso() {
         int pc = this.registradores.getRegistradorPorNome("PC").getValorIntSigned();
 
-        if (memoria.getWord(pc) == 0) { return false; } // palavra vazia -> para de executar
+        if (memoria.getWord(pc) == 0) { // para de executar se a proxima palavra for vazia
+            return false;
+        }
 
         byte opcode = memoria.getOpcode(pc);
         stop = false;
