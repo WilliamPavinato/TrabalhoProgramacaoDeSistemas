@@ -1,10 +1,6 @@
 package Montador;
 
 import Instrucoes.Instructions;
-import Executor.Registradores;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
@@ -25,7 +21,7 @@ public class Montador {
     public Montador() {
         OPTAB = new Instructions();
 
-        SYMTAB = new HashMap<String, Integer>();
+        SYMTAB = new HashMap<>();
         SYMTAB.put("A",  0);
         SYMTAB.put("X",  1);
         SYMTAB.put("L",  2);
@@ -71,7 +67,7 @@ public class Montador {
     // Cria a tabela de simbolos
     private void passoUm() {
         int lineCounter = 0;
-        int LOCCTR = 0;
+        int LOCCTR;
 
         Line line = new Line();
         line.parser(input.get(lineCounter));
@@ -109,24 +105,17 @@ public class Montador {
             if( OPTAB.getInstrucaoPorNome(line.opcode) != null )
             {
                 int tamanhoIntrucao = OPTAB.getInstrucaoPorNome(line.opcode).getLength();
-                switch (tamanhoIntrucao)
-                {
-                    case 3:
-                        if(line.extended)
-                        {
-                            LOCCTR += 4;
-                            line.set_tamanho_instr(4);
-                        }
-                        else
-                        {
-                            LOCCTR += 3;
-                            line.set_tamanho_instr(3);
-                        }
-                        break;
-                    default:
-                        LOCCTR += tamanhoIntrucao;
-                        line.set_tamanho_instr(tamanhoIntrucao);
-                        break;
+                if (tamanhoIntrucao == 3) {
+                    if (line.extended) {
+                        LOCCTR += 4;
+                        line.set_tamanho_instr(4);
+                    } else {
+                        LOCCTR += 3;
+                        line.set_tamanho_instr(3);
+                    }
+                } else {
+                    LOCCTR += tamanhoIntrucao;
+                    line.set_tamanho_instr(tamanhoIntrucao);
                 }
             }
             else if (line.opcode.equals("RD") || line.opcode.equals("WD"))
@@ -174,7 +163,7 @@ public class Montador {
     // Gera código de máquina e arquivo temporário a partir da tabela de símbolos
     private void passoDois() {
         int lineCounter = 0;
-        int LOCCTR = 0;
+        int LOCCTR;
 
         String obj = "";
 
@@ -259,7 +248,7 @@ public class Montador {
 
                 for(int i=0; i < numero_palavras; i++)
                 {
-                    obj = String.format("%1$06X",0x0 & 0xFFFFFF);
+                    obj = String.format("%1$06X", 0);
                     output.machineCode.add(hexToBinary(obj));
                 }
             }
@@ -270,7 +259,7 @@ public class Montador {
 
                 for(int i=0; i < numero_bytes;i++)
                 {
-                    obj = String.format("%1$02X",0x0 & 0xFF);
+                    obj = String.format("%1$02X", 0);
                     output.machineCode.add(hexToBinary(obj));
                 }
             }
@@ -315,8 +304,8 @@ public class Montador {
         String operando1 = line.operands[0];
         String operando2 = line.operands[1];
 
-        String r1 = "0";
-        String r2 = "0";
+        String r1;
+        String r2;
 
         if( SYMTAB.containsKey(operando1) )
         {
@@ -342,28 +331,22 @@ public class Montador {
     //Monta instrucao do formato 3 ou formato 4
     public String montarF3F4(Line line, int PC) {
         byte opcode = OPTAB.getInstrucaoPorNome(line.opcode).getOpcode();
-        int operand = 0;
+        int operand;
 
         int ni = 0;
-        int xbpe = 0;
+        int xbpe;
         int disp = 0;
 
-        int obj = 0;
+        int obj;
 
-        String firstByte = "";
-        String hexAddress = "";
+        String firstByte;
+        String hexAddress;
 
-        if( line.prefix.isEmpty() ){
-            ni = 0x03;
-        }
-        else if( line.prefix.equals("#") ) {
-            ni = 0x01;
-        }
-        else if( line.prefix.equals("@") ) {
-            ni = 0x02;
-        }
-        else {
-            errorMsg = errorMsg + "\nERRO - Prefixo inválido: " + line.line;
+        switch (line.prefix) {
+            case ""  -> ni = 0x03;
+            case "#" -> ni = 0x01;
+            case "@" -> ni = 0x02;
+            default  -> errorMsg = errorMsg + "\nERRO - Prefixo inválido: " + line.line;
         }
 
 
@@ -373,16 +356,15 @@ public class Montador {
                 disp = Integer.parseInt(line.operands[0]);
 
             } catch (NumberFormatException e) {
-                errorMsg = errorMsg + "\nERRO - Nao foi possivel converter para inteiro: " + line.line;
+                errorMsg = errorMsg + "\nERRO - Não foi possivel converter para inteiro: " + line.line;
             }
 
-            xbpe = 0;
-            obj = ((opcode & 0xFC) <<16) + (ni<< 16) + (xbpe << 12)+ disp;
+            obj = ((opcode & 0xFC) << 16) + (ni << 16) + disp;
 
             firstByte = String.format("%1$02X", (opcode + ni) & 0xFF);
             hexAddress = String.format("%1$04X",obj & 0xFFFF);
         }
-        else if( line.extended == true ) // Formato 4
+        else if(line.extended) // Formato 4
         {
             operand = SYMTAB.get(line.operands[0]);
             xbpe = 0x01;
@@ -438,7 +420,7 @@ public class Montador {
 
         hex = hex.toUpperCase();
 
-        HashMap<Character, String> hashMap = new HashMap<Character, String>();
+        HashMap<Character, String> hashMap = new HashMap<>();
 
         hashMap.put('0', "0000");
         hashMap.put('1', "0001");

@@ -3,7 +3,6 @@ package Executor;
 import Instrucoes.Instructions;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -21,7 +20,7 @@ public class Executor {
         this.output        = -1;
     }
 
-    public void setPrograma(String path) throws IOException {
+    public void setPrograma(String path) {
         memoria.limparMemoria();
         registradores.cleanRegistradores();
 

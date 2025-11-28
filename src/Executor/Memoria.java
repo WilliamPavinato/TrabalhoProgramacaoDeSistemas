@@ -4,8 +4,8 @@ import java.util.Arrays;
 
 public class Memoria {
 
-    private byte[] memoria;
-    private int capacidade;
+    private final byte[] memoria;
+    private final int capacidade;
 
     Memoria(int capacidade) {
         this.memoria = new byte[capacidade];

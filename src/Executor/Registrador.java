@@ -3,8 +3,8 @@ package Executor;
 import java.util.Arrays;
 
 public class Registrador {
-    private String name;
-    private int id;
+    private final String name;
+    private final int id;
     private byte[] value;
 
 
