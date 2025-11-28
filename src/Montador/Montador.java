@@ -19,6 +19,7 @@ public class Montador {
     private final Map<String, Integer> SYMTAB;      // Símbolos
     private final List<String> input = new ArrayList<>();
     public Output output = new Output();
+    ArrayList<Line> intermediateFile = new ArrayList<>();
 
     public Montador() {
         OPTAB = new Instructions();
@@ -58,8 +59,13 @@ public class Montador {
     private void passoUm() {
         int LocationCounter = 0; // endereço atual
 
+        output.startingAddress = LocationCounter;
+
         for(String linha : input)
         {
+            Line line = new Line();
+            line.parse(linha);
+
             if (linha.isEmpty() || linha.charAt(0) == '.')
                 continue;       // pula linhas que começam com . (comentários)
 
@@ -73,23 +79,23 @@ public class Montador {
             if (OPTAB.getInstrucaoPorNome(opcode) != null) { // instruction
                 LocationCounter++;
 
-                int tamanhoIntrucao = OPTAB.getInstrucaoPorNome(line.opcode).getLength();
+                int tamanhoIntrucao = OPTAB.getInstrucaoPorNome(opcode).getLength();
                 switch (tamanhoIntrucao)
                 {
                     case 3:
                         if(line.extended)
                         {
-                            LOCCTR += 4;
+                            LocationCounter += 4;
                             line.set_tamanho_instr(4);
                         }
                         else
                         {
-                            LOCCTR += 3;
+                            LocationCounter += 3;
                             line.set_tamanho_instr(3);
                         }
                         break;
                     default:
-                        LOCCTR += tamanhoIntrucao;
+                        LocationCounter += tamanhoIntrucao;
                         line.set_tamanho_instr(tamanhoIntrucao);
                         break;
                 }
@@ -134,7 +140,11 @@ public class Montador {
                         break;
                 }
             }
+            line = intermediateFile.get(lineCounter);
         }
+
+        output.endAddress = LocationCounter;
+        output.set_length();
     }
 
     // Gera código de máquina e arquivo temporário a partir da tabela de símbolos
