@@ -328,92 +328,150 @@ public class Montador {
         return opCode + r1 + r2;
     }
 
-    //Monta instrucao do formato 3 ou formato 4
+    // Monta instrucao do formato 3 ou formato 4 (corrigido)
+    // a ultima versão nao contava com operandos vazios, o que gerava disp negativa, tentando acessar pontos da memória inválidos
     public String montarF3F4(Line line, int PC) {
-        byte opcode = OPTAB.getInstrucaoPorNome(line.opcode).getOpcode();
-        int operand;
+        int opcode = OPTAB.getInstrucaoPorNome(line.opcode).getOpcode() & 0xFF;
 
-        int ni = 0;
-        int xbpe;
-        int disp = 0;
-
-        int obj;
-
-        String firstByte;
-        String hexAddress;
-
+        // Determina ni a partir do prefixo
+        int n = 0, i = 0;
         switch (line.prefix) {
-            case ""  -> ni = 0x03;
-            case "#" -> ni = 0x01;
-            case "@" -> ni = 0x02;
-            default  -> errorMsg = errorMsg + "\nERRO - Prefixo inválido: " + line.line;
+            case ""  -> { n = 1; i = 1; } // addressing simples (n=1,i=1)
+            case "#" -> { n = 0; i = 1; } // imediato (n=0,i=1)
+            case "@" -> { n = 1; i = 0; } // indireto (n=1,i=0)
+            default  -> {
+                errorMsg = errorMsg + "\nERRO - Prefixo inválido: " + line.line;
+                n = 1; i = 1;
+            }
         }
 
+        boolean isExtended = line.extended; // formato 4 se true
+        boolean indexed = false;
+        String operandField = (line.operands.length > 0) ? line.operands[0] : ""; // aqui resolve um dos erros da versao anterior
 
-        if( !SYMTAB.containsKey(line.operands[0]) ) // Constante
-        {
+        // detectando indexado
+        if (line.operands.length > 1 && "X".equals(line.operands[1])) {
+            indexed = true;
+        } else {
+            // também aceita operandos no formato "LABEL,X"
+            if (operandField != null && operandField.toUpperCase().endsWith(",X")) {
+                indexed = true;
+                operandField = operandField.substring(0, operandField.length() - 2).trim();
+            }
+        }
+
+        // Tratar instruções sem operando (aqui q tava um dos erros da ultima versao)
+        if (operandField == null) operandField = "";
+
+        // calcula primeiro byte
+        int firstByte = ((opcode & 0xFC) | ((n << 1) | i)) & 0xFF;
+
+        // Bits x b p e numa nibble
+        int x = indexed ? 1 : 0;
+        int b = 0;
+        int p = 0;
+        int e = isExtended ? 1 : 0;
+
+        // se nao tem operando disp/address = 0 (aqui!!!!!!)
+        if (operandField.isEmpty()) {
+            int xbpe = (x << 3) | (b << 2) | (p << 1) | e;
+            if (isExtended) {
+                int instr = (firstByte << 24) | (xbpe << 20) | (0 & 0xFFFFF);
+                return String.format("%08X", instr & 0xFFFFFFFF);
+            } else {
+                int instr = (firstByte << 16) | (xbpe << 12) | (0 & 0xFFF);
+                return String.format("%06X", instr & 0xFFFFFF);
+            }
+        }
+
+        // lida com imediato numerico
+        boolean immediateNumeric = false;
+        int immediateValue = 0;
+        if ("#".equals(line.prefix)) {
             try {
-                disp = Integer.parseInt(line.operands[0]);
-
-            } catch (NumberFormatException e) {
-                errorMsg = errorMsg + "\nERRO - Não foi possivel converter para inteiro: " + line.line;
+                immediateValue = Integer.parseInt(operandField);
+                immediateNumeric = true;
+            } catch (NumberFormatException ignored) {
+                immediateNumeric = false; // pode ser símbolo
             }
-
-            obj = ((opcode & 0xFC) << 16) + (ni << 16) + disp;
-
-            firstByte = String.format("%1$02X", (opcode + ni) & 0xFF);
-            hexAddress = String.format("%1$04X",obj & 0xFFFF);
-        }
-        else if(line.extended) // Formato 4
-        {
-            operand = SYMTAB.get(line.operands[0]);
-            xbpe = 0x01;
-            disp = operand;
-            obj = ((opcode & 0xFC) <<24) + (ni<< 24) + (xbpe << 20)+ disp;
-
-            firstByte = String.format("%1$02X", (opcode + ni) & 0xFF);
-            hexAddress = String.format("%1$04X",obj & 0xFFFF);
-        }
-        else // Formato 3
-        {
-            operand = SYMTAB.get(line.operands[0]);
-
-            if(line.operands[1].equals("X")) // Indexado
-            {
-                disp = operand - PC + SYMTAB.get("X");
-                xbpe = 0xA;
-            }
-            else
-            {
-                disp = operand - PC;
-                xbpe = 0x2;
-            }
-
-            String string_disp = "";
-
-            if(disp < 0)
-            {
-                string_disp = String.format("%1$01X", disp & 0xFFF);
-            }
-            else if(disp >=2048)
-            {
-                ni = 0x0;
-                disp +=PC;
-
-                firstByte = String.format("%1$02X", (opcode + ni) & 0xFF);
-                hexAddress = String.format("%1$04X", disp & 0x7FFF);
-            }
-            else
-            {
-                string_disp = String.format("%1$03X", disp & 0xFFF);
-            }
-
-            firstByte = String.format("%1$02X", (opcode + ni) & 0xFF);
-            hexAddress = String.format("%1$01X", xbpe & 0xF) + string_disp;
         }
 
-        return firstByte + hexAddress;
+        // Formato 4
+        if (isExtended) {
+            int address = 0;
+            if (immediateNumeric) {
+                address = immediateValue & 0xFFFFF;
+            } else {
+                if (!SYMTAB.containsKey(operandField)) {
+                    errorMsg = errorMsg + "\nERRO - Símbolo não definido (formato 4): " + operandField;
+                    address = 0;
+                } else {
+                    address = SYMTAB.get(operandField) & 0xFFFFF;
+                }
+            }
+            int xbpe = (x << 3) | (b << 2) | (p << 1) | e;
+            int instr = (firstByte << 24) | (xbpe << 20) | (address & 0xFFFFF);
+            return String.format("%08X", instr & 0xFFFFFFFF);
+        }
+
+        // Formato 3
+        int disp = 0;
+        boolean usedPCRelative = false;
+        boolean usedBaseRelative = false;
+
+        if (immediateNumeric && n == 0 && i == 1) {
+            // imediato com valor numérico -> usa valor direto no campo de 12 bits
+            disp = immediateValue;
+            // verifica se cabe (se deus fez é pq cabe (mas deus nao fez(fomos nós mesmo)))
+            if (disp >= -2048 && disp <= 2047) {
+                disp = disp & 0xFFF;
+                usedPCRelative = true;
+                p = 0; b = 0; // direct immediate
+            } else {
+                errorMsg = errorMsg + "\nERRO - Imediato numérico fora do alcance para formato 3: " + line.line;
+                // imediato informado nao cabe no tipo de instrução. erro gerado
+                disp = 0;
+            }
+        } else {
+            if (!SYMTAB.containsKey(operandField)) {
+                errorMsg = errorMsg + "\nERRO - Símbolo não definido: " + operandField;
+                disp = 0;
+            } else {
+                int target = SYMTAB.get(operandField);
+                // PC já vem com o endereco da prox instrucao
+                int relative = target - PC;
+                if (relative >= -2048 && relative <= 2047) {
+                    // PC-relative
+                    p = 1; b = 0;
+                    usedPCRelative = true;
+                    disp = relative & 0xFFF;
+                } else {
+                    // tentar base-relative se existir registro BASE
+                    if (SYMTAB.containsKey("BASE")) {
+                        int baseAddr = SYMTAB.get("BASE");
+                        int baseDisp = target - baseAddr;
+                        if (baseDisp >= 0 && baseDisp <= 0xFFF) {
+                            b = 1; p = 0;
+                            usedBaseRelative = true;
+                            disp = baseDisp & 0xFFF;
+                        } else {
+                            errorMsg = errorMsg + "\nERRO - Deslocamento fora do alcance (use + para formato 4): " + line.line;
+                            disp = relative & 0xFFF;
+                        }
+                    } else {
+                        errorMsg = errorMsg + "\nERRO - Deslocamento fora do alcance e BASE não definido (use + para formato 4): ";
+                        disp = relative & 0xFFF;
+                    }
+                }
+            }
+        }
+
+        // seta flags de endereçamento e deslocamento
+        int xbpe = (x << 3) | (b << 2) | (p << 1) | e;
+        int instr = ((firstByte & 0xFF) << 16) | ((xbpe & 0xF) << 12) | (disp & 0xFFF);
+        return String.format("%06X", instr & 0xFFFFFF);
     }
+
 
     String hexToBinary(String hex) {
         String binary = "";
