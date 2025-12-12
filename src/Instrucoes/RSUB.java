@@ -8,11 +8,8 @@ public class RSUB extends Instruction {
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
-        // RSUB nao tem operandos, apenas flags
-        // Lê 2 bytes (ni xbpe) mas ignora deslocamento pois é retorno
-        registradores.incrementarPC(2);
-
-        int retorno = registradores.getRegistradorPorNome("L").getValorIntSigned();
-        registradores.getRegistradorPorNome("PC").setValorInt(retorno);
+        byte[] valorL = registradores.getRegistradorPorNome("L").getValor();    // Obtém o valor do reg L
+        registradores.getRegistradorPorNome("PC").setValor(valorL);             // PC fica com o valor do registrador L
+        registradores.incrementarPC(getFormato(memoria.getBytes(registradores.getValorPC(), 2))); // Próxima instrução
     }
 }

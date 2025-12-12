@@ -8,17 +8,17 @@ public class MULR extends Instruction {
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
-        int pc = registradores.getValorPC();
-        int operando = memoria.getByte(pc) & 0xFF;
+        byte[] bytes = memoria.getBytes(registradores.getValorPC(),2); // pega dos 2 bytes que a instrução ocupa
 
-        int id1 = (operando >> 4) & 0xF;
-        int id2 = operando & 0xF;
+        int[] registradoresID = getRegistradores(bytes); // id dos registradores
 
-        registradores.incrementarPC(1);
+        int valorRegistradorA = registradores.getRegistrador(registradoresID[0]).getValorIntSigned(); // valor no reg A
+        int valorRegistradorB = registradores.getRegistrador(registradoresID[1]).getValorIntSigned(); // valor no reg B
 
-        // Executa: R2 <- R2 * R1
-        int val1 = registradores.getRegistrador(id1).getValorIntSigned();
-        int val2 = registradores.getRegistrador(id2).getValorIntSigned();
-        registradores.getRegistrador(id2).setValorInt(val2 * val1);
+        int resultado = valorRegistradorA * valorRegistradorB;
+
+        registradores.getRegistrador(registradoresID[0]).setValorInt(resultado);
+
+        registradores.incrementarPC(getFormato(memoria.getBytes(registradores.getValorPC(), 2))); // incrementa PC para a proxima instrução
     }
 }

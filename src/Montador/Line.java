@@ -3,101 +3,76 @@ package Montador;
 public class Line {
 
     // Variaveis publicas pra facilitar o acesso na classe Montador
-    public String line = "";
-    public String label = "";
-    public String opcode = "";
-    public String[] operands = new String[]{"", ""};
-    public String prefix = "";
-    public boolean extended = false;
-    public boolean constant = false;
+    public String line       = "";
+    public String label      = "";
+    public String opcode     = "";
+    public String[] operands = new String[2];
+    public String prefix     = "";
+    public boolean extended  = false;
+    public boolean constant  = false;
     public int tamanho_instr;
 
-    public void parser(String inputLine) {
-        // Reseta tudo antes de processar a linha nova
-        this.resetarEstado();
-        this.line = inputLine;
+    public void parser(String Line){
+        this.line = Line;
+        String[] loo = Line.split(" ");
 
-        if (inputLine == null || inputLine.trim().isEmpty()) return;
-
-        // Uso regex \\s+ pra pegar qualquer espaço em branco (tab ou espaco normal)
-        String[] tokens = inputLine.trim().split("\\s+");
-
-        // Logica pra descobrir se a linha tem Label ou nao
-        boolean temLabel = definirLayout(tokens);
-
-        if (temLabel) {
-            this.label = tokens[0];
-            this.opcode = tokens[1];
-            // Se tiver mais coisas depois do opcode, sao os operandos
-            if (tokens.length > 2) extrairOperandos(tokens[2]);
-        } else {
-            this.label = "";
-            this.opcode = tokens[0];
-            if (tokens.length > 1) extrairOperandos(tokens[1]);
+        if (loo[0].equals("RD") || loo[0].equals("WD") || loo[0].equals("END")) {
+            label = "";
+            opcode = loo[0];
+            return;
+        }
+        else if (loo[1].equals("RD") || loo[1].equals("WD")) {
+            label = loo[0];
+            opcode = loo[1];
+            return;
         }
 
-        detectarExtendido();
-    }
-
-    // Zera as variaveis da instancia
-    private void resetarEstado() {
-        this.label = "";
-        this.opcode = "";
-        this.operands[0] = "";
-        this.operands[1] = "";
-        this.prefix = "";
-        this.extended = false;
-        this.constant = false;
-    }
-
-    // Regras pra saber onde esta o Label
-    private boolean definirLayout(String[] tokens) {
-        String first = tokens[0];
-
-        // Instrucoes especificas que nunca tem label na frente nessa logica
-        if (first.equals("RD") || first.equals("WD") || first.equals("END")) {
-            return false;
+        if(loo.length <3) { // Sem label
+            label = "";
+            opcode = loo[0];
+            String[] aux = loo[1].split(",");
+            if(aux.length > 1){
+                operands[1] = aux[1];
+            }
+            else{
+                operands[1] = "";
+            }
+            operands[0] = aux[0];
+        }
+        else { // Com label
+            label = loo[0];
+            opcode = loo[1];
+            String[] aux = loo[2].split(",");
+            if(aux.length >1){
+                operands[1] = aux[1];
+            }
+            else{
+                operands[1] = "";
+            }
+            operands[0] = aux[0];
         }
 
-        // Se a segunda palavra for RD ou WD, entao a primeira eh label
-        if (tokens.length > 1 && (tokens[1].equals("RD") || tokens[1].equals("WD"))) {
-            return true;
+        // Remover prefixos dos operandos
+        if(operands[0].contains("#")) {
+            prefix = "#";
+            StringBuilder sb = new StringBuilder(operands[0]);
+            sb.deleteCharAt(0);
+            operands[0] = sb.toString();
         }
-
-        // Se tiver 3 ou mais partes, assume que tem label
-        return tokens.length >= 3;
-    }
-
-    // Trata os operandos e remove os caracteres especiais (#, @)
-    private void extrairOperandos(String rawOperands) {
-        String[] parts = rawOperands.split(",");
-        String op1 = parts[0];
-
-        // Verifica endereçamento imediato ou indireto
-        if (op1.startsWith("#")) {
-            this.prefix = "#";
-            this.operands[0] = op1.substring(1);
-        } else if (op1.startsWith("@")) {
-            this.prefix = "@";
-            this.operands[0] = op1.substring(1);
-        } else {
-            this.prefix = "";
-            this.operands[0] = op1;
+        else if(operands[0].contains("@")) {
+            prefix = "@";
+            StringBuilder sb = new StringBuilder(operands[0]);
+            sb.deleteCharAt(0);
+            operands[0] = sb.toString();
         }
+        else { prefix = ""; }
 
-        // Pega o segundo operando se existir
-        if (parts.length > 1) {
-            this.operands[1] = parts[1];
-        } else {
-            this.operands[1] = "";
-        }
-    }
-
-    // Verifica formato 4 (+)
-    private void detectarExtendido() {
-        if (this.opcode.startsWith("+")) {
-            this.extended = true;
-            this.opcode = this.opcode.substring(1); // Tira o + do opcode
+        // Remover prefixos da instrução
+        if(opcode.contains("+")) {
+            extended = true;
+            StringBuilder sb = new StringBuilder(opcode);
+            sb.deleteCharAt(0);
+            opcode = sb.toString();
         }
     }
 

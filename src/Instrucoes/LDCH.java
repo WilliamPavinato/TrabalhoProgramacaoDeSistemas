@@ -13,10 +13,10 @@ public class LDCH extends Instruction {
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
-        int TA = calcularTA(registradores, memoria);
-        Map<String, Boolean> flags = getFlags();
 
-        if (flags.get("n") && !flags.get("i"))
+        int TA = calcularTA(registradores, memoria); // operando
+        Map<String, Boolean> flags = getFlags();
+        if (flags.get("n") && !flags.get("i"))           // N = 1 e I = 0
             TA = memoria.getWord(memoria.getWord(TA));
         else if ((!flags.get("n") && !flags.get("i")) || (flags.get("n") && flags.get("i")))
             TA = memoria.getByte(TA);
@@ -24,7 +24,7 @@ public class LDCH extends Instruction {
         byte[] bytesA = registradores.getRegistradorPorNome("A").getValor();
         bytesA[2] = (byte)(TA & 0xFF);
 
-        registradores.getRegistradorPorNome("A").setValor(bytesA); // A (byte da direita) ← (m)
+        registradores.getRegistradorPorNome("A").setValor(bytesA); // A [byte mais à direita] ← (m)
     }
 
 }

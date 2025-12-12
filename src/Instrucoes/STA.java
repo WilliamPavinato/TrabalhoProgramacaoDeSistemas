@@ -2,23 +2,18 @@ package Instrucoes;
 
 import Executor.Memoria;
 import Executor.Registradores;
+import java.util.Map;
 
 public class STA extends Instruction {
     public STA() { super("STA", (byte)0x0C, "3/4", 3); }
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
-        int pc = registradores.getValorPC();
-        int byte1 = memoria.getByte(pc) & 0xFF;
-        int byte2 = memoria.getByte(pc + 1) & 0xFF;
-
-        int disp = ((byte1 & 0xF) << 8) | byte2;
-
-        if ((byte1 & 0x20) != 0) disp += (pc + 2);
-
-        registradores.incrementarPC(2);
-
-        int valorA = registradores.getRegistradorPorNome("A").getValorIntSigned();
-        memoria.setWord(disp, valorA);
+        int TA = calcularTA(registradores, memoria); // operando
+        Map<String, Boolean> flags = getFlags();
+        if (flags.get("n") && !flags.get("i"))           // N = 1 e I = 0
+            TA = memoria.getWord(memoria.getWord(TA));
+        int bytesRegA = registradores.getRegistradorPorNome("A").getValorIntSigned(); // retorna o valor armazenado no registrador A
+        memoria.setWord(TA, bytesRegA); // armazena o valor do reg a na posição de memória espeçificado por TA
     }
 }

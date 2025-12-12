@@ -13,16 +13,19 @@ public class DIVR extends Instruction {
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
-        byte[] bytes = memoria.getBytes(registradores.getValorPC(),2);
+
+        byte[] bytes = memoria.getBytes(registradores.getValorPC(),2); // pega dos 2 bytes que a instrução ocupa
 
         int[] registradoresID = getRegistradores(bytes); // id dos registradores
 
         int valorRegistradorA = registradores.getRegistrador(registradoresID[0]).getValorIntSigned(); // valor no reg A
         int valorRegistradorB = registradores.getRegistrador(registradoresID[1]).getValorIntSigned(); // valor no reg B
 
-        int resultado = valorRegistradorA / valorRegistradorB;
+        int resultado = valorRegistradorA / valorRegistradorB; // realiza a divisão
 
         registradores.getRegistrador(registradoresID[0]).setValorInt(resultado);
-        registradores.incrementarPC(getFormato(memoria.getBytes(registradores.getValorPC(), 2)));
+
+        registradores.incrementarPC(getFormato(memoria.getBytes(registradores.getValorPC(), 2))); // incrementa PC para
+        // Retorna apenas a parte inteira da divisão
     }
 }

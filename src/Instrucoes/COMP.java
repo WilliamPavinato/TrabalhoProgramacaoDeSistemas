@@ -15,11 +15,11 @@ public class COMP extends Instruction {
 
     @Override
     public void executar(Memoria memoria, Registradores registradores) {
-        int TA = calcularTA(registradores, memoria);
+        int TA = calcularTA(registradores, memoria); // operando
 
         Map<String, Boolean> flags = getFlags();
-
-        if (flags.get("n") && !flags.get("i"))  TA = memoria.getWord(memoria.getWord(TA));
+        if (flags.get("n") && !flags.get("i"))           // N = 1 e I = 0
+            TA = memoria.getWord(memoria.getWord(TA));
         else if ((!flags.get("n") && !flags.get("i")) || (flags.get("n") && flags.get("i")))
             TA = memoria.getWord(TA);
 
@@ -32,5 +32,6 @@ public class COMP extends Instruction {
         } else {
             registradores.getRegistradorPorNome("SW").setValorInt(2); // SW recebe "maior", pois ValorRegA > valorMem
         }
+
     }
 }

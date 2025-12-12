@@ -1,14 +1,12 @@
 package TrabalhoPS;
 
-import Interface.ExecutorInterface;
-import Montador.Montador;
+import Interface.*;
 
-    public class TrabalhoPS {
-        static ExecutorInterface executor;
+public class TrabalhoPS {
+        // static ExecutorInterface executor;
+        static MontadorInterface montador;
 
         void main() {
-            Montador montador = new Montador();
-            montador.montarPrograma(System.getProperty("user.dir")+ "/ArquivosTXT/inputMontador.txt");
-            executor = new ExecutorInterface();
+            montador = new MontadorInterface();
         }
 }
