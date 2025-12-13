@@ -90,6 +90,8 @@ public class Montador {
 
         while( !(line.opcode.equals("END")) )
         {
+            line.setAddress(LOCCTR);
+
             if( !(line.label.isEmpty()) )
             {
                 if( SYMTAB.containsKey(line.label) )
@@ -142,8 +144,27 @@ public class Montador {
             }
             else if(line.opcode.equals("BYTE"))
             {
-                LOCCTR += 1;
-                line.set_tamanho_instr(1);
+                char tipo = line.operands[0].charAt(0);
+                int tamanho = 0;
+
+                // lida com diferentes tamanhos da instrucao BYTE
+                if (tipo == 'C') {
+                    // C'EOF' 3 bytes
+                    String conteudo = line.operands[0].substring(2, line.operands[0].length() - 1);
+                    tamanho = conteudo.length();
+                }
+                else if (tipo == 'X') {
+                    // X'F1' 1 byte
+                    String conteudo = line.operands[0].substring(2, line.operands[0].length() - 1);
+                    tamanho = conteudo.length() / 2;
+                }
+                else {
+                    // BYTE 5  1 byte
+                    tamanho = 1;
+                }
+
+                LOCCTR += tamanho;
+                line.set_tamanho_instr(tamanho);
             }
             else
             {
@@ -163,7 +184,6 @@ public class Montador {
     // Gera código de máquina e arquivo temporário a partir da tabela de símbolos
     private void passoDois() {
         int lineCounter = 0;
-        int LOCCTR;
 
         String obj = "";
 
@@ -171,12 +191,7 @@ public class Montador {
 
         if ( line.opcode.equals("START") )
         {
-            LOCCTR = Integer.parseInt(line.operands[0]);
             lineCounter +=1;
-        }
-        else
-        {
-            LOCCTR = 0;
         }
 
         line = intermediateFile.get(lineCounter);
@@ -185,7 +200,6 @@ public class Montador {
         {
             if( OPTAB.getInstrucaoPorNome(line.opcode) != null )
             {
-                LOCCTR += line.tamanho_instr;
 
                 // Nao possuimos instruçoes formato 1 (Alem de RD e WD que são tratadas a parte)
 
@@ -197,71 +211,49 @@ public class Montador {
 
                 else if(line.tamanho_instr > 2)
                 {
-                    obj = montarF3F4(line,LOCCTR);
+                    int pc = line.address + line.tamanho_instr;
+                    obj = montarF3F4(line,pc);
                     output.machineCode.add(hexToBinary(obj));
                 }
             }
             else if (line.opcode.equals("RD"))
             {
-                LOCCTR +=1;
                 output.machineCode.add("11011000");
             }
             else if (line.opcode.equals("WD"))
             {
-                LOCCTR +=1;
                 output.machineCode.add("11011100");
             }
             else if(line.opcode.equals("BYTE"))
             {
-                LOCCTR +=1;
-                char c = line.operands[0].charAt(0);
+                char tipo = line.operands[0].charAt(0);
 
-                if (c == 'C') // ASCII ex: C'EOF'
-                {
-                    String aux = line.operands[0].substring(2,line.operands[0].length()-1);
-                    for(int i=0; i < aux.length(); i++)
-                    {
-                        obj = String.format("%1$02X",(int)aux.charAt(i) & 0xFF);
+                if (tipo == 'C') {
+                    // BYTE C'EOF'
+                    String conteudo = line.operands[0].substring(2, line.operands[0].length() - 1);
+                    for (int i = 0; i < conteudo.length(); i++) {
+                        obj = String.format("%02X", conteudo.charAt(i) & 0xFF);
+                        output.machineCode.add(hexToBinary(obj));
                     }
-                } else if (c == 'X') // Hexadecimal ex: X'05'
-                {
-                    obj = line.operands[0].substring(2,line.operands[0].length()-1);
-                } else // Numero ex: 5
-                {
-                    obj = line.operands[0];
                 }
-
-                output.machineCode.add(hexToBinary(obj));
+                else if (tipo == 'X') {
+                    // BYTE X'F1'
+                    String conteudo = line.operands[0].substring(2, line.operands[0].length() - 1);
+                    output.machineCode.add(hexToBinary(conteudo));
+                }
+                else {
+                    // BYTE 5
+                    int valor = Integer.parseInt(line.operands[0]);
+                    obj = String.format("%02X", valor & 0xFF);
+                    output.machineCode.add(hexToBinary(obj));
+                }
 
             }
             else if(line.opcode.equals("WORD"))
             {
-                LOCCTR +=3;
                 int word = Integer.parseInt(line.operands[0]);
                 obj = String.format("%1$06X",word & 0xFFFFFF);
                 output.machineCode.add(hexToBinary(obj));
-            }
-            else if(line.opcode.equals("RESW"))
-            {
-                LOCCTR += line.tamanho_instr;
-                int numero_palavras = (line.tamanho_instr)/3;
-
-                for(int i=0; i < numero_palavras; i++)
-                {
-                    obj = String.format("%1$06X", 0);
-                    output.machineCode.add(hexToBinary(obj));
-                }
-            }
-            else if(line.opcode.equals("RESB"))
-            {
-                LOCCTR += line.tamanho_instr;
-                int numero_bytes = line.tamanho_instr;
-
-                for(int i=0; i < numero_bytes;i++)
-                {
-                    obj = String.format("%1$02X", 0);
-                    output.machineCode.add(hexToBinary(obj));
-                }
             }
             else
             {
@@ -272,7 +264,7 @@ public class Montador {
             line = intermediateFile.get(lineCounter);
         }
 
-        output.endAddress = LOCCTR;
+        output.endAddress = line.address;
         output.set_length();
     }
 
@@ -416,8 +408,6 @@ public class Montador {
 
         // Formato 3
         int disp = 0;
-        boolean usedPCRelative = false;
-        boolean usedBaseRelative = false;
 
         if (immediateNumeric && n == 0 && i == 1) {
             // imediato com valor numérico -> usa valor direto no campo de 12 bits
@@ -425,7 +415,6 @@ public class Montador {
             // verifica se cabe (se deus fez é pq cabe (mas deus nao fez(fomos nós mesmo)))
             if (disp >= -2048 && disp <= 2047) {
                 disp = disp & 0xFFF;
-                usedPCRelative = true;
                 p = 0; b = 0; // direct immediate
             } else {
                 errorMsg = errorMsg + "\nERRO - Imediato numérico fora do alcance para formato 3: " + line.line;
@@ -443,7 +432,6 @@ public class Montador {
                 if (relative >= -2048 && relative <= 2047) {
                     // PC-relative
                     p = 1; b = 0;
-                    usedPCRelative = true;
                     disp = relative & 0xFFF;
                 } else {
                     // tentar base-relative se existir registro BASE
@@ -452,7 +440,6 @@ public class Montador {
                         int baseDisp = target - baseAddr;
                         if (baseDisp >= 0 && baseDisp <= 0xFFF) {
                             b = 1; p = 0;
-                            usedBaseRelative = true;
                             disp = baseDisp & 0xFFF;
                         } else {
                             errorMsg = errorMsg + "\nERRO - Deslocamento fora do alcance (use + para formato 4): " + line.line;

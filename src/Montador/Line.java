@@ -11,6 +11,7 @@ public class Line {
     public boolean extended  = false;
     public boolean constant  = false;
     public int tamanho_instr;
+    public int address;
 
     public void parser(String Line){
         this.line = Line;
@@ -79,5 +80,10 @@ public class Line {
     // Setter pro tamanho
     public void set_tamanho_instr(int LOCCTR){
         this.tamanho_instr = LOCCTR;
+    }
+
+    // Setter pro endereco
+    public void setAddress(int address) {
+        this.address = address;
     }
 }
