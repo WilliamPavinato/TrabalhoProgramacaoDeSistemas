@@ -1,7 +1,7 @@
 package ProcessadorDeMacros;
 
 import java.util.*;
-
+import java.io.*;
 import Montador.Line;
 
 public class ProcessadorDeMacros {
@@ -20,7 +20,7 @@ public class ProcessadorDeMacros {
         DEFTAB = new HashMap<String, String>();
         ARGTAB = new HashMap<String, List<String>>();
         line = new Line();
-        
+
     }
 
     public void macroProcessor(){
@@ -80,8 +80,15 @@ public class ProcessadorDeMacros {
                 if (lineCounter < input.size()) {
                     line.parser(input.get(lineCounter));
                 }
+            } else {
+                output.add(line.line);
+                lineCounter++;
+                if (lineCounter < input.size()) {
+                    line.parser(input.get(lineCounter));
+                }
             }
         }
+        output.add(line.line);
     }
 
     public void setPrograma(String codigoAssembly)
@@ -117,13 +124,26 @@ public class ProcessadorDeMacros {
         }
     }
 
-        private void gerarASMOutput(String moduloIndex) {
+    public String getOutput() {
+        return String.join("\n", output);
+    }
+
+    public void limpar() {
+        NAMTAB.clear();
+        DEFTAB.clear();
+        ARGTAB.clear();
+        input.clear();
+        output.clear();
+        errorMessage = "";
+    }
+
+    private void gerarASMOutput(String moduloIndex) {
         try (FileWriter fileWriter = new FileWriter(System.getProperty("user.dir")+ "/txtFiles/outputMacroModulo" + moduloIndex + ".asm"))
-            {
-                fileWriter.write(String.join("\n", output));
-                fileWriter.close();
-            } catch (IOException e) {
-                errorMessage = errorMessage + "\nERRO - Erro ao gerar arquivo de saida.";
-            }
+        {
+            fileWriter.write(String.join("\n", output));
+            fileWriter.close();
+        } catch (IOException e) {
+            errorMessage = errorMessage + "\nERRO - Erro ao gerar arquivo de saida.";
+        }
     }
 }
