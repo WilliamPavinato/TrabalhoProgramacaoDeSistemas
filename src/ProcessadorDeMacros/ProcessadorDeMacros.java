@@ -93,6 +93,7 @@ public class ProcessadorDeMacros {
 
     public void setPrograma(String codigoAssembly)
     {
+        input.clear();
         String[] linhas = codigoAssembly.split("\\r?\\n");
         input.addAll(Arrays.asList(linhas));
     }
