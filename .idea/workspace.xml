@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="49513774-cd14-46a5-89e2-6d5c80cd9bfc" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ProcessadorDeMacros/ProcessadorDeMacros.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ProcessadorDeMacros/ProcessadorDeMacros.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

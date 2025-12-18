@@ -140,8 +140,8 @@ public class ProcessadorDeMacros {
         errorMessage = "";
     }
 
-    private void gerarASMOutput(String moduloIndex) {
-        try (FileWriter fileWriter = new FileWriter(System.getProperty("user.dir")+ "/txtFiles/outputMacroModulo" + moduloIndex + ".asm"))
+    private void gerarASMOutput() {
+        try (FileWriter fileWriter = new FileWriter(System.getProperty("user.dir")+ "/txtFiles/outputMacro.asm"))
         {
             fileWriter.write(String.join("\n", output));
             fileWriter.close();
