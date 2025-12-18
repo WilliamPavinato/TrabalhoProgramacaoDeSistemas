@@ -8,6 +8,7 @@ public class ProcessadorDeMacros {
     private Map<String, Tupla> NAMTAB;          // nome da macro e ponteiros
     private Map<String, String> DEFTAB;         // nome da macro e códigos
     private Map<String, List<String>> ARGTAB;   // Tabela com os nomes dos macros e seus argumentos
+    public Line line;
 
     private ArrayList<String> input = new ArrayList<String>();
 
@@ -17,6 +18,7 @@ public class ProcessadorDeMacros {
         NAMTAB = new HashMap<String, Tupla>();
         DEFTAB = new HashMap<String, String>();
         ARGTAB = new HashMap<String, List<String>>();
+        private String errorMessage = "";
     }
 
     public void macroProcessor(){
@@ -111,5 +113,15 @@ public class ProcessadorDeMacros {
         } else {
             output.add(linhaString); //se não for macro, adiciona a linha processada ao output final
         }
+    }
+
+        private void gerarASMOutput(String moduloIndex) {
+        try (FileWriter fileWriter = new FileWriter(System.getProperty("user.dir")+ "/txtFiles/outputMacroModulo" + moduloIndex + ".asm"))
+            {
+                fileWriter.write(String.join("\n", output));
+                fileWriter.close();
+            } catch (IOException e) {
+                errorMessage = errorMessage + "\nERRO - Erro ao gerar arquivo de saida.";
+            }
     }
 }
