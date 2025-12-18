@@ -1,5 +1,9 @@
 package Montador;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class Line {
 
     // Variaveis publicas pra facilitar o acesso na classe Montador
@@ -12,12 +16,25 @@ public class Line {
     public boolean constant  = false;
     public int tamanho_instr;
     public int address;
+    public List<String> macroArguments = new ArrayList<>();
 
     public void parser(String Line){
         this.line = Line;
         String[] loo = Line.split(" ");
 
-        if (loo[0].equals("RD") || loo[0].equals("WD") || loo[0].equals("END")) {
+        if (loo[0].equals("MACRO")){
+            opcode = loo[0];
+            label = loo[1];
+            String[] aux = loo[2].split(",");
+            macroArguments.addAll(Arrays.asList(aux));
+            return;
+        }
+        else if (loo[0].equals("MEND")){
+            label = "";
+            opcode = loo[0];
+            return;
+        }
+        else if (loo[0].equals("RD") || loo[0].equals("WD") || loo[0].equals("END")) {
             label = "";
             opcode = loo[0];
             return;
