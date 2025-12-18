@@ -11,6 +11,7 @@ public class ProcessadorDeMacros {
 
     private ArrayList<String> input = new ArrayList<String>();
 
+    private ArrayList<String> output = new ArrayList<String>();
 
     public ProcessadorDeMacros() {
         NAMTAB = new HashMap<String, Tupla>();
@@ -51,6 +52,31 @@ public class ProcessadorDeMacros {
                 DEFTAB.put(macroName, macroCode.toString());
                 ARGTAB.put(macroName, line.macroArguments);
             }
+            // Se o opcode da linha está na DEFTAB, é uma chamada de macro
+            else if (DEFTAB.containsKey(line.opcode)) {
+                String macroBody = DEFTAB.get(line.opcode);
+                List<String> macroArgs = ARGTAB.get(line.opcode); // argumentos formais (&ARG1, etc)
+                List<String> macroParams = line.macroArguments;   // argumentos reais (A, B, etc)
+
+                // substitui os argumentos formais pelos reais no corpo da macro
+                if (macroArgs != null && macroParams != null) {
+                    for (int i = 0; i < macroArgs.size() && i < macroParams.size(); i++) {
+                        macroBody = macroBody.replaceAll(macroArgs.get(i), macroParams.get(i)); // substitui todas as ocorrências de &ARG pelo valor passado
+                    }
+                }
+
+                // civide o corpo expandido em linhas e processa recursivamente
+                String[] linhasExpandidas = macroBody.split("\\r?\\n");
+                for (String linhaExp : linhasExpandidas) {
+                    expandNestedMacros(linhaExp);
+                }
+
+                // avança para a próxima linha do input original
+                lineCounter++;
+                if (lineCounter < input.size()) {
+                    line.parser(input.get(lineCounter));
+                }
+            }
         }
     }
 
@@ -58,5 +84,32 @@ public class ProcessadorDeMacros {
     {
         String[] linhas = codigoAssembly.split("\\r?\\n");
         input.addAll(Arrays.asList(linhas));
+    }
+
+    public void expandNestedMacros(String linhaString) {
+        Line tempLine = new Line();
+        tempLine.parser(linhaString);
+
+        // verifica se a linha expandida também é uma chamada de macro
+        if (DEFTAB.containsKey(tempLine.opcode)) { // verifica o opcode, pois é onde fica o nome da chamada (ex: MACRO1 A,B)
+            String macroBody = DEFTAB.get(tempLine.opcode);
+            List<String> macroArgs = ARGTAB.get(tempLine.opcode);
+            List<String> macroParams = tempLine.macroArguments;
+
+            //substituição de parâmetros
+            if (macroArgs != null && macroParams != null) {
+                for (int i = 0; i < macroArgs.size() && i < macroParams.size(); i++) {
+                    macroBody = macroBody.replaceAll(macroArgs.get(i), macroParams.get(i));
+                }
+            }
+
+            // divide novamente e chama a função recursivamente
+            String[] lines = macroBody.split("\\r?\\n");
+            for (String subLine : lines) {
+                expandNestedMacros(subLine);
+            }
+        } else {
+            output.add(linhaString); //se não for macro, adiciona a linha processada ao output final
+        }
     }
 }
