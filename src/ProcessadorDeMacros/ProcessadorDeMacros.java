@@ -89,6 +89,8 @@ public class ProcessadorDeMacros {
             }
         }
         output.add(line.line);
+        gerarASMOutput();
+        return;
     }
 
     public void setPrograma(String codigoAssembly)
