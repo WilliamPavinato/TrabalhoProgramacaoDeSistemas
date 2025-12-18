@@ -13,12 +13,14 @@ public class ProcessadorDeMacros {
     private ArrayList<String> input = new ArrayList<String>();
 
     private ArrayList<String> output = new ArrayList<String>();
+    private String errorMessage = "";
 
     public ProcessadorDeMacros() {
         NAMTAB = new HashMap<String, Tupla>();
         DEFTAB = new HashMap<String, String>();
         ARGTAB = new HashMap<String, List<String>>();
-        private String errorMessage = "";
+        line = new Line();
+        
     }
 
     public void macroProcessor(){
