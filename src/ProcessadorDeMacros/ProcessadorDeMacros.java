@@ -46,7 +46,7 @@ public class ProcessadorDeMacros {
                 line.parser(input.get(lineCounter));
 
                 // Escreve linha por linha da macro para salvar na DEFTAB
-                while (!line.label.equals("MEND")){
+                while (!line.opcode.equals("MEND")){
                     macroCode.append(line.line + "\n");
                     lineCounter++;
                     line.parser(input.get(lineCounter));
@@ -55,39 +55,48 @@ public class ProcessadorDeMacros {
                 NAMTAB.get(macroName).setEndPointer(lineCounter);
                 DEFTAB.put(macroName, macroCode.toString());
                 ARGTAB.put(macroName, line.macroArguments);
+                lineCounter += 2;
+                line.parser(input.get(lineCounter));
             }
             // Se o opcode da linha está na DEFTAB, é uma chamada de macro
-            else if (DEFTAB.containsKey(line.opcode)) {
-                String macroBody = DEFTAB.get(line.opcode);
-                List<String> macroArgs = ARGTAB.get(line.opcode); // argumentos formais (&ARG1, etc)
-                List<String> macroParams = line.macroArguments;   // argumentos reais (A, B, etc)
+            else if (DEFTAB.containsKey(line.label)){       // Se a linha for uma chamada de macro, expande
+                String macroBody = DEFTAB.get(line.label);
+                List<String> macroArgs = ARGTAB.get(line.label);
+                List<String> macroParams = line.macroArguments;
 
-                // substitui os argumentos formais pelos reais no corpo da macro
-                if (macroArgs != null && macroParams != null) {
-                    for (int i = 0; i < macroArgs.size() && i < macroParams.size(); i++) {
-                        macroBody = macroBody.replaceAll(macroArgs.get(i), macroParams.get(i)); // substitui todas as ocorrências de &ARG pelo valor passado
+                for (int i = 0; i < macroArgs.size(); i++){
+                    macroBody = macroBody.replaceAll(macroArgs.get(i), macroParams.get(i));
+                }
+
+                String[] linhas = macroBody.split("\\r?\\n");
+                for (String linha : linhas){
+                    Line tmpLine = new Line();
+                    tmpLine = line;
+                    tmpLine.parser(linha);
+                    if (DEFTAB.containsKey(tmpLine.label)){
+                        expandNestedMacros(linha);          // Se a linha expandida for um macro, expande o macro interno
+                    }
+                    else{
+                        output.add(linha);
                     }
                 }
 
-                // civide o corpo expandido em linhas e processa recursivamente
-                String[] linhasExpandidas = macroBody.split("\\r?\\n");
-                for (String linhaExp : linhasExpandidas) {
-                    expandNestedMacros(linhaExp);
-                }
-
-                // avança para a próxima linha do input original
                 lineCounter++;
-                if (lineCounter < input.size()) {
-                    line.parser(input.get(lineCounter));
-                }
-            } else {
+                line.parser(input.get(lineCounter));
+            }
+            else if (line.opcode.equals("START")){
                 output.add(line.line);
                 lineCounter++;
-                if (lineCounter < input.size()) {
-                    line.parser(input.get(lineCounter));
-                }
+                line.parser(input.get(lineCounter));
+                expanding = true;
+            }
+            else{                                         // Se a linha não for um macro, apenas copia
+                output.add(line.line);
+                lineCounter++;
+                line.parser(input.get(lineCounter));
             }
         }
+
         output.add(line.line);
         gerarASMOutput();
         return;

@@ -17,21 +17,43 @@ public class Line {
     public int tamanho_instr;
     public int address;
     public List<String> macroArguments = new ArrayList<>();
+    public List<String> macroNames = new ArrayList<>();
 
     public void parser(String Line){
         this.line = Line;
         String[] loo = Line.split(" ");
 
-        if (loo[0].equals("MACRO")){
+        if (loo[0].charAt(0) == '&'){              // Chamada de macro dentro de macro
+            StringBuilder sb = new StringBuilder(line);
+            sb.deleteCharAt(0);
+            line = sb.toString();
+            if (loo.length > 1){                        // Se tiver argumentos (não obrigatório)
+                String[] aux = loo[1].split(",");
+                macroArguments.addAll(Arrays.asList(aux));
+            }
+            return;
+        }
+        else if (loo[0].equals("MACRO")){
             opcode = loo[0];
             label = loo[1];
-            String[] aux = loo[2].split(",");
-            macroArguments.addAll(Arrays.asList(aux));
+            if (loo.length > 2){
+                String[] aux = loo[2].split(",");
+                macroArguments.addAll(Arrays.asList(aux));
+            }
             return;
         }
         else if (loo[0].equals("MEND")){
             label = "";
             opcode = loo[0];
+            return;
+        }
+        else if (macroNames.contains(loo[0])){          // EXPANDINDO
+            label = loo[0];
+            macroArguments.clear();
+            if (loo.length > 1){                        // Se tiver argumentos (não obrigatório)
+                String[] aux = loo[1].split(",");
+                macroArguments.addAll(Arrays.asList(aux));
+            }
             return;
         }
         else if (loo[0].equals("RD") || loo[0].equals("WD") || loo[0].equals("END")) {
