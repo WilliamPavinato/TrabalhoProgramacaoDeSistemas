@@ -65,7 +65,7 @@ public class Montador {
     }
 
     // Cria a tabela de simbolos
-    private void passoUm() {
+    public void passoUm() {
         int lineCounter = 0;
         int LOCCTR;
 
@@ -182,7 +182,7 @@ public class Montador {
     }
 
     // Gera código de máquina e arquivo temporário a partir da tabela de símbolos
-    private void passoDois() {
+    public void passoDois() {
         int lineCounter = 0;
 
         String obj = "";
@@ -459,6 +459,9 @@ public class Montador {
         return String.format("%06X", instr & 0xFFFFFF);
     }
 
+    public Map<String, Integer> getSYMTAB() {
+        return SYMTAB;
+    }
 
     String hexToBinary(String hex) {
         String binary = "";

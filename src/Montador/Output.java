@@ -19,4 +19,14 @@ public class Output {
         this.length          = 0;
         this.machineCode.clear();
     }
+
+    public String getStringMachineCode() {
+        StringBuilder codeBuilder = new StringBuilder();
+
+        for (String code : machineCode) {
+            codeBuilder.append(code);
+        }
+
+        return codeBuilder.toString();
+    }
 }
