@@ -501,4 +501,8 @@ public class Montador {
         }
         return binary;
     }
+
+    public Output getOutput(){
+        return this.output;
+    }
 }
