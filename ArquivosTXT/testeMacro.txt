@@ -1,4 +1,0 @@
-MACRO nomeMacro par1,par2,par3,par4
-MUL par1,par2
-ADDR S,T
-MEND

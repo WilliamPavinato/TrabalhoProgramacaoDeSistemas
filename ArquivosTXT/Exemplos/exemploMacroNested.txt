@@ -1,0 +1,11 @@
+MACRO macroExterno
+ADD #10
+&macroInterno
+ADD #10
+MEND
+MACRO macroInterno
+ADD #20
+MEND
+START 0
+macroExterno
+END

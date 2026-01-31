@@ -399,7 +399,7 @@ public class MontadorInterface extends JFrame {
         outputArea.setText("");
         String input = inputArea.getText();
         try {
-            String out = montador.Montar(input);
+            String out = montador.Montar(input, "1");
             outputArea.setText(out);
         } catch (Exception e) {
             outputArea.setText("Erro ao montar o programa: " + e.getMessage());

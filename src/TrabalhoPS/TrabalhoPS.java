@@ -1,25 +1,15 @@
 package TrabalhoPS;
 
 import Interface.*;
+import java.io.IOException;
 
 public class TrabalhoPS {
-        // static ExecutorInterface executor;
+        static ExecutorInterface executor;
         static MontadorInterface montador;
+        static ProcessadorMacrosInterface processadorMacros;
+        static SICXE sicXE;
 
-        void main() {
-            montador = new MontadorInterface();
+        void main() throws IOException{
+            sicXE = new SICXE();
         }
 }
-// descomentar quando for rodar o processador de macros - mais pra frente faço um menu que dê pra escolher
-
-//package TrabalhoPS;
-//
-//import Interface.ProcessadorMacrosInterface;
-//
-//public class TrabalhoPS {
-//    static ProcessadorMacrosInterface processadorMacros;
-//
-//    public static void main(String[] args) {
-//        processadorMacros = new ProcessadorMacrosInterface();
-//    }
-//}

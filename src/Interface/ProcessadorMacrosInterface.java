@@ -355,7 +355,7 @@ public class ProcessadorMacrosInterface extends JFrame{
         String programaCompleto = macrosArea.getText() + "\n" + codeArea.getText();
         processadorDeMacros.limpar();
         processadorDeMacros.setPrograma(programaCompleto);
-        processadorDeMacros.macroProcessor();
+        processadorDeMacros.macroProcessor("1");
         codeArea.setText(processadorDeMacros.getOutput());
         converterButton.setEnabled(false);
     }

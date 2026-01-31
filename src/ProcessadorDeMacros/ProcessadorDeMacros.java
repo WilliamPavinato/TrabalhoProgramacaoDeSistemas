@@ -23,7 +23,7 @@ public class ProcessadorDeMacros {
 
     }
 
-    public void macroProcessor(){
+    public void macroProcessor(String moduloIndex){
 
         int lineCounter = 0;
         boolean expanding = false;
@@ -98,7 +98,7 @@ public class ProcessadorDeMacros {
         }
 
         output.add(line.line);
-        gerarASMOutput();
+        gerarASMOutput(moduloIndex);
         return;
     }
 
@@ -149,8 +149,8 @@ public class ProcessadorDeMacros {
         errorMessage = "";
     }
 
-    private void gerarASMOutput() {
-        try (FileWriter fileWriter = new FileWriter(System.getProperty("user.dir")+ "/txtFiles/outputMacro.asm"))
+    private void gerarASMOutput(String moduloIndex) {
+        try (FileWriter fileWriter = new FileWriter(System.getProperty("user.dir") + "/ArquivosTXT/outputMacroModulo" + moduloIndex + ".asm"))
         {
             fileWriter.write(String.join("\n", output));
             fileWriter.close();

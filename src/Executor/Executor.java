@@ -20,33 +20,34 @@ public class Executor {
         this.output        = -1;
     }
 
-    public void setPrograma(String path) {
+    public void limpar() {
+        memoria.limparMemoria();
+        registradores.cleanRegistradores();
+        output = -1;
+    }
+
+    public void setPrograma(String programaObjeto) {
         memoria.limparMemoria();
         registradores.cleanRegistradores();
 
         int posMem = 0;
 
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(path));
-            String line;
-            StringBuilder binaryString = new StringBuilder();
+        StringBuilder binaryString = new StringBuilder();
 
-            while ((line = br.readLine()) != null) {
-                binaryString.append(line.trim());
-            }
+        String[] lines = programaObjeto.split("\\r?\\n");
 
-            br.close();
-
-            // Lê de 8 em 8 caracteres
-            for (int i = 0; i < binaryString.length(); i += 8) {
-                String pedaco = binaryString.substring(i, Math.min(i + 8, binaryString.length()));
-
-                byte pedacoByte = (byte) Integer.parseInt(pedaco, 2);
-
-                memoria.setByte(posMem++, pedacoByte);
-            }
+        for (String l : lines) {
+            binaryString.append(l.trim());
         }
-        catch (IOException e) { e.printStackTrace(); }
+
+        // Lê de 8 em 8 caracteres
+        for (int i = 0; i < binaryString.length(); i += 8) {
+            String pedaco = binaryString.substring(i, Math.min(i + 8, binaryString.length()));
+
+            byte pedacoByte = (byte) Integer.parseInt(pedaco, 2);
+
+            memoria.setByte(posMem++, pedacoByte);
+        }
     }
 
     public void executarPrograma() {

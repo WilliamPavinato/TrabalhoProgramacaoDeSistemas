@@ -1,0 +1,27 @@
+======Exemplo 1======
+// Primeiro Modulo
+PROG1 START 0
+EXTREF PROG2
+J PROG2
+END
+
+// Segundo Modulo
+PROG2 START 0
+EXTREF PROG1
+J PROG1
+END
+
+======Exemplo 2======
+// Primeiro Modulo
+PROG1 START 0
+EXTREF DEZ
+ADD DEZ
+END
+
+// Segundo Modulo
+PROG2 START 0
+EXTDEF DEZ
+J FIM
+DEZ WORD 10
+FIM WD
+END
