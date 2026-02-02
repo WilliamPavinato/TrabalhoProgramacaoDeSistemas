@@ -139,11 +139,14 @@ public class Montador {
             LOCCTR = Integer.parseInt(line.operands.get(0));
             intermediateFile.add(line);
 
-            Object[] entradaDefTab = new Object[3];
-            entradaDefTab[0] = line.label;
-            entradaDefTab[1] = LOCCTR;
-            entradaDefTab[2] = "R";
-            DEFTAB.add(entradaDefTab);
+            if( !(line.label.isEmpty()) ) // só adiciona na DEFTAB se o label não estiver vazio
+            {
+                Object[] entradaDefTab = new Object[3];
+                entradaDefTab[0] = line.label;
+                entradaDefTab[1] = LOCCTR;
+                entradaDefTab[2] = "R";
+                DEFTAB.add(entradaDefTab);
+            }
 
             lineCounter +=1;
             line = new Line();
