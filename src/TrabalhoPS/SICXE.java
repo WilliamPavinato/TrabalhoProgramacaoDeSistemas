@@ -176,52 +176,61 @@ public class SICXE extends javax.swing.JFrame{
     }
 
     public void processarMacros() {
-        if (primeiroModulo.getText().isEmpty() || segundoModulo.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Preencha os dois módulos!", "Error", JOptionPane.WARNING_MESSAGE);
+        if (primeiroModulo.getText().isEmpty() && segundoModulo.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Preencha pelo menos um módulo.", "Error", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        processadorDeMacrosPrimeiroModulo.limpar();
-        processadorDeMacrosPrimeiroModulo.setPrograma(primeiroModulo.getText());
-        processadorDeMacrosPrimeiroModulo.macroProcessor("1");
-        primeiroModuloOutput.setText(processadorDeMacrosPrimeiroModulo.getOutput());
 
-        processadorDeMacrosSegundoModulo.limpar();
-        processadorDeMacrosSegundoModulo.setPrograma(segundoModulo.getText());
-        processadorDeMacrosSegundoModulo.macroProcessor("2");
-        segundoModuloOutput.setText(processadorDeMacrosSegundoModulo.getOutput());
+        if( !primeiroModulo.getText().isEmpty() ){
+            processadorDeMacrosPrimeiroModulo.limpar();
+            processadorDeMacrosPrimeiroModulo.setPrograma(primeiroModulo.getText());
+            processadorDeMacrosPrimeiroModulo.macroProcessor("1");
+            primeiroModuloOutput.setText(processadorDeMacrosPrimeiroModulo.getOutput());
+        }
+
+        if( !segundoModulo.getText().isEmpty() ){
+            processadorDeMacrosSegundoModulo.limpar();
+            processadorDeMacrosSegundoModulo.setPrograma(segundoModulo.getText());
+            processadorDeMacrosSegundoModulo.macroProcessor("2");
+            segundoModuloOutput.setText(processadorDeMacrosSegundoModulo.getOutput());
+        }
 
         processarMacrosButton.setEnabled(false);
         montarButton.setEnabled(true);
     }
 
     public void montar() {
-        if (primeiroModuloOutput.getText().isEmpty() || segundoModuloOutput.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Primeiro processe as macros!", "Error", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        montadorPrimeiroModulo.Montar(primeiroModuloOutput.getText(), "1");
-        primeiroModuloOutput.setText(montadorPrimeiroModulo.getOutput().getMachineCodeAsString());
-
-        if (!montadorPrimeiroModulo.getErrorMessage().isEmpty()) {
-            processarMacrosButton.setEnabled(true);
-            montarButton.setEnabled(false);
-            primeiroModuloOutput.setText("");
-            segundoModuloOutput.setText("");
+        if (primeiroModuloOutput.getText().isEmpty() && segundoModuloOutput.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Programa vazio.", "Error", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
+        if(!primeiroModuloOutput.getText().isEmpty()) {
+            montadorPrimeiroModulo.Montar(primeiroModuloOutput.getText(), "1");
+            primeiroModuloOutput.setText(montadorPrimeiroModulo.getOutput().getMachineCodeAsString());
 
-        montadorSegundoModulo.Montar(segundoModuloOutput.getText(), "2");
-        segundoModuloOutput.setText(montadorSegundoModulo.getOutput().getMachineCodeAsString());
 
-        if (!montadorSegundoModulo.getErrorMessage().isEmpty()) {
-            processarMacrosButton.setEnabled(true);
-            montarButton.setEnabled(false);
-            primeiroModuloOutput.setText("");
-            segundoModuloOutput.setText("");
-            return;
+            if (!montadorPrimeiroModulo.getErrorMessage().isEmpty()) {
+                processarMacrosButton.setEnabled(true);
+                montarButton.setEnabled(false);
+                primeiroModuloOutput.setText("");
+                segundoModuloOutput.setText("");
+                return;
+            }
         }
 
+        if( !segundoModuloOutput.getText().isEmpty() ){
+            montadorSegundoModulo.Montar(segundoModuloOutput.getText(), "2");
+            segundoModuloOutput.setText(montadorSegundoModulo.getOutput().getMachineCodeAsString());
+
+            if (!montadorSegundoModulo.getErrorMessage().isEmpty()) {
+                processarMacrosButton.setEnabled(true);
+                montarButton.setEnabled(false);
+                primeiroModuloOutput.setText("");
+                segundoModuloOutput.setText("");
+                return;
+            }
+        }
         montarButton.setEnabled(false);
         ligarButton.setEnabled(true);
     }
@@ -244,8 +253,19 @@ public class SICXE extends javax.swing.JFrame{
     }
 
     public void ligar() {
-        ligador.adicionarPrograma(montadorPrimeiroModulo);
-        ligador.adicionarPrograma(montadorSegundoModulo);
+        if (primeiroModuloOutput.getText().isEmpty() && segundoModuloOutput.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Programa vazio!", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (!primeiroModuloOutput.getText().isEmpty()) {
+            ligador.adicionarPrograma(montadorPrimeiroModulo);
+        }
+
+        if (!segundoModuloOutput.getText().isEmpty()) {
+            ligador.adicionarPrograma(montadorSegundoModulo);
+        }
+
         String output = ligador.ligarProgramas();
         primeiroModuloOutput.setText(output);
         segundoModuloOutput.setText(output);

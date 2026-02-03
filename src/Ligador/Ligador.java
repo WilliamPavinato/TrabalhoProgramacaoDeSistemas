@@ -41,10 +41,12 @@ public class Ligador {
         }
 
         // Adiciona os símbolos do programa 2 à tabela de símbolos global, somando o tamanho do programa 1
-        for (Object[] entrada : programas.get(1).getDEFTAB())
-        {
-            entrada[1] = (int)entrada[1] + programas.get(0).getOutput().getLength();
-            tabelaDeSimbolosGlobal.add(entrada);
+
+        if(programas.size() > 1) {
+            for (Object[] entrada : programas.get(1).getDEFTAB()) {
+                entrada[1] = (int) entrada[1] + programas.get(0).getOutput().getLength();
+                tabelaDeSimbolosGlobal.add(entrada);
+            }
         }
 
         // Atualiza a tabela de uso do programa 2, adicionando o tamanho do programa 1
@@ -62,15 +64,16 @@ public class Ligador {
         }
 
         // Adiciona o código do programa 2 ao código de saída
-        for (String codigo : programas.get(1).getOutput().machineCode)
-        {
-            output.machineCode.add(codigo);
+        if (programas.size() > 1) {
+            for (String codigo : programas.get(1).getOutput().machineCode) {
+                output.machineCode.add(codigo);
+            }
         }
-
+        //Percorre o código de saída atualizando os deslocamentos
         int loc = 0;
         for (int i = 0; i < output.machineCode.size(); i++)
         {
-            // Verificar Tabela de Uso programa 0
+            // Verificar Tabela de Uso programa 1
             for (Object[] entrada : programas.get(0).getUSETAB())
             {
                 if (loc == (int)entrada[1])
@@ -94,27 +97,30 @@ public class Ligador {
                 }
             }
 
-            // Verificar Tabela de Uso programa 1
-            for (Object[] entrada : programas.get(1).getUSETAB())
-            {
-                if (loc == (int)entrada[1])
+            // Verificar Tabela de Uso programa 2
+
+            if(programas.size() > 1){
+                for (Object[] entrada : programas.get(1).getUSETAB())
                 {
-                    String simbolo = (String)entrada[0];
-                    int valor = 0;
-
-                    for (Object[] entrada2 : tabelaDeSimbolosGlobal)
+                    if (loc == (int)entrada[1])
                     {
-                        if (entrada2[0].equals(simbolo))
+                        String simbolo = (String)entrada[0];
+                        int valor = 0;
+
+                        for (Object[] entrada2 : tabelaDeSimbolosGlobal)
                         {
-                            valor = (int)entrada2[1];
+                            if (entrada2[0].equals(simbolo))
+                            {
+                                valor = (int)entrada2[1];
+                            }
                         }
+
+                        String disp = Integer.toBinaryString(valor);
+                        disp = String.format("%12s", disp).replaceAll(" ", "0");
+
+                        String codigoAtualizado = output.machineCode.get(i).substring(0, 12) + disp;
+                        output.machineCode.set(i, codigoAtualizado);
                     }
-
-                    String disp = Integer.toBinaryString(valor);
-                    disp = String.format("%12s", disp).replaceAll(" ", "0");
-
-                    String codigoAtualizado = output.machineCode.get(i).substring(0, 12) + disp;
-                    output.machineCode.set(i, codigoAtualizado);
                 }
             }
 
@@ -126,7 +132,7 @@ public class Ligador {
             {
                 loc+=1;
             }
-            else if (instrucoes.getInstrucao(opcode) == null)   // Se a inrtucao nao existe é BYTE, WORD, etc
+            else if (instrucoes.getInstrucao(opcode) == null)   // Se a inrtucao nao existe é BYTE, WORD
             {
                 if (output.machineCode.get(i).length() > 8)     // WORD
                     loc+=3;

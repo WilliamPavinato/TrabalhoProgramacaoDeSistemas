@@ -1,0 +1,145 @@
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_24_11_2025_08_56_[Changes]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_24_11_2025_08_56_[Changes]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Update_at_24_11_2025_08_56_[Changes]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_24_11_2025_08_56_[Changes]/shelved.patch	(revision 40399bbe1b80bb8bdfed997ccbfdb0f50ce677e2)
++++ /dev/null	(revision 40399bbe1b80bb8bdfed997ccbfdb0f50ce677e2)
+@@ -1,38 +0,0 @@
+-Index: .idea/workspace.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"AutoImportSettings\">\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\n  </component>\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"49513774-cd14-46a5-89e2-6d5c80cd9bfc\" name=\"Changes\" comment=\"\" />\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"FileTemplateManagerImpl\">\n    <option name=\"RECENT_TEMPLATES\">\n      <list>\n        <option value=\"Class\" />\n      </list>\n    </option>\n  </component>\n  <component name=\"Git.Settings\">\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\n  </component>\n  <component name=\"ProjectColorInfo\"><![CDATA[{\n  \"associatedIndex\": 0\n}]]></component>\n  <component name=\"ProjectId\" id=\"34wX74tZTG6bW3RirRi17iiLFZO\" />\n  <component name=\"ProjectViewState\">\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\n    <option name=\"showLibraryContents\" value=\"true\" />\n  </component>\n  <component name=\"PropertiesComponent\"><![CDATA[{\n  \"keyToString\": {\n    \"ModuleVcsDetector.initialDetectionPerformed\": \"true\",\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\n    \"RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252\": \"true\",\n    \"git-widget-placeholder\": \"master\",\n    \"kotlin-language-version-configured\": \"true\",\n    \"project.structure.last.edited\": \"Modules\",\n    \"project.structure.proportion\": \"0.0\",\n    \"project.structure.side.proportion\": \"0.0\"\n  }\n}]]></component>\n  <component name=\"TaskManager\">\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\n      <changelist id=\"49513774-cd14-46a5-89e2-6d5c80cd9bfc\" name=\"Changes\" comment=\"\" />\n      <created>1762125441084</created>\n      <option name=\"number\" value=\"Default\" />\n      <option name=\"presentableId\" value=\"Default\" />\n      <updated>1762125441084</updated>\n    </task>\n    <servers />\n  </component>\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+---- a/.idea/workspace.xml	(revision 6a39fcd9f7c4b808dbc3e84a0397560413f7824a)
+-+++ b/.idea/workspace.xml	(date 1762266458436)
+-@@ -20,10 +20,13 @@
+-   <component name="Git.Settings">
+-     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+-   </component>
+--  <component name="ProjectColorInfo"><![CDATA[{
+--  "associatedIndex": 0
+--}]]></component>
+-+  <component name="ProjectColorInfo">{
+-+  &quot;associatedIndex&quot;: 0
+-+}</component>
+-   <component name="ProjectId" id="34wX74tZTG6bW3RirRi17iiLFZO" />
+-+  <component name="ProjectLevelVcsManager">
+-+    <ConfirmationsSetting value="1" id="Add" />
+-+  </component>
+-   <component name="ProjectViewState">
+-     <option name="hideEmptyMiddlePackages" value="true" />
+-     <option name="showLibraryContents" value="true" />
+-@@ -33,8 +36,10 @@
+-     "ModuleVcsDetector.initialDetectionPerformed": "true",
+-     "RunOnceActivity.ShowReadmeOnStart": "true",
+-     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+-+    "RunOnceActivity.git.unshallow": "true",
+-     "git-widget-placeholder": "master",
+-     "kotlin-language-version-configured": "true",
+-+    "last_opened_file_path": "/home/diogo/IdeaProjects/TrabalhoProgramacaoDeSistemas",
+-     "project.structure.last.edited": "Modules",
+-     "project.structure.proportion": "0.0",
+-     "project.structure.side.proportion": "0.0"
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_24_11_2025_08_56__Changes_.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_24_11_2025_08_56__Changes_.xml b/.idea/shelf/Uncommitted_changes_before_Update_at_24_11_2025_08_56__Changes_.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_24_11_2025_08_56__Changes_.xml	(revision 40399bbe1b80bb8bdfed997ccbfdb0f50ce677e2)
++++ /dev/null	(revision 40399bbe1b80bb8bdfed997ccbfdb0f50ce677e2)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Update_at_24_11_2025_08_56_[Changes]" date="1763985435532" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_24_11_2025_08_56_[Changes]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Update at 24/11/2025 08:56 [Changes]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+deleted file mode 100644
+--- a/.idea/workspace.xml	(revision 40399bbe1b80bb8bdfed997ccbfdb0f50ce677e2)
++++ /dev/null	(revision 40399bbe1b80bb8bdfed997ccbfdb0f50ce677e2)
+@@ -1,77 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="AutoImportSettings">
+-    <option name="autoReloadType" value="SELECTIVE" />
+-  </component>
+-  <component name="ChangeListManager">
+-    <list default="true" id="49513774-cd14-46a5-89e2-6d5c80cd9bfc" name="Changes" comment="">
+-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/Executor/Executor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Executor/Executor.java" afterDir="false" />
+-    </list>
+-    <option name="SHOW_DIALOG" value="false" />
+-    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+-    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+-    <option name="LAST_RESOLUTION" value="IGNORE" />
+-  </component>
+-  <component name="FileTemplateManagerImpl">
+-    <option name="RECENT_TEMPLATES">
+-      <list>
+-        <option value="Class" />
+-      </list>
+-    </option>
+-  </component>
+-  <component name="Git.Settings">
+-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+-  </component>
+-  <component name="ProblemsViewState">
+-    <option name="selectedTabId" value="CurrentFile" />
+-  </component>
+-  <component name="ProjectColorInfo">{
+-  &quot;associatedIndex&quot;: 0
+-}</component>
+-  <component name="ProjectId" id="34wX74tZTG6bW3RirRi17iiLFZO" />
+-  <component name="ProjectLevelVcsManager">
+-    <ConfirmationsSetting value="1" id="Add" />
+-  </component>
+-  <component name="ProjectViewState">
+-    <option name="hideEmptyMiddlePackages" value="true" />
+-    <option name="showLibraryContents" value="true" />
+-  </component>
+-  <component name="PropertiesComponent"><![CDATA[{
+-  "keyToString": {
+-    "Application.TrabalhoPS.executor": "Run",
+-    "ModuleVcsDetector.initialDetectionPerformed": "true",
+-    "RunOnceActivity.ShowReadmeOnStart": "true",
+-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+-    "RunOnceActivity.git.unshallow": "true",
+-    "git-widget-placeholder": "corrigindo__bobagens",
+-    "kotlin-language-version-configured": "true",
+-    "last_opened_file_path": "//wsl.localhost/Ubuntu/home/guest/trabalho_ps/TrabalhoProgramacaoDeSistemas",
+-    "project.structure.last.edited": "Modules",
+-    "project.structure.proportion": "0.0",
+-    "project.structure.side.proportion": "0.0"
+-  }
+-}]]></component>
+-  <component name="RecentsManager">
+-    <key name="MoveFile.RECENT_KEYS">
+-      <recent name="$PROJECT_DIR$/ArquivosTXT" />
+-    </key>
+-  </component>
+-  <component name="SharedIndexes">
+-    <attachedChunks>
+-      <set>
+-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.28238.7" />
+-      </set>
+-    </attachedChunks>
+-  </component>
+-  <component name="TaskManager">
+-    <task active="true" id="Default" summary="Default task">
+-      <changelist id="49513774-cd14-46a5-89e2-6d5c80cd9bfc" name="Changes" comment="" />
+-      <created>1762125441084</created>
+-      <option name="number" value="Default" />
+-      <option name="presentableId" value="Default" />
+-      <updated>1762125441084</updated>
+-    </task>
+-    <servers />
+-  </component>
+-</project>
+\ No newline at end of file
