@@ -1,4 +1,4 @@
-======Exemplo 1======
+======Exemplo 1 (Pula de um programa para o outro)======
 // Primeiro Modulo
 PROG1 START 0
 EXTREF PROG2
@@ -11,7 +11,7 @@ EXTREF PROG1
 J PROG1
 END
 
-======Exemplo 2======
+======Exemplo 2 (Usa Variável do programa 2 no programa 1)======
 // Primeiro Modulo
 PROG1 START 0
 EXTREF DEZ
@@ -21,7 +21,9 @@ END
 // Segundo Modulo
 PROG2 START 0
 EXTDEF DEZ
+ADD DOIS
 J FIM
 DEZ WORD 10
+DOIS WORD 2
 FIM WD
 END
