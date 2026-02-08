@@ -1,0 +1,5 @@
+START 0
+RD 
+SHIFTL A,2
+WD
+END

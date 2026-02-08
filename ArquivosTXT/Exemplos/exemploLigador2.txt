@@ -1,0 +1,16 @@
+======(Usa Variável do programa 2 no programa 1)======
+// Primeiro Modulo
+PROG1 START 0
+EXTREF DEZ
+ADD DEZ
+END
+
+// Segundo Modulo
+PROG2 START 0
+EXTDEF DEZ
+ADD DOIS
+J FIM
+DEZ WORD 10
+DOIS WORD 2
+FIM WD
+END

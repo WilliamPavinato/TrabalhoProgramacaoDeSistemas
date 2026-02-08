@@ -1,0 +1,12 @@
+======(Pula de um programa para o outro)======
+// Primeiro Modulo
+PROG1 START 0
+EXTREF PROG2
+J PROG2
+END
+
+// Segundo Modulo
+PROG2 START 0
+EXTREF PROG1
+J PROG1
+END
