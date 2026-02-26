@@ -40,7 +40,7 @@ public class ProcessadorDeMacros {
                 Tupla tupla = new Tupla(lineCounter, 0);
 
                 NAMTAB.put(macroName, tupla);
-                ARGTAB.put(macroName, new ArrayList<String>());
+                ARGTAB.put(macroName, new ArrayList<>(line.macroArguments));
 
                 lineCounter++;
                 line.parser(input.get(lineCounter));
@@ -54,7 +54,6 @@ public class ProcessadorDeMacros {
                 // Define o ponteiro para o fim da macro e salva código e arguments
                 NAMTAB.get(macroName).setEndPointer(lineCounter);
                 DEFTAB.put(macroName, macroCode.toString());
-                ARGTAB.put(macroName, line.macroArguments);
                 lineCounter += 2;
                 line.parser(input.get(lineCounter));
             }
